@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
-import { ListPage } from './pages/List/ListPage';
-import { NotePage } from './pages/Note/NotePage';
-import { CalendarPage } from './pages/Calendar/CalendarPage';
-import { IntroPage } from './pages/Intro/IntroPage';
+import { ListPage } from '@/pages/List/ListPage';
+import { NotePage } from '@/pages/Note/NotePage';
+import { CalendarPage } from '@/pages/Calendar/CalendarPage';
+import { IntroPage } from '@/pages/Intro/IntroPage';
 
 function App() {
   return (
