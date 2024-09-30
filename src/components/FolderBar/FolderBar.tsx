@@ -26,10 +26,17 @@ export const FolderBar = () => {
   const handleAddFolder = () => {
     if (newFolderName.trim() !== '') {
       // 중복 호출 방지
-      if (isAddingFolder) return; // isAddingFolder가 true라면 폴더를 추가하는 작업이 이미 진행 중이므로 함수를 즉시 종료
+      if (isAddingFolder) return;
 
       setIsAddingFolder(true);
       setFolders((prevFolders) => [...prevFolders, { name: newFolderName.trim(), notes: [] }]);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // 기본 동작 방지
+      handleAddFolder();
     }
   };
 
@@ -41,17 +48,11 @@ export const FolderBar = () => {
     }
   }, [folders, isAddingFolder]);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault(); // 기본 동작 방지
-      handleAddFolder();
-    }
-  };
-
   return (
     <aside>
-      <div className="w-[280px] h-full bg-subBlack flex flex-col justify-between font-nanum leading-[22px]">
-        <section>
+      <div className="w-[280px] h-full bg-subBlack flex flex-col font-nanum leading-[22px]">
+        {/* 로고 및 상단 영역 */}
+        <section className="flex-none">
           <img className="w-[214px] mt-[47px] ml-[36px]" src={logo} alt="logo" />
           <p className="ml-9 mt-7 font-medium text-[17px] text-white">
             <span className="font-extrabold text-main04">
@@ -60,11 +61,14 @@ export const FolderBar = () => {
             님의 회의공간
           </p>
           <div className="w-[216px] h-[1.5px] ml-8 mt-6 bg-gray06" />
+        </section>
 
+        {/* 스크롤 영역 */}
+        <section className="flex-1 overflow-y-auto mt-6 scrollbar-hide">
           {/* 폴더와 해당 폴더에 속한 노트들 */}
           {folders.map((folderItem, index) => (
             <div key={index}>
-              <div className="mt-6 flex items-center">
+              <div className={`flex items-center ${index !== 0 ? 'mt-6' : ''}`}>
                 <img className="w-5 h-5 ml-8 mr-2" src={folder} alt="folder" />
                 <span className="mr-[10px] font-bold text-[14px] text-white cursor-pointer">
                   {folderItem.name}
@@ -104,9 +108,9 @@ export const FolderBar = () => {
           </div>
         </section>
 
-        {/* 로그아웃 */}
-        <section>
-          <div className="fixed bottom-9 ml-10 mt-20 flex items-center">
+        {/* 로그아웃 섹션 */}
+        <section className="flex-none pt-[120px] pb-9">
+          <div className="w-full ml-10 flex items-center">
             <img className="w-5 h-5 mr-[10px]" src={logout} alt="logout" />
             <span className="font-light text-[14px] text-white cursor-pointer">로그아웃</span>
           </div>
