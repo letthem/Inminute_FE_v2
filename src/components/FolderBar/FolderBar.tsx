@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import logo from '@/assets/webps/Layout/logo.webp';
 import folder from '@/assets/webps/FolderBar/folder.webp';
 import down from '@/assets/webps/FolderBar/down.webp';
+import up from '@/assets/webps/FolderBar/up.webp';
 import note from '@/assets/webps/FolderBar/note.webp';
 import logout from '@/assets/webps/FolderBar/logout.webp';
 
@@ -22,6 +23,7 @@ export const FolderBar = () => {
   ]);
   const [newFolderName, setNewFolderName] = useState('');
   const [isAddingFolder, setIsAddingFolder] = useState(false);
+  const [expandedFolders, setExpandedFolders] = useState<boolean[]>(folders.map(() => false));
 
   const handleAddFolder = () => {
     if (newFolderName.trim() !== '') {
@@ -35,7 +37,7 @@ export const FolderBar = () => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      e.preventDefault(); // 기본 동작 방지
+      e.preventDefault();
       handleAddFolder();
     }
   };
@@ -45,8 +47,18 @@ export const FolderBar = () => {
     if (isAddingFolder) {
       setNewFolderName('');
       setIsAddingFolder(false);
+      setExpandedFolders((prev) => [...prev, false]); // 새 폴더에 대해 확장 여부를 추가
     }
   }, [folders, isAddingFolder]);
+
+  // 폴더 toggle
+  const toggleFolder = (index: number) => {
+    setExpandedFolders((prevExpandedFolders) => {
+      const updatedFolders = [...prevExpandedFolders];
+      updatedFolders[index] = !updatedFolders[index]; // 열리고 접히는 상태 toggle
+      return updatedFolders;
+    });
+  };
 
   return (
     <aside>
@@ -73,16 +85,30 @@ export const FolderBar = () => {
                 <span className="mr-[10px] font-bold text-[14px] text-white cursor-pointer">
                   {folderItem.name}
                 </span>
-                <img className="w-5 h-5 cursor-pointer" src={down} alt="down" />
+                <img
+                  className="w-5 h-5 cursor-pointer transition-transform duration-300 ease-in-out"
+                  src={expandedFolders[index] ? up : down}
+                  alt={expandedFolders[index] ? 'up' : 'down'}
+                  onClick={() => toggleFolder(index)}
+                />
               </div>
-              {folderItem.notes.map((noteItem, noteIndex) => (
-                <div key={noteIndex} className="mt-5 ml-[52px] flex items-center">
-                  <img className="w-5 h-5 mr-[10px]" src={note} alt="note" />
-                  <span className="font-[350] text-[14px] text-white cursor-pointer">
-                    {noteItem}
-                  </span>
-                </div>
-              ))}
+              <div
+                className={`ml-[52px] overflow-hidden transition-all duration-300 ease-in-out ${
+                  expandedFolders[index] ? 'max-h-[300px]' : 'max-h-0'
+                }`}
+                style={{
+                  maxHeight: expandedFolders[index] ? `${folderItem.notes.length * 50}px` : '0',
+                }}
+              >
+                {folderItem.notes.map((noteItem, noteIndex) => (
+                  <div key={noteIndex} className="mt-5 flex items-center">
+                    <img className="w-5 h-5 mr-[10px]" src={note} alt="note" />
+                    <span className="font-[350] text-[14px] text-white cursor-pointer">
+                      {noteItem}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
 
