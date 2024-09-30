@@ -6,7 +6,7 @@ export const AboutPage = () => {
     <>
       <div className="w-screen h-screen flex flex-row bg-bg">
         <FolderBar />
-        <section>
+        <section className="flex flex-col w-[calc(100vw-280px)] h-full">
           <NavBar />
           About 페이지입니다.
         </section>

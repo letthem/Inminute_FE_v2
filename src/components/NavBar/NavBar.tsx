@@ -13,7 +13,7 @@ export const NavBar = () => {
 
   return (
     <header>
-      <div className="w-screen h-full flex font-nanum leading-[22px] z-10 bg-bg">
+      <div className="flex font-nanum leading-[22px] z-10 bg-bg">
         <ul className="flex ml-9 mt-12 mb-4">
           {navItems.map((item) => (
             <li
