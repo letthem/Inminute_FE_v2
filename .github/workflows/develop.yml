@@ -11,6 +11,7 @@ on:
 jobs:
   cicd:
     runs-on: ubuntu-latest
+
     steps:
       # Checkout code
       - name: Checkout code
@@ -38,9 +39,12 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
 
-      - run: yarn build
+      # Build project
+      - name: Build Project
+        run: yarn build
 
-      - name: deploy to s3
+      # Deploy to S3
+      - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@master
         with:
           args: --delete
@@ -51,7 +55,23 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           SOURCE_DIR: ${{ secrets.SOURCE_DIR }}
 
-      - name: Cloudfront invalidation
+      # Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # Install AWS CLI if needed
+      - name: Install AWS CLI
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+
+      # CloudFront invalidation
+      - name: CloudFront Invalidation
         run: |
           aws cloudfront create-invalidation \
             --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} \
