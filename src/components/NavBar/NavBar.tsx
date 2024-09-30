@@ -1,12 +1,10 @@
-import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-export const NavBar: React.FC = () => {
+export const NavBar = () => {
   const nav = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
 
-  // 네비게이션 항목 목록
   const navItems = [
     { path: '/', label: '회의록', width: '62px' },
     { path: '/calendar', label: '캘린더', width: '62px' },
@@ -20,14 +18,16 @@ export const NavBar: React.FC = () => {
           {navItems.map((item) => (
             <li
               key={item.path}
-              className={`ml-9 flex flex-col cursor-pointer font-bold text-[22px] ${
-                currentPath === item.path ? 'text-mainBlack' : 'text-gray03'
-              }`}
+              className={`ml-9 flex flex-col cursor-pointer font-bold text-[22px] transition-all duration-300 transform ${
+                currentPath === item.path ? 'text-mainBlack' : 'text-gray03 hover:text-mainBlack'
+              } hover:scale-[102%] active:scale-100`}
               onClick={() => nav(item.path)}
             >
               <span>{item.label}</span>
               {currentPath === item.path && (
-                <div className={`mt-2 w-[${item.width}] h-[2px] bg-mainBlack`} />
+                <div
+                  className={`mt-2 h-[2px] w-[${item.width}] bg-mainBlack transition-all duration-300`}
+                />
               )}
             </li>
           ))}
