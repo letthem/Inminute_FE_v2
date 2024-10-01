@@ -27,6 +27,7 @@ export default {
       },
       fontFamily: {
         nanum: ['"NanumSquare Neo"', 'sans-serif'],
+        pretendard: ['"Pretendard Variable"', 'sans-serif'],
       },
     },
   },
