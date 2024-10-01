@@ -15,7 +15,7 @@ export const MainTopBar = () => {
             <span className="w-[40px] mr-2 font-medium text-[14px]">최신순</span>
             <img className="w-5 h-5" src={down} alt='down'/>
           </div>
-          <div className="w-[123px] h-[38px] mr-[72px] bg-mainBlack flex items-center border rounded cursor-pointer">
+          <div className="w-[123px] h-[38px] mr-[72px] bg-mainBlack flex items-center rounded cursor-pointer">
             <img className="w-[18px] h-[18px] ml-[14px]" src={notePlus} alt="note plus" />
             <span className="w-[69px] text-[13px] font-medium text-white ml-[8px]">
               새 회의 노트
