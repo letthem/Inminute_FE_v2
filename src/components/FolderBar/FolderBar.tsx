@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import logo from '@/assets/webps/Layout/logo.webp';
 import folder from '@/assets/webps/FolderBar/folder.webp';
-import down from '@/assets/webps/FolderBar/down.webp';
-import up from '@/assets/webps/FolderBar/up.webp';
+import down from '@/assets/webps/FolderBar/downGray.webp';
+import up from '@/assets/webps/FolderBar/upGray.webp';
 import note from '@/assets/webps/FolderBar/note.webp';
 import logout from '@/assets/webps/FolderBar/logout.webp';
 
