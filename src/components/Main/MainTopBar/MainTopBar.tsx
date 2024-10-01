@@ -1,12 +1,20 @@
 import { SearchBar } from '@/components/Main/MainTopBar/SearchBar/SearchBar';
 import notePlus from '@/assets/webps/Main/notePlus.webp';
-import down from '@/assets/webps/Main/downBlack.webp';
+import { SortDropdown } from '@/components/Main/MainTopBar/\bSortDropDown/SortDropDown';
+import { useState } from 'react';
 
 export const MainTopBar = () => {
+  const [selectedSortOption, setSelectedSortOption] = useState('최신순');
+
   // 검색 결과 처리 함수
   const handleSearch = (searchText: string) => {
     console.log(`Searching for: ${searchText}`);
     // 검색 로직 수행
+  };
+
+  // 드롭다운 옵션 선택 처리 함수
+  const handleOptionSelect = (option: string) => {
+    setSelectedSortOption(option);
   };
 
   return (
@@ -15,10 +23,12 @@ export const MainTopBar = () => {
         <SearchBar onSearch={handleSearch} />
 
         <div className="flex items-center">
-          <div className="w-[68px] h-[22px] mr-6 flex items-center cursor-pointer">
-            <span className="w-[40px] mr-2 font-medium text-[14px]">최신순</span>
-            <img className="w-5 h-5" src={down} alt="down" />
-          </div>
+          <SortDropdown
+            options={['최신순', '오래된 순', '가나다 순']}
+            selectedOption={selectedSortOption}
+            onOptionSelect={handleOptionSelect}
+          />
+
           <div className="w-[123px] h-[38px] mr-[72px] bg-mainBlack flex items-center rounded cursor-pointer">
             <img className="w-[18px] h-[18px] ml-[14px]" src={notePlus} alt="note plus" />
             <span className="w-[69px] text-[13px] font-medium text-white ml-[8px]">
