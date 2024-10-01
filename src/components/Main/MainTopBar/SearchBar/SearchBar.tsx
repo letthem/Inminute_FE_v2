@@ -82,6 +82,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       onClick={handleSearchClick}
     >
       <img className="w-[22px] h-[22px] ml-4" src={searchIcon} alt="search" />
+      {!isSearchActive && <span className="w-10 h-[22px] ml-2 cursor-text" />}
       {isSearchActive && (
         <input
           ref={inputRef}
