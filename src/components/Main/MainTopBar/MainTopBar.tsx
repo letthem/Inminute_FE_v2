@@ -83,16 +83,18 @@ export const MainTopBar = () => {
           onClick={handleSearchClick}
         >
           <img className="w-[22px] h-[22px] ml-4" src={search} alt="search" />
-          <input
-            ref={inputRef}
-            className="ml-4 w-[320px] h-[24px] outline-none bg-transparent font-pretendard text-[18px]"
-            type="text"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            onBlur={handleBlur}
-            onKeyDown={handleKeyDown}
-            autoFocus={isSearchActive && !isSearched}
-          />
+          {isSearchActive && (
+            <input
+              ref={inputRef}
+              className="ml-4 w-[320px] h-[24px] outline-none bg-transparent font-pretendard text-[18px]"
+              type="text"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              onBlur={handleBlur}
+              onKeyDown={handleKeyDown}
+              autoFocus={isSearchActive && !isSearched}
+            />
+          )}
           {showSearchButton && (
             <span
               className={`w-[27px] h-[24px] ml-[19px] mr-[20px] font-medium text-[14px] cursor-pointer ${
