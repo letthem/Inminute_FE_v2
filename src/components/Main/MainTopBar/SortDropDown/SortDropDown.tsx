@@ -51,29 +51,31 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({
         <img className="w-5 h-5" src={isDropdownOpen ? up : down} alt="toggle dropdown" />
       </div>
 
-      {isDropdownOpen && (
-        <div className="w-[120px] y-[100px] absolute top-full mt-3 right-6 bg-white rounded-[10px] shadow-[0_0_4px_0_rgba(0,0,0,0.25)] z-20">
-          <ul className="mx-[6px] my-2">
-            {options.map((option) => (
-              <li
-                key={option}
-                className={`pl-2 pt-[7px] pb-2 text-[12px] font-medium cursor-pointer rounded flex items-center hover:bg-gray02 justify-between ${
-                  option === selectedOption ? 'text-gray04' : 'text-mainBlack'
-                }`}
-                onClick={() => {
-                  onOptionSelect(option);
-                  setIsDropdownOpen(false);
-                }}
-              >
-                {option}
-                {option === selectedOption && (
-                  <img className="w-[11px] mr-[14px]" src={check} alt="selected" />
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <div
+        className={`w-[120px] y-[100px] absolute top-full mt-3 right-6 bg-white rounded-[10px] shadow-[0_0_4px_0_rgba(0,0,0,0.25)] z-20 transition-all duration-300 ease-in-out overflow-hidden ${
+          isDropdownOpen ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <ul className="mx-[6px] my-2">
+          {options.map((option) => (
+            <li
+              key={option}
+              className={`pl-2 py-[3px] text-[12px] font-medium cursor-pointer rounded flex items-center hover:bg-gray02 justify-between ${
+                option === selectedOption ? 'text-gray04' : 'text-mainBlack'
+              }`}
+              onClick={() => {
+                onOptionSelect(option);
+                setIsDropdownOpen(false);
+              }}
+            >
+              {option}
+              {option === selectedOption && (
+                <img className="w-[11px] mr-[14px]" src={check} alt="selected" />
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
