@@ -1,7 +1,14 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import calendar from '@/assets/webps/Main/calendar.webp';
 
-export const CardItem = () => {
+interface CardItemProps {
+  date: string;
+  title: string;
+  summary: string;
+  folder: string;
+}
+
+export const CardItem = ({ date, title, summary }: CardItemProps) => {
   const [isBottomOverlayVisible, setIsBottomOverlayVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -68,9 +75,9 @@ export const CardItem = () => {
     >
       <div className="w-[75.6px] h-[23px] mt-5 ml-[23px] flex items-center bg-main06 rounded-[14.6px]">
         <img src={calendar} alt="calendar" className="w-[11px] h-[11px] mr-[3.6px] ml-[10px]" />
-        <span className="text-white text-[8.5px] font-bold">24.05.07</span>
+        <span className="text-white text-[8.5px] font-bold">{date}</span>
       </div>
-      <p className="ml-6 mt-4 text-mainBlack text-[20px] font-bold ">브랜드 아이덴티티 전략 회의</p>
+      <p className="ml-6 mt-4 text-mainBlack text-[20px] font-bold ">{title}</p>
       <div className="relative mx-6 my-5">
         <div className="bg-gray01 h-[68px] pl-4 pr-2 py-3 rounded-[10px]">
           <div
@@ -79,11 +86,7 @@ export const CardItem = () => {
               isHovered ? 'mr-[1px] scrollbar-visible scrollbar-thin-custom' : 'scrollbar-hide'
             }`}
           >
-            <span className="text-gray06 font-pretendard font-normal text-[13px]">
-              새로운 브랜드의 핵심 가치와 시각적 요소를 정의하는 전략을 수립하고 새로운 브랜드의
-              핵심 가치를 새로운 브랜드화하고 전략 새로운 브랜드의 핵심 가치와 시각적 요소를
-              정의하는 전략을 수립하고 새로운 브랜드의 핵심 가치를 새로운 브랜드화하고 전략
-            </span>
+            <span className="text-gray06 font-pretendard font-normal text-[13px]">{summary}</span>
           </div>
         </div>
         {/* 하단 고정 회색 오버레이 */}
