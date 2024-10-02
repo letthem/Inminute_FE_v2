@@ -52,7 +52,7 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({
       </div>
 
       <div
-        className={`w-[120px] y-[100px] absolute top-full mt-3 right-6 bg-white rounded-[10px] shadow-[0_0_4px_0_rgba(0,0,0,0.25)] z-20 transition-all duration-300 ease-in-out overflow-hidden ${
+        className={`w-[120px] y-[100px] absolute top-full mt-3 right-6 bg-white rounded-[10px] shadow-[0_0_4px_0_rgba(0,0,0,0.25)] z-20 transition-all duration-200 ease-in-out overflow-hidden ${
           isDropdownOpen ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
