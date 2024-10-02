@@ -3,13 +3,16 @@ import notePlus from '@/assets/webps/Main/notePlus.webp';
 import { SortDropdown } from '@/components/Main/MainTopBar/\bSortDropDown/SortDropDown';
 import { useState } from 'react';
 
-export const MainTopBar = () => {
+interface MainTopBarProps {
+  onSearch: (searchText: string) => void;
+}
+
+export const MainTopBar: React.FC<MainTopBarProps> = ({ onSearch }) => {
   const [selectedSortOption, setSelectedSortOption] = useState('최신순');
 
   // 검색 결과 처리 함수
   const handleSearch = (searchText: string) => {
-    console.log(`Searching for: ${searchText}`);
-    // 검색 로직 수행
+    onSearch(searchText); // 부모 컴포넌트로 검색어 전달
   };
 
   // 드롭다운 옵션 선택 처리 함수

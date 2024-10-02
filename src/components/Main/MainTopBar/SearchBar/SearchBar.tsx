@@ -60,6 +60,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     }
   };
 
+  // 검색어 변경 시 부모 컴포넌트로 전달
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+    onSearch(e.target.value);
+  };
+
   // 검색바 애니메이션 후 '검색' 버튼 표시
   useEffect(() => {
     if (isSearchActive) {
@@ -89,7 +95,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           className="ml-4 w-[320px] h-[24px] outline-none bg-transparent font-pretendard text-[18px]"
           type="text"
           value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
+          // onChange={(e) => setSearchText(e.target.value)}
+          onChange={handleChange}
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
           autoFocus={isSearchActive && !isSearched}
