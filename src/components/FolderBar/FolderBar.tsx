@@ -83,7 +83,7 @@ export const FolderBar = () => {
           {/* 폴더와 해당 폴더에 속한 노트들 */}
           {folders.map((folderItem, index) => (
             <div key={index}>
-              <div className={`flex ${index !== 0 ? 'mt-6' : ''}`}>
+              <div className={`flex ${index !== 0 ? 'mt-4' : ''}`}>
                 <img className="w-5 h-5 ml-8 mr-2" src={folder} alt="folder" />
                 <span className="mr-[10px] font-bold text-[14px] text-white cursor-pointer">
                   {folderItem.name}
@@ -103,28 +103,30 @@ export const FolderBar = () => {
                   maxHeight: expandedFolders[index] ? `${folderItem.notes.length * 100}px` : '0',
                 }}
               >
-                {folderItem.notes.map((noteItem, noteIndex) => (
-                  <div key={noteIndex} className="mt-5 flex">
-                    <img className="w-5 h-5 mr-[10px]" src={note} alt="note" />
-                    <span className="font-[350] w-[170px] text-[14px] text-white cursor-pointer">
-                      {noteItem}
-                    </span>
-                  </div>
-                ))}
+                <div className="mb-1">
+                  {folderItem.notes.map((noteItem, noteIndex) => (
+                    <div key={noteIndex} className="mt-4 flex">
+                      <img className="w-5 h-5 mr-[10px]" src={note} alt="note" />
+                      <span className="font-[350] w-[170px] text-[14px] text-white cursor-pointer">
+                        {noteItem}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           ))}
 
           {/* 폴더에 속하지 않은 노트들 */}
           {unassignedNotes.map((noteItem, noteIndex) => (
-            <div key={`unassigned-${noteIndex}`} className="mt-6 ml-8 flex items-center">
+            <div key={`unassigned-${noteIndex}`} className="mt-4 ml-8 flex items-center">
               <img className="w-5 h-5 mr-[10px]" src={note} alt="note" />
               <span className="font-[350] text-[14px] text-white cursor-pointer">{noteItem}</span>
             </div>
           ))}
 
           {/* 새 폴더 만들기 */}
-          <div className="mt-6 ml-8 flex items-center">
+          <div className="mt-4 ml-8 flex items-center">
             <img className="w-5 h-5 mr-[10px]" src={folder} alt="new folder" />
             <input
               type="text"
