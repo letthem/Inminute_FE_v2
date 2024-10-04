@@ -32,9 +32,9 @@ export const MainTopBar: React.FC<MainTopBarProps> = ({ onSearch }) => {
             onOptionSelect={handleOptionSelect}
           />
 
-          <div className="w-[123px] h-[38px] mr-[72px] bg-mainBlack flex items-center rounded cursor-pointer">
+          <div className="w-[117px] h-[38px] mr-[72px] bg-mainBlack flex items-center rounded cursor-pointer">
             <img className="w-[18px] h-[18px] ml-[14px]" src={notePlus} alt="note plus" />
-            <span className="w-[69px] text-[13px] font-medium text-white ml-[8px]">
+            <span className="w-[63px] text-[12px] font-medium text-white ml-[8px]">
               새 회의 노트
             </span>
           </div>

@@ -6,9 +6,9 @@ export const NavBar = () => {
   const currentPath = location.pathname;
 
   const navItems = [
-    { path: '/', label: '회의록', width: '62px' },
-    { path: '/calendar', label: '캘린더', width: '62px' },
-    { path: '/about', label: 'ABOUT', width: '84px' },
+    { path: '/', label: '회의록', width: '57px' },
+    { path: '/calendar', label: '캘린더', width: '57px' },
+    { path: '/about', label: 'ABOUT', width: '77px' },
   ];
 
   return (
@@ -18,7 +18,7 @@ export const NavBar = () => {
           {navItems.map((item) => (
             <li
               key={item.path}
-              className={`ml-9 flex flex-col cursor-pointer font-bold text-[22px] transition-all duration-300 transform ${
+              className={`ml-8 flex flex-col cursor-pointer font-bold text-[20px] transition-all duration-300 transform ${
                 currentPath === item.path ? 'text-mainBlack' : 'text-gray03 hover:text-mainBlack'
               } hover:scale-[102%] active:scale-100`}
               onClick={() => nav(item.path)}
