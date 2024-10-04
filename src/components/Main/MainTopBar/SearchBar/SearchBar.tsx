@@ -92,7 +92,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       {isSearchActive && (
         <input
           ref={inputRef}
-          className="ml-4 w-[320px] h-[24px] outline-none bg-transparent font-pretendard text-[18px]"
+          className="ml-4 w-[320px] h-[24px] outline-none bg-transparent font-pretendard text-[17px]"
           type="text"
           value={searchText}
           // onChange={(e) => setSearchText(e.target.value)}
