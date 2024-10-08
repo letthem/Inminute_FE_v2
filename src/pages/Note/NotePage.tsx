@@ -254,7 +254,11 @@ export const NotePage = () => {
               <p className="font-bold text-mainBlack text-[17px] ml-[32px] mr-[32px]">
                 회의 스크립트
               </p>
-              <img src={aside} alt="aside icon" className="w-[18px] h-[18px] mr-5 cursor-pointer" />
+              <img
+                src={aside}
+                alt="aside icon"
+                className={`w-[18px] h-[18px] cursor-pointer ${hasScrollbar ? (isHovered ? 'mr-[2px]' : 'mr-5') : 'mr-5'}`}
+              />
             </title>
 
             <div
