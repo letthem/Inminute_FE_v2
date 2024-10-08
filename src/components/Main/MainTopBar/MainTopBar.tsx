@@ -5,9 +5,10 @@ import { useState } from 'react';
 
 interface MainTopBarProps {
   onSearch: (searchText: string) => void;
+  onSort: (sortOption: string) => void;
 }
 
-export const MainTopBar: React.FC<MainTopBarProps> = ({ onSearch }) => {
+export const MainTopBar: React.FC<MainTopBarProps> = ({ onSearch, onSort }) => {
   const [selectedSortOption, setSelectedSortOption] = useState('최신순');
 
   // 검색 결과 처리 함수
@@ -18,6 +19,7 @@ export const MainTopBar: React.FC<MainTopBarProps> = ({ onSearch }) => {
   // 드롭다운 옵션 선택 처리 함수
   const handleOptionSelect = (option: string) => {
     setSelectedSortOption(option);
+    onSort(option);
   };
 
   return (
