@@ -135,8 +135,8 @@ export const NotePage = () => {
                   <span className="font-extrabold text-[15px]">TO DO</span>
                 </div>
 
-                <div className="mt-[28px] mb-[46px] grid gap-y-10">
-                  <div className="w-[200px] relative">
+                <div className="flex flex-wrap mt-[28px] mb-[46px] mr-[120px]">
+                  <div className="w-[200px] relative mr-[48px] mb-[40px]">
                     <img
                       src={todoMint}
                       alt="todo mint"
@@ -154,7 +154,7 @@ export const NotePage = () => {
                     </div>
                   </div>
 
-                  <div className="w-[200px] relative">
+                  <div className="w-[200px] relative mr-[48px] mb-[40px]">
                     <img
                       src={todoMint}
                       alt="todo mint"
@@ -162,16 +162,14 @@ export const NotePage = () => {
                     />
                     <div className="bg-mainBlack rounded-[10px] flex flex-col">
                       <p className="font-bold text-white text-[13px] leading-[14px] mt-6 mb-6 mx-auto">
-                        심수연
+                        박상욱
                       </p>
                       <ul className="text-white font-normal font-pretendard text-[12px] list-outside list-disc ml-8 mr-5 mb-[18px]">
                         <li>브랜딩 레퍼런스 찾기</li>
-                        <li>카드뉴스 만들기</li>
-                        <li>추후 프로젝트 이름 고민해오기</li>
                       </ul>
                     </div>
                   </div>
-                  <div className="w-[200px] relative">
+                  <div className="w-[200px] relative mr-[48px] mb-[40px]">
                     <img
                       src={todoMint}
                       alt="todo mint"
@@ -179,16 +177,15 @@ export const NotePage = () => {
                     />
                     <div className="bg-mainBlack rounded-[10px] flex flex-col">
                       <p className="font-bold text-white text-[13px] leading-[14px] mt-6 mb-6 mx-auto">
-                        심수연
+                        노태일
                       </p>
                       <ul className="text-white font-normal font-pretendard text-[12px] list-outside list-disc ml-8 mr-5 mb-[18px]">
                         <li>브랜딩 레퍼런스 찾기</li>
                         <li>카드뉴스 만들기</li>
-                        <li>추후 프로젝트 이름 고민해오기</li>
                       </ul>
                     </div>
                   </div>
-                  <div className="w-[200px] relative">
+                  <div className="w-[200px] relative mr-[48px] mb-[40px]">
                     <img
                       src={todoMint}
                       alt="todo mint"
