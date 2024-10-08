@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FolderBar } from '@/components/FolderBar/FolderBar';
 import leftBlack from '@/assets/webps/Note/leftBlack.webp';
@@ -12,6 +13,41 @@ import aside from '@/assets/webps/Note/aside.webp';
 
 export const NotePage = () => {
   const nav = useNavigate();
+
+  const [isHovered, setIsHovered] = useState(false);
+  const [hasScrollbar, setHasScrollbar] = useState(false);
+  const asideRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  // Detect scrollbar visibility
+  useEffect(() => {
+    const checkScrollbar = () => {
+      if (asideRef.current) {
+        const hasScroll = asideRef.current.scrollHeight > asideRef.current.clientHeight;
+        setHasScrollbar(hasScroll);
+      }
+    };
+
+    // Run check on mount
+    checkScrollbar();
+
+    // Optionally add event listener for window resizing
+    window.addEventListener('resize', checkScrollbar);
+
+    // Cleanup the event listener
+    return () => {
+      window.removeEventListener('resize', checkScrollbar);
+    };
+  }, []);
+
+  // 호버 상태 제어 함수
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
 
   return (
     <>
@@ -208,15 +244,23 @@ export const NotePage = () => {
             </div>
           </main>
 
-          <aside className="w-[381px] border-l border-gray03 overflow-y-auto scrollbar-visible mr-1 scrollbar-mid-custom">
-            <title className="flex justify-between mt-12 items-center">
+          <aside
+            ref={asideRef}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className={`w-[375px] border-l border-gray03 pt-12 overflow-y-auto ${hasScrollbar ? (isHovered ? 'w-[361px] scrollbar-visible mr-[14px] scrollbar-mid-custom' : 'scrollbar-hide w-[375px]') : 'scrollbar-hide w-[375px]'}`}
+          >
+            <title className="flex justify-between items-center">
               <p className="font-bold text-mainBlack text-[17px] ml-[32px] mr-[32px]">
                 회의 스크립트
               </p>
               <img src={aside} alt="aside icon" className="w-[18px] h-[18px] mr-5 cursor-pointer" />
             </title>
 
-            <div className="ml-8 mr-[28px] mb-[94px]">
+            <div
+              ref={contentRef}
+              className={`ml-8 ${hasScrollbar ? (isHovered ? 'mr-[14px]' : 'scrollbar-hide mr-8') : 'scrollbar-hide mr-8'} mb-[94px]`}
+            >
               <div className="mt-12 mb-8">
                 <div className="flex items-center">
                   <img src={userMint} alt="user icon" className="w-[28px] h-[28px] mr-[10px]" />
@@ -230,7 +274,7 @@ export const NotePage = () => {
                 </p>
               </div>
 
-              <div className="mt-12 mb-8">
+              <div className="mb-8">
                 <div className="flex items-center">
                   <img src={userMint} alt="user icon" className="w-[28px] h-[28px] mr-[10px]" />
                   <span className="font-bold text-[14px] text-main07">심수연</span>
@@ -243,7 +287,7 @@ export const NotePage = () => {
                 </p>
               </div>
 
-              <div className="mt-12 mb-8">
+              <div className="mb-8">
                 <div className="flex items-center">
                   <img src={userMint} alt="user icon" className="w-[28px] h-[28px] mr-[10px]" />
                   <span className="font-bold text-[14px] text-main07">노태일</span>
@@ -254,7 +298,7 @@ export const NotePage = () => {
                 </p>
               </div>
 
-              <div className="mt-12 mb-8">
+              <div className="mb-8">
                 <div className="flex items-center">
                   <img src={userMint} alt="user icon" className="w-[28px] h-[28px] mr-[10px]" />
                   <span className="font-bold text-[14px] text-main07">노태일</span>
@@ -266,7 +310,7 @@ export const NotePage = () => {
                 </p>
               </div>
 
-              <div className="mt-12 mb-8">
+              <div className="mb-8">
                 <div className="flex items-center">
                   <img src={userMint} alt="user icon" className="w-[28px] h-[28px] mr-[10px]" />
                   <span className="font-bold text-[14px] text-main07">노태일</span>
@@ -277,7 +321,7 @@ export const NotePage = () => {
                 </p>
               </div>
 
-              <div className="mt-12 mb-8">
+              <div className="mb-8">
                 <div className="flex items-center">
                   <img src={userMint} alt="user icon" className="w-[28px] h-[28px] mr-[10px]" />
                   <span className="font-bold text-[14px] text-main07">노태일</span>
