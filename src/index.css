@@ -17,7 +17,7 @@
   }
 
   .scrollbar-mid-custom::-webkit-scrollbar {
-    width: 4px; /* 스크롤바 너비를 2px로 설정 */
+    width: 4px; /* 스크롤바 너비를 4px로 설정 */
   }
 
   .scrollbar-mid-custom::-webkit-scrollbar-thumb {
