@@ -8,6 +8,7 @@ import kebab from '@/assets/webps/Note/kebab.webp';
 import chat from '@/assets/webps/Note/chat.webp';
 import todo from '@/assets/webps/Note/todo.webp';
 import todoMint from '@/assets/webps/Note/todoMint.webp';
+import aside from '@/assets/webps/Note/aside.webp';
 
 export const NotePage = () => {
   const nav = useNavigate();
@@ -16,8 +17,8 @@ export const NotePage = () => {
     <>
       <div className="w-screen h-screen flex flex-row bg-bg font-nanum leading-[22px]">
         <FolderBar />
-        <main className="flex w-[calc(100vw-280px)] h-full">
-          <div className="flex flex-1 flex-col">
+        <div className="flex w-[calc(100vw-280px)] h-full">
+          <main className="flex flex-1 flex-col">
             <section className="flex justify-between mt-10">
               <img
                 src={leftBlack}
@@ -37,7 +38,7 @@ export const NotePage = () => {
                 브랜드 아이덴티티 전략 회의
               </p>
 
-              <div className="flex ml-[49px] mt-2 items-center">
+              <div className="flex ml-[49px] mt-2 items-center mb-2">
                 <div className="flex items-center">
                   <img src={calendarBlack} alt="calendarBlack" className="w-[14px] h-[14px]" />
                   <span className="h-4 ml-[6px] text-[11px] font-medium leading-4">24.05.07</span>
@@ -49,33 +50,33 @@ export const NotePage = () => {
               </div>
             </section>
             <div className="overflow-y-auto scrollbar-hide">
-              <section className="mt-9 ml-12 mr-[120px] flex whitespace-nowrap">
+              <section className="mt-[28px] ml-12 mr-[120px] flex whitespace-nowrap">
                 <span className="font-bold text-[15px] mr-6">참여자</span>
                 <div className="flex flex-wrap whitespace-nowrap">
-                  <div className="mr-4 flex items-center">
+                  <div className="mr-4 flex items-center mb-3">
                     <img src={userMint} alt="user icon" className="w-[21px] h-[21px] mr-[6px]" />
                     <span className="text-[12px] font-bold">심수연</span>
                   </div>
-                  <div className="mr-4 flex items-center">
+                  <div className="mr-4 flex items-center mb-3">
                     <img src={userMint} alt="user icon" className="w-[21px] h-[21px] mr-[6px]" />
                     <span className="text-[12px] font-bold">박상욱</span>
                   </div>
-                  <div className="mr-4 flex items-center">
+                  <div className="mr-4 flex items-center mb-3">
                     <img src={userMint} alt="user icon" className="w-[21px] h-[21px] mr-[6px]" />
                     <span className="text-[12px] font-bold">노태일</span>
                   </div>
-                  <div className="mr-4 flex items-center">
+                  <div className="mr-4 flex items-center mb-3">
                     <img src={userMint} alt="user icon" className="w-[21px] h-[21px] mr-[6px]" />
                     <span className="text-[12px] font-bold">유재인</span>
                   </div>
-                  <div className="mr-4 flex items-center">
+                  <div className="mr-4 flex items-center mb-3">
                     <img src={userMint} alt="user icon" className="w-[21px] h-[21px] mr-[6px]" />
                     <span className="text-[12px] font-bold">곽민우</span>
                   </div>
                 </div>
               </section>
 
-              <section className="mt-8 ml-12">
+              <section className="mt-5 ml-12">
                 <span className="font-bold text-[15px] mr-6">회의 한 줄 요약</span>
                 <div className="mt-3 mr-[120px] max-w-[760px] rounded-[10px] bg-[#ECECEC]">
                   <p className="font-normal text-[14px] font-pretendard leading-[25.2px] py-[15px] px-[18px]">
@@ -99,7 +100,7 @@ export const NotePage = () => {
                     직접적으로 연결되어야 한다고 강조
                   </span>
                 </div>
-                <div className="mt-5 flex">
+                <div className="mt-3 flex">
                   <span className="min-w-10 font-extrabold text-[13px] mr-6">박상욱</span>
                   <span className="font-pretendard font-normal text-[13px] leading-[23px] mr-[120px]">
                     고객 세분화를 기반으로 한 맞춤형 마케팅이 타겟 고객의 욕구에 부합하는 브랜드
@@ -205,10 +206,91 @@ export const NotePage = () => {
                 </div>
               </section>
             </div>
-          </div>
+          </main>
 
-          <aside className="w-[385px] border-l border-gray03">회의 스크립트</aside>
-        </main>
+          <aside className="w-[381px] border-l border-gray03 overflow-y-auto scrollbar-visible mr-1 scrollbar-mid-custom">
+            <title className="flex justify-between mt-12 items-center">
+              <p className="font-bold text-mainBlack text-[17px] ml-[32px] mr-[32px]">
+                회의 스크립트
+              </p>
+              <img src={aside} alt="aside icon" className="w-[18px] h-[18px] mr-5 cursor-pointer" />
+            </title>
+
+            <div className="ml-8 mr-[28px] mb-[94px]">
+              <div className="mt-12 mb-8">
+                <div className="flex items-center">
+                  <img src={userMint} alt="user icon" className="w-[28px] h-[28px] mr-[10px]" />
+                  <span className="font-bold text-[14px] text-main07">노태일</span>
+                </div>
+                <p className="font-pretendard font-normal text-[13px] leading-[24px] mt-3">
+                  안녕하세요 다들 잘 지내셨죠 오늘 회의는 브랜드 아이덴티티에 관한 내용을 중심으로
+                  진행하려 합니다 우리 브랜드가 시장에서 어떤 이미지를 구축해야 할지 논의하고자 해요
+                  우선 각자 아이디어나 제안을 간략하게 말씀해 주세요 그럼 디자이너님부터 시작해
+                  볼까요
+                </p>
+              </div>
+
+              <div className="mt-12 mb-8">
+                <div className="flex items-center">
+                  <img src={userMint} alt="user icon" className="w-[28px] h-[28px] mr-[10px]" />
+                  <span className="font-bold text-[14px] text-main07">심수연</span>
+                </div>
+                <p className="font-pretendard font-normal text-[13px] leading-[24px] mt-3">
+                  네 저는 브랜드의 비주얼 아이덴티티에 대해 말씀드리고 싶습니다 현재 트렌드와 우리
+                  제품의 핵심 가치를 반영한 로고와 색상 팔레트를 제안하려고 해요 우선 브랜드가
+                  전달하고자 하는 메시지가 명확하게 시각적으로 드러나야 한다고 생각해요. 예를 들어
+                  심플함과 정체성을 강조하는 디자인을 고려 중입니다
+                </p>
+              </div>
+
+              <div className="mt-12 mb-8">
+                <div className="flex items-center">
+                  <img src={userMint} alt="user icon" className="w-[28px] h-[28px] mr-[10px]" />
+                  <span className="font-bold text-[14px] text-main07">노태일</span>
+                </div>
+                <p className="font-pretendard font-normal text-[13px] leading-[24px] mt-3">
+                  좋은 의견이에요 브랜드의 시각적인 요소가 중요한 역할을 하니까요 그럼 제품
+                  기획자님은 어떤 생각을 하고 계신가요
+                </p>
+              </div>
+
+              <div className="mt-12 mb-8">
+                <div className="flex items-center">
+                  <img src={userMint} alt="user icon" className="w-[28px] h-[28px] mr-[10px]" />
+                  <span className="font-bold text-[14px] text-main07">노태일</span>
+                </div>
+                <p className="font-pretendard font-normal text-[13px] leading-[24px] mt-3">
+                  네 제가 생각하는 브랜드 아이덴티티는 제품 자체와 연결되는 부분이 중요하다고 봅니다
+                  저희 제품이 제공하는 핵심 가치가 무엇인지 명확히 설정하고 이를 브랜드 이미지와
+                  일관되게 전달해야 한다고 생각해요
+                </p>
+              </div>
+
+              <div className="mt-12 mb-8">
+                <div className="flex items-center">
+                  <img src={userMint} alt="user icon" className="w-[28px] h-[28px] mr-[10px]" />
+                  <span className="font-bold text-[14px] text-main07">노태일</span>
+                </div>
+                <p className="font-pretendard font-normal text-[13px] leading-[24px] mt-3">
+                  고급스러움과 편안함을 함께 가져가는 방향성 좋네요 마케팅 전문가님은 어떤
+                  의견이신가요
+                </p>
+              </div>
+
+              <div className="mt-12 mb-8">
+                <div className="flex items-center">
+                  <img src={userMint} alt="user icon" className="w-[28px] h-[28px] mr-[10px]" />
+                  <span className="font-bold text-[14px] text-main07">노태일</span>
+                </div>
+                <p className="font-pretendard font-normal text-[13px] leading-[24px] mt-3">
+                  네 제가 생각하는 브랜드 아이덴티티는 제품 자체와 연결되는 부분이 중요하다고 봅니다
+                  저희 제품이 제공하는 핵심 가치가 무엇인지 명확히 설정하고 이를 브랜드 이미지와
+                  일관되게 전달해야 한다고 생각해요
+                </p>
+              </div>
+            </div>
+          </aside>
+        </div>
       </div>
     </>
   );
