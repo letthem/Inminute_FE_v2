@@ -248,7 +248,7 @@ export const NotePage = () => {
             ref={asideRef}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className={`w-[375px] border-l border-gray03 pt-12 overflow-y-auto ${hasScrollbar ? (isHovered ? 'w-[361px] scrollbar-visible mr-[14px] scrollbar-mid-custom' : 'scrollbar-hide w-[375px]') : 'scrollbar-hide w-[375px]'}`}
+            className={`w-[375px] border-l border-gray03 pt-12 overflow-y-auto ${hasScrollbar && isHovered ? 'w-[361px] scrollbar-visible mr-[14px] scrollbar-mid-custom' : 'scrollbar-hide w-[375px]'}`}
           >
             <title className="flex justify-between items-center">
               <p className="font-bold text-mainBlack text-[17px] ml-[32px] mr-[32px]">
@@ -257,13 +257,13 @@ export const NotePage = () => {
               <img
                 src={aside}
                 alt="aside icon"
-                className={`w-[18px] h-[18px] cursor-pointer ${hasScrollbar ? (isHovered ? 'mr-[2px]' : 'mr-5') : 'mr-5'}`}
+                className={`w-[18px] h-[18px] cursor-pointer ${hasScrollbar && isHovered ? 'mr-[2px]' : 'mr-5'}`}
               />
             </title>
 
             <div
               ref={contentRef}
-              className={`ml-8 ${hasScrollbar ? (isHovered ? 'mr-[14px]' : 'scrollbar-hide mr-8') : 'scrollbar-hide mr-8'} mb-[94px]`}
+              className={`ml-8 mb-[94px] ${hasScrollbar && isHovered ? 'mr-[14px]' : 'scrollbar-hide mr-[32px]'}`}
             >
               <div className="mt-12 mb-8">
                 <div className="flex items-center">
