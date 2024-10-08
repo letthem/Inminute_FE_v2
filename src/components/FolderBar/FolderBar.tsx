@@ -69,7 +69,7 @@ export const FolderBar = () => {
         {/* 로고 및 상단 영역 */}
         <section className="flex-none">
           <img className="w-[208px] mt-[47px] ml-[36px]" src={logo} alt="logo" />
-          <p className="ml-9 mt-6 font-medium text-[17px] text-white">
+          <p className="ml-9 mt-6 font-medium text-[16px] text-white">
             <span className="font-extrabold text-main04">
               수연<span className="font-normal"> </span>
             </span>
