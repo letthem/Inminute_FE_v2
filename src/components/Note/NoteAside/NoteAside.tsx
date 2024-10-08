@@ -37,27 +37,32 @@ export const NoteAside = () => {
   };
 
   return (
-    <aside
-      ref={asideRef}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className={`w-[375px] border-l border-gray03 pt-12 overflow-y-auto ${hasScrollbar && isHovered ? 'w-[361px] scrollbar-visible mr-[14px] scrollbar-mid-custom' : 'scrollbar-hide w-[375px]'}`}
-    >
-      <title className="flex justify-between items-center mb-12">
-        <p className="font-bold text-mainBlack text-[17px] ml-[32px] mr-[32px]">회의 스크립트</p>
-        <img
-          src={aside}
-          alt="aside icon"
-          className={`w-[18px] h-[18px] cursor-pointer ${hasScrollbar && isHovered ? 'mr-[2px]' : 'mr-5'}`}
-        />
-      </title>
+    <aside className="w-[375px] flex flex-col border-l border-gray03 overflow-hidden">
+      <div className="h-12" />
 
-      <div
-        ref={contentRef}
-        className={`ml-8 mb-[94px] ${hasScrollbar && isHovered ? 'mr-[14px]' : 'scrollbar-hide mr-[32px]'}`}
+      {/* 스크롤 영역 */}
+      <section
+        ref={asideRef}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className={`flex flex-col flex-1 overflow-y-auto ${hasScrollbar && isHovered ? 'w-[361px] scrollbar-visible mr-[14px] scrollbar-mid-custom' : 'scrollbar-hide w-[375px]'} `}
       >
-        <ScriptList />
-      </div>
+        <div className="justify-between items-center flex mb-8">
+          <p className="font-bold text-mainBlack text-[17px] ml-[32px] mr-[32px]">회의 스크립트</p>
+          <img
+            src={aside}
+            alt="aside icon"
+            className={`w-[18px] h-[18px] cursor-pointer ${hasScrollbar && isHovered ? 'mr-[2px]' : 'mr-5'}`}
+          />
+        </div>
+
+        <div
+          ref={contentRef}
+          className={`ml-[17px] mb-[94px] ${hasScrollbar && isHovered ? 'mr-[2px]' : 'scrollbar-hide mr-[20px]'}`}
+        >
+          <ScriptList />
+        </div>
+      </section>
     </aside>
   );
 };
