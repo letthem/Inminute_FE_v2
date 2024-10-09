@@ -13,7 +13,9 @@ export const NavBar = () => {
 
   return (
     <header>
-      <div className="flex font-nanum leading-[22px] z-10 bg-bg">
+      <div
+        className={`flex font-nanum leading-[22px] z-10 ${currentPath === '/about' ? 'bg-transparent' : 'bg-bg'} justify-between`}
+      >
         <ul className="flex ml-9 mt-12 mb-4">
           {navItems.map((item) => (
             <li
@@ -32,6 +34,11 @@ export const NavBar = () => {
             </li>
           ))}
         </ul>
+        {currentPath === '/about' && (
+          <div className="w-[102px] h-[42px] bg-mainBlack rounded-[3.2px] flex justify-center items-center cursor-pointer mt-10 mr-11">
+            <span className="text-white text-[14px] font-medium">로그인 하기</span>
+          </div>
+        )}
       </div>
     </header>
   );
