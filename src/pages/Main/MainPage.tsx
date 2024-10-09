@@ -116,10 +116,26 @@ const cardData: CardData[] = [
 
 export const MainPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortOption, setSortOption] = useState('최신순');
 
-  const filteredCards = cardData.filter((card) =>
-    card.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const parseDate = (dateString: string) => {
+    const [year, month, day] = dateString.split('.').map(Number);
+    return new Date(year + 2000, month - 1, day);
+  };
+
+  // 검색어와 SortDropDown에 맞는 카드 필터링
+  const filteredCards = cardData
+    .filter((card) => card.title.toLowerCase().includes(searchQuery.toLowerCase()))
+    .sort((a, b) => {
+      if (sortOption === '최신순') {
+        return parseDate(b.date).getTime() - parseDate(a.date).getTime();
+      } else if (sortOption === '오래된 순') {
+        return parseDate(a.date).getTime() - parseDate(b.date).getTime();
+      } else if (sortOption === '가나다 순') {
+        return a.title.localeCompare(b.title);
+      }
+      return 0;
+    });
 
   return (
     <>
@@ -127,7 +143,7 @@ export const MainPage = () => {
         <FolderBar />
         <section className="flex flex-col w-[calc(100vw-280px)] h-full">
           <NavBar />
-          <MainTopBar onSearch={setSearchQuery} />
+          <MainTopBar onSearch={setSearchQuery} onSort={setSortOption} />
           <CardList cards={filteredCards} />
           {/* <div className="flex flex-col items-center justify-center">
             <img className="w-[147px] h-[154px] mt-[136px]" src={noteMint} alt="note" />
