@@ -1,7 +1,7 @@
-import { SearchBar } from '@/components/Main/MainTopBar/SearchBar/SearchBar';
-import notePlus from '@/assets/webps/Main/notePlus.webp';
-import { SortDropdown } from '@/components/Main/MainTopBar/\bSortDropDown/SortDropDown';
 import { useState } from 'react';
+import { SearchBar } from '@/components/Main/MainTopBar/SearchBar/SearchBar';
+import { SortDropdown } from '@/components/Main/MainTopBar/\bSortDropDown/SortDropDown';
+import notePlus from '@/assets/webps/Main/notePlus.webp';
 
 interface MainTopBarProps {
   onSearch: (searchText: string) => void;
