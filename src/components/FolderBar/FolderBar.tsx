@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import logo from '@/assets/webps/Layout/logo.webp';
 import folder from '@/assets/webps/FolderBar/folder.webp';
+import folderMint from '@/assets/webps/FolderBar/folderMint.webp';
 import down from '@/assets/webps/FolderBar/downGray.webp';
 import up from '@/assets/webps/FolderBar/upGray.webp';
 import note from '@/assets/webps/FolderBar/note.webp';
@@ -11,7 +12,7 @@ interface Folder {
   notes: string[];
 }
 
-export const FolderBar = () => {
+export const FolderBar = ({ onFolderSelect }: { onFolderSelect: (folder: string) => void }) => {
   const [folders, setFolders] = useState<Folder[]>([
     { name: '학교', notes: ['해커톤 정기회의 2차', '플로우 회의'] },
     {
@@ -27,6 +28,8 @@ export const FolderBar = () => {
   const [newFolderName, setNewFolderName] = useState('');
   const [isAddingFolder, setIsAddingFolder] = useState(false);
   const [expandedFolders, setExpandedFolders] = useState<boolean[]>(folders.map(() => false));
+  const [hoveredFolderIndex, setHoveredFolderIndex] = useState<number | null>(null); // 호버 상태 관리
+  const [selectedFolderIndex, setSelectedFolderIndex] = useState<number | null>(null); // 클릭 상태 관리
 
   const handleAddFolder = () => {
     if (newFolderName.trim() !== '') {
@@ -84,8 +87,24 @@ export const FolderBar = () => {
           {folders.map((folderItem, index) => (
             <div key={index}>
               <div className={`flex ${index !== 0 ? 'mt-4' : ''}`}>
-                <img className="w-5 h-5 ml-8 mr-2" src={folder} alt="folder" />
-                <span className="mr-[10px] font-bold text-[14px] text-white cursor-pointer">
+                <img
+                  className="w-5 h-5 ml-8 mr-2"
+                  src={
+                    hoveredFolderIndex === index || selectedFolderIndex === index
+                      ? folderMint
+                      : folder
+                  } // 호버에 따른 이미지 변경
+                  alt="folder"
+                />
+                <span
+                  onMouseEnter={() => setHoveredFolderIndex(index)} // 호버 시작
+                  onMouseLeave={() => setHoveredFolderIndex(null)} // 호버 끝
+                  className={`mr-[10px] font-bold text-[14px] cursor-pointer active:scale-95 ${hoveredFolderIndex === index || selectedFolderIndex === index ? 'text-main04' : 'text-white'}`}
+                  onClick={() => {
+                    setSelectedFolderIndex(index); // 폴더 클릭 시 인덱스 저장
+                    onFolderSelect(folderItem.name); // 선택된 폴더 이름 전달
+                  }}
+                >
                   {folderItem.name}
                 </span>
                 <img
@@ -107,7 +126,7 @@ export const FolderBar = () => {
                   {folderItem.notes.map((noteItem, noteIndex) => (
                     <div key={noteIndex} className="mt-4 flex">
                       <img className="w-5 h-5 mr-[10px]" src={note} alt="note" />
-                      <span className="font-[350] w-[170px] text-[14px] text-white cursor-pointer">
+                      <span className="font-[350] w-[170px] text-[14px] text-white cursor-pointer active:scale-[97%]">
                         {noteItem}
                       </span>
                     </div>
@@ -121,7 +140,9 @@ export const FolderBar = () => {
           {unassignedNotes.map((noteItem, noteIndex) => (
             <div key={`unassigned-${noteIndex}`} className="mt-4 ml-8 flex items-center">
               <img className="w-5 h-5 mr-[10px]" src={note} alt="note" />
-              <span className="font-[350] text-[14px] text-white cursor-pointer">{noteItem}</span>
+              <span className="font-[350] text-[14px] text-white cursor-pointer active:scale-[97%]">
+                {noteItem}
+              </span>
             </div>
           ))}
 
@@ -141,9 +162,11 @@ export const FolderBar = () => {
 
         {/* 로그아웃 섹션 */}
         <section className="flex-none pt-[120px] pb-9">
-          <div className="w-full ml-10 flex items-center">
-            <img className="w-5 h-5 mr-[10px]" src={logout} alt="logout" />
-            <span className="font-light text-[14px] text-white cursor-pointer">로그아웃</span>
+          <div className="inline-flex h-[38px] ml-6 px-4 py-2 items-center cursor-pointer rounded-[10px] hover:bg-mainBlack">
+            <img className="w-5 h-5 mr-[8px]" src={logout} alt="logout" />
+            <span className="font-light text-[14px] w-[54px] text-white active:scale-95">
+              로그아웃
+            </span>
           </div>
         </section>
       </div>

@@ -3,6 +3,8 @@ import { FolderBar } from '@/components/FolderBar/FolderBar';
 import { MainTopBar } from '@/components/Main/MainTopBar/MainTopBar';
 import { NavBar } from '@/components/NavBar/NavBar';
 import { CardList } from '@/components/Main/CardList/CardList';
+import noteMint from '@/assets/webps/Main/noteMint.webp';
+import searchMint from '@/assets/webps/Main/searchMint.webp';
 
 interface CardData {
   date: string;
@@ -117,14 +119,22 @@ const cardData: CardData[] = [
 export const MainPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOption, setSortOption] = useState('최신순');
+  const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
 
   const parseDate = (dateString: string) => {
     const [year, month, day] = dateString.split('.').map(Number);
     return new Date(year + 2000, month - 1, day);
   };
 
-  // 검색어와 SortDropDown에 맞는 카드 필터링
+  // 폴더 선택, 검색어, SortDropDown에 맞는 카드 필터링
   const filteredCards = cardData
+    .filter((card) => {
+      // 선택된 폴더가 있으면 해당 폴더의 카드만, 없으면 모든 카드
+      if (selectedFolder) {
+        return card.folder === selectedFolder;
+      }
+      return true;
+    })
     .filter((card) => card.title.toLowerCase().includes(searchQuery.toLowerCase()))
     .sort((a, b) => {
       if (sortOption === '최신순') {
@@ -140,17 +150,27 @@ export const MainPage = () => {
   return (
     <>
       <div className="w-screen h-screen flex flex-row bg-bg font-nanum leading-[22px]">
-        <FolderBar />
+        <FolderBar onFolderSelect={setSelectedFolder}/>
         <section className="flex flex-col w-[calc(100vw-280px)] h-full">
           <NavBar />
           <MainTopBar onSearch={setSearchQuery} onSort={setSortOption} />
-          <CardList cards={filteredCards} />
-          {/* <div className="flex flex-col items-center justify-center">
-            <img className="w-[147px] h-[154px] mt-[136px]" src={noteMint} alt="note" />
-            <p className="mt-[27.5px] text-mainBlack font-medium text-[15px]">
-              회의 노트를 추가해보세요 !
-            </p>
-          </div> */}
+          {filteredCards.length > 0 ? (
+            <CardList cards={filteredCards} />
+          ) : searchQuery ? (
+            <div className="flex flex-col items-center justify-center">
+              <img className="w-[131px] h-[139.5px] mt-[159px]" src={searchMint} alt="search" />
+              <p className="mt-[19.5px] text-mainBlack font-medium text-[15px]">
+                검색 결과가 존재하지 않습니다!
+              </p>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center">
+              <img className="w-[147px] h-[154px] mt-[136px]" src={noteMint} alt="note" />
+              <p className="mt-[27.5px] text-mainBlack font-medium text-[15px]">
+                회의 노트를 추가해보세요 !
+              </p>
+            </div>
+          )}
         </section>
       </div>
     </>
