@@ -6,8 +6,8 @@ interface SummaryBySpeakerItemProps {
 export const SummaryBySpeakerItem: React.FC<SummaryBySpeakerItemProps> = ({ name, summary }) => {
   return (
     <div className="mt-3 flex">
-      <span className="min-w-10 font-extrabold text-[13px] mr-6">{name}</span>
-      <span className="font-pretendard font-normal text-[13px] leading-[23px] mr-[120px]">
+      <span className="min-w-10 font-extrabold text-[13.5px] mr-6 leading-[23px]">{name}</span>
+      <span className="font-pretendard font-[350] text-[13.5px] leading-[23px] mr-[120px]">
         {summary}
       </span>
     </div>

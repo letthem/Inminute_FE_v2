@@ -8,14 +8,14 @@ export const NoteTitle = () => {
         브랜드 아이덴티티 전략 회의
       </p>
 
-      <div className="flex ml-[49px] mt-2 items-center mb-2">
+      <div className="flex ml-[49px] mt-[13px] items-center mb-2">
         <div className="flex items-center">
           <img src={calendarBlack} alt="calendarBlack" className="w-[14px] h-[14px]" />
-          <span className="h-4 ml-[6px] text-[11px] font-medium leading-4">24.05.07</span>
+          <span className="h-4 ml-[6px] text-[10px] font-medium leading-4">24.05.07</span>
         </div>
         <div className="ml-5 flex items-center">
           <img src={timeBlack} alt="timeBlack" className="w-[14px] h-[14px]" />
-          <span className="h-4 ml-[6px] text-[11px] font-medium leading-4">1:19:05</span>
+          <span className="h-4 ml-[6px] text-[10px] font-medium leading-4">1:19:05</span>
         </div>
       </div>
     </section>
