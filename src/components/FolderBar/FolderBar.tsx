@@ -85,7 +85,7 @@ export const FolderBar = () => {
             <div key={index}>
               <div className={`flex ${index !== 0 ? 'mt-4' : ''}`}>
                 <img className="w-5 h-5 ml-8 mr-2" src={folder} alt="folder" />
-                <span className="mr-[10px] font-bold text-[14px] text-white cursor-pointer">
+                <span className="mr-[10px] font-bold text-[14px] text-white cursor-pointer active:scale-95">
                   {folderItem.name}
                 </span>
                 <img
@@ -107,7 +107,7 @@ export const FolderBar = () => {
                   {folderItem.notes.map((noteItem, noteIndex) => (
                     <div key={noteIndex} className="mt-4 flex">
                       <img className="w-5 h-5 mr-[10px]" src={note} alt="note" />
-                      <span className="font-[350] w-[170px] text-[14px] text-white cursor-pointer">
+                      <span className="font-[350] w-[170px] text-[14px] text-white cursor-pointer active:scale-[97%]">
                         {noteItem}
                       </span>
                     </div>
@@ -121,7 +121,9 @@ export const FolderBar = () => {
           {unassignedNotes.map((noteItem, noteIndex) => (
             <div key={`unassigned-${noteIndex}`} className="mt-4 ml-8 flex items-center">
               <img className="w-5 h-5 mr-[10px]" src={note} alt="note" />
-              <span className="font-[350] text-[14px] text-white cursor-pointer">{noteItem}</span>
+              <span className="font-[350] text-[14px] text-white cursor-pointer active:scale-[97%]">
+                {noteItem}
+              </span>
             </div>
           ))}
 
@@ -141,9 +143,11 @@ export const FolderBar = () => {
 
         {/* 로그아웃 섹션 */}
         <section className="flex-none pt-[120px] pb-9">
-          <div className="w-full ml-10 flex items-center">
-            <img className="w-5 h-5 mr-[10px]" src={logout} alt="logout" />
-            <span className="font-light text-[14px] text-white cursor-pointer">로그아웃</span>
+          <div className="inline-flex h-[38px] ml-6 px-4 py-2 items-center cursor-pointer rounded-[10px] hover:bg-mainBlack">
+            <img className="w-5 h-5 mr-[8px]" src={logout} alt="logout" />
+            <span className="font-light text-[14px] w-[54px] text-white active:scale-95">
+              로그아웃
+            </span>
           </div>
         </section>
       </div>
