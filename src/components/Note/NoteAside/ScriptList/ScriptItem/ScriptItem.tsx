@@ -29,7 +29,7 @@ export const ScriptItem: React.FC<ScriptItemProps> = ({ name, script }) => {
           />
         )}
       </div>
-      <p className="font-pretendard font-normal text-[13px] leading-[24px] mt-3">{script}</p>
+      <p className="font-pretendard font-[350] text-[13px] leading-[24px] mt-3">{script}</p>
     </div>
   );
 };

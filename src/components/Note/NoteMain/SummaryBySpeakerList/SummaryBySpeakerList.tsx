@@ -31,7 +31,7 @@ const speakerSummaries = [
 export const SummaryBySpeakerList = () => {
   return (
     <section className="ml-12 mt-[74px]">
-      <div className="flex mb-7 items-center">
+      <div className="flex mb-5 items-center">
         <img src={chat} alt="chat icon" className="w-5 h-5 mr-[6px]" />
         <span className="font-bold">화자별 요약</span>
       </div>
