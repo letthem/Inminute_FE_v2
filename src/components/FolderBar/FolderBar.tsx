@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import logo from '@/assets/webps/Layout/logo.webp';
 import folder from '@/assets/webps/FolderBar/folder.webp';
+import folderMint from '@/assets/webps/FolderBar/folderMint.webp';
 import down from '@/assets/webps/FolderBar/downGray.webp';
 import up from '@/assets/webps/FolderBar/upGray.webp';
 import note from '@/assets/webps/FolderBar/note.webp';
@@ -11,7 +12,7 @@ interface Folder {
   notes: string[];
 }
 
-export const FolderBar = () => {
+export const FolderBar = ({ onFolderSelect }: { onFolderSelect: (folder: string) => void }) => {
   const [folders, setFolders] = useState<Folder[]>([
     { name: '학교', notes: ['해커톤 정기회의 2차', '플로우 회의'] },
     {
@@ -27,6 +28,8 @@ export const FolderBar = () => {
   const [newFolderName, setNewFolderName] = useState('');
   const [isAddingFolder, setIsAddingFolder] = useState(false);
   const [expandedFolders, setExpandedFolders] = useState<boolean[]>(folders.map(() => false));
+  const [hoveredFolderIndex, setHoveredFolderIndex] = useState<number | null>(null); // 호버 상태 관리
+  const [selectedFolderIndex, setSelectedFolderIndex] = useState<number | null>(null); // 클릭 상태 관리
 
   const handleAddFolder = () => {
     if (newFolderName.trim() !== '') {
@@ -84,8 +87,24 @@ export const FolderBar = () => {
           {folders.map((folderItem, index) => (
             <div key={index}>
               <div className={`flex ${index !== 0 ? 'mt-4' : ''}`}>
-                <img className="w-5 h-5 ml-8 mr-2" src={folder} alt="folder" />
-                <span className="mr-[10px] font-bold text-[14px] text-white cursor-pointer active:scale-95">
+                <img
+                  className="w-5 h-5 ml-8 mr-2"
+                  src={
+                    hoveredFolderIndex === index || selectedFolderIndex === index
+                      ? folderMint
+                      : folder
+                  } // 호버에 따른 이미지 변경
+                  alt="folder"
+                />
+                <span
+                  onMouseEnter={() => setHoveredFolderIndex(index)} // 호버 시작
+                  onMouseLeave={() => setHoveredFolderIndex(null)} // 호버 끝
+                  className={`mr-[10px] font-bold text-[14px] cursor-pointer active:scale-95 ${hoveredFolderIndex === index || selectedFolderIndex === index ? 'text-main04' : 'text-white'}`}
+                  onClick={() => {
+                    setSelectedFolderIndex(index); // 폴더 클릭 시 인덱스 저장
+                    onFolderSelect(folderItem.name); // 선택된 폴더 이름 전달
+                  }}
+                >
                   {folderItem.name}
                 </span>
                 <img

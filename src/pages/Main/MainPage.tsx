@@ -119,14 +119,22 @@ const cardData: CardData[] = [
 export const MainPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOption, setSortOption] = useState('최신순');
+  const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
 
   const parseDate = (dateString: string) => {
     const [year, month, day] = dateString.split('.').map(Number);
     return new Date(year + 2000, month - 1, day);
   };
 
-  // 검색어와 SortDropDown에 맞는 카드 필터링
+  // 폴더 선택, 검색어, SortDropDown에 맞는 카드 필터링
   const filteredCards = cardData
+    .filter((card) => {
+      // 선택된 폴더가 있으면 해당 폴더의 카드만, 없으면 모든 카드
+      if (selectedFolder) {
+        return card.folder === selectedFolder;
+      }
+      return true;
+    })
     .filter((card) => card.title.toLowerCase().includes(searchQuery.toLowerCase()))
     .sort((a, b) => {
       if (sortOption === '최신순') {
@@ -142,7 +150,7 @@ export const MainPage = () => {
   return (
     <>
       <div className="w-screen h-screen flex flex-row bg-bg font-nanum leading-[22px]">
-        <FolderBar />
+        <FolderBar onFolderSelect={setSelectedFolder}/>
         <section className="flex flex-col w-[calc(100vw-280px)] h-full">
           <NavBar />
           <MainTopBar onSearch={setSearchQuery} onSort={setSortOption} />
