@@ -21,6 +21,21 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
     e.stopPropagation();
   };
 
+  // 구글 로그인
+  const loginWithGoogle = () => {
+    window.location.href = `${import.meta.env.VITE_API_URL}/oauth2/authorization/google`;
+  };
+
+  // 카카오 로그인
+  const loginWithKakao = () => {
+    window.location.href = `${import.meta.env.VITE_API_URL}/oauth2/authorization/kakao`;
+  };
+
+  // 네이버 로그인
+  const loginWithNaver = () => {
+    window.location.href = `${import.meta.env.VITE_API_URL}/oauth2/authorization/naver`;
+  };
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-mainBlack bg-opacity-60"
@@ -43,18 +58,21 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
             altText="google login"
             text="구글로 시작하기"
             marginLeft="93px"
+            onClick={loginWithGoogle}
           />
           <SocialLoginButton
             imgSrc={kakao}
             altText="kakao login"
             text="카카오로 시작하기"
             marginLeft="86px"
+            onClick={loginWithKakao}
           />
           <SocialLoginButton
             imgSrc={naver}
             altText="naver login"
             text="네이버로 시작하기"
             marginLeft="86px"
+            onClick={loginWithNaver}
           />
         </div>
       </div>
