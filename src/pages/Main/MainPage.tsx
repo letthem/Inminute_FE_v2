@@ -4,6 +4,7 @@ import { MainTopBar } from '@/components/Main/MainTopBar/MainTopBar';
 import { NavBar } from '@/components/NavBar/NavBar';
 import { CardList } from '@/components/Main/CardList/CardList';
 import noteMint from '@/assets/webps/Main/noteMint.webp';
+import searchMint from '@/assets/webps/Main/searchMint.webp';
 
 interface CardData {
   date: string;
@@ -147,6 +148,13 @@ export const MainPage = () => {
           <MainTopBar onSearch={setSearchQuery} onSort={setSortOption} />
           {filteredCards.length > 0 ? (
             <CardList cards={filteredCards} />
+          ) : searchQuery ? (
+            <div className="flex flex-col items-center justify-center">
+              <img className="w-[131px] h-[139.5px] mt-[159px]" src={searchMint} alt="search" />
+              <p className="mt-[19.5px] text-mainBlack font-medium text-[15px]">
+                검색 결과가 존재하지 않습니다!
+              </p>
+            </div>
           ) : (
             <div className="flex flex-col items-center justify-center">
               <img className="w-[147px] h-[154px] mt-[136px]" src={noteMint} alt="note" />
