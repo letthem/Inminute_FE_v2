@@ -16,7 +16,7 @@ export const ToDoItem: React.FC<ToDoItemProps> = ({ name, tasks }) => {
       />
       <div className="bg-mainBlack rounded-[10px] flex flex-col">
         <p className="font-bold text-white text-[13px] leading-[14px] mt-6 mb-6 mx-auto">{name}</p>
-        <ul className="text-white font-[350] font-pretendard text-[12px] list-outside list-disc ml-8 mr-5 mb-[18px] leading-[24px]">
+        <ul className="text-white font-[300] font-pretendard text-[12px] list-outside list-disc ml-8 mr-5 mb-[18px] leading-[24px]">
           {tasks.map((task, index) => (
             <li key={index}>{task}</li>
           ))}
