@@ -40,6 +40,11 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
 
+      # Create .env file with environment variables
+      - name: Create .env file
+        run: |
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env
+
       # Build project
       - name: Build Project
         run: yarn build
