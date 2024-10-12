@@ -6,6 +6,8 @@ import down from '@/assets/webps/FolderBar/downGray.webp';
 import up from '@/assets/webps/FolderBar/upGray.webp';
 import note from '@/assets/webps/FolderBar/note.webp';
 import logout from '@/assets/webps/FolderBar/logout.webp';
+import kebabWhite from '@/assets/webps/FolderBar/kebabWhite.webp';
+import dragGray from '@/assets/webps/FolderBar/dragGray.webp';
 
 interface Folder {
   name: string;
@@ -32,8 +34,9 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
   const [newFolderName, setNewFolderName] = useState('');
   const [isAddingFolder, setIsAddingFolder] = useState(false);
   const [expandedFolders, setExpandedFolders] = useState<boolean[]>(folders.map(() => false));
-  const [hoveredFolderIndex, setHoveredFolderIndex] = useState<number | null>(null); // 호버 상태 관리
-  const [selectedFolderIndex, setSelectedFolderIndex] = useState<number | null>(null); // 클릭 상태 관리
+  const [hoveredFolderName, setHoveredFolderName] = useState<number | null>(null); // 폴더 이름 호버 상태 관리
+  const [selectedFolderName, setSelectedFolderName] = useState<number | null>(null); // 클릭 상태 관리
+  const [hoveredFolderIndex, setHoveredFolderIndex] = useState<number | null>(null); // 폴더 영역 호버 상태 관리
 
   const handleAddFolder = () => {
     if (newFolderName.trim() !== '') {
@@ -86,39 +89,53 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
         </section>
 
         {/* 스크롤 영역 */}
-        <section className="flex-1 overflow-y-auto mt-5 scrollbar-hide">
+        <section className="flex-1 overflow-y-auto mt-3 scrollbar-hide">
           {/* 폴더와 해당 폴더에 속한 노트들 */}
           {folders.map((folderItem, index) => (
             <div key={index}>
-              <div className={`flex ${index !== 0 ? 'mt-4' : ''}`}>
-                <img
-                  className="w-5 h-5 ml-8 mr-2"
-                  src={
-                    hoveredFolderIndex === index || selectedFolderIndex === index
-                      ? folderMint
-                      : folder
-                  } // 호버에 따른 이미지 변경
-                  alt="folder"
-                />
-                <span
-                  onMouseEnter={() => setHoveredFolderIndex(index)} // 호버 시작
-                  onMouseLeave={() => setHoveredFolderIndex(null)} // 호버 끝
-                  className={`mr-[10px] font-bold text-[14px] cursor-pointer active:scale-95 ${hoveredFolderIndex === index || selectedFolderIndex === index ? 'text-main04' : 'text-white'}`}
-                  onClick={() => {
-                    setSelectedFolderIndex(index); // 폴더 클릭 시 인덱스 저장
-                    if (onFolderSelect) {
-                      onFolderSelect(folderItem.name); // 선택된 폴더 이름 전달
-                    }
-                  }}
-                >
-                  {folderItem.name}
-                </span>
-                <img
-                  className="w-5 h-5 mr-6 cursor-pointer transition-transform duration-300 ease-in-out"
-                  src={expandedFolders[index] ? up : down}
-                  alt={expandedFolders[index] ? 'up' : 'down'}
-                  onClick={() => toggleFolder(index)}
-                />
+              <div
+                onMouseEnter={() => setHoveredFolderIndex(index)} // 호버 시작
+                onMouseLeave={() => setHoveredFolderIndex(null)} // 호버 끝
+                className={`flex hover:bg-mainBlack ml-[10px] mr-6 py-2 rounded-[10px] justify-between cursor-pointer items-center`}
+              >
+                <div className="flex items-center">
+                  {hoveredFolderIndex === index && (
+                    <img src={dragGray} alt="drag" className="w-2 h-[15px] ml-2" />
+                  )}
+                  <img
+                    className={`w-5 h-5 ${hoveredFolderIndex === index ? 'ml-[6px]' : 'ml-[22px]'} mr-2`}
+                    src={
+                      hoveredFolderName === index || selectedFolderName === index
+                        ? folderMint
+                        : folder
+                    } // 호버에 따른 이미지 변경
+                    alt="folder"
+                  />
+                  <span
+                    onMouseEnter={() => setHoveredFolderName(index)} // 호버 시작
+                    onMouseLeave={() => setHoveredFolderName(null)} // 호버 끝
+                    className={`mr-[10px] font-bold text-[14px] cursor-pointer active:scale-95 ${hoveredFolderName === index || selectedFolderName === index ? 'text-main04' : 'text-white'}`}
+                    onClick={() => {
+                      setSelectedFolderName(index); // 폴더 클릭 시 인덱스 저장
+                      if (onFolderSelect) {
+                        onFolderSelect(folderItem.name); // 선택된 폴더 이름 전달
+                      }
+                    }}
+                  >
+                    {folderItem.name}
+                  </span>
+                  <img
+                    className="w-5 h-5 mr-6 cursor-pointer transition-transform duration-300 ease-in-out"
+                    src={expandedFolders[index] ? up : down}
+                    alt={expandedFolders[index] ? 'up' : 'down'}
+                    onClick={() => toggleFolder(index)}
+                  />
+                </div>
+                <div className="mr-[10px]">
+                  {hoveredFolderIndex === index && (
+                    <img src={kebabWhite} alt="kebab menu" className="w-[3px] h-[15px]" />
+                  )}
+                </div>
               </div>
               <div
                 className={`ml-[52px] overflow-hidden transition-all duration-300 ease-in-out ${
@@ -144,7 +161,7 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
 
           {/* 폴더에 속하지 않은 노트들 */}
           {unassignedNotes.map((noteItem, noteIndex) => (
-            <div key={`unassigned-${noteIndex}`} className="mt-4 ml-8 flex items-center">
+            <div key={`unassigned-${noteIndex}`} className="mt-2 ml-8 flex items-center pb-2">
               <img className="w-5 h-5 mr-[10px]" src={note} alt="note" />
               <span className="font-[350] text-[14px] text-white cursor-pointer active:scale-[97%]">
                 {noteItem}
@@ -153,7 +170,7 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
           ))}
 
           {/* 새 폴더 만들기 */}
-          <div className="mt-4 ml-8 flex items-center">
+          <div className="mt-2 ml-8 flex items-center">
             <img className="w-5 h-5 mr-[10px]" src={folder} alt="new folder" />
             <input
               type="text"
