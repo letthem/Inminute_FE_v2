@@ -138,7 +138,7 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
                 </div>
               </div>
               <div
-                className={`ml-[52px] overflow-hidden transition-all duration-300 ease-in-out ${
+                className={`ml-[30px] mb-1 overflow-hidden transition-all duration-300 ease-in-out ${
                   expandedFolders[index] ? 'max-h-[300px]' : 'max-h-0'
                 }`}
                 style={{
@@ -147,11 +147,30 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
               >
                 <div className="mb-1">
                   {folderItem.notes.map((noteItem, noteIndex) => (
-                    <div key={noteIndex} className="mt-4 flex">
-                      <img className="w-5 h-5 mr-[10px]" src={note} alt="note" />
-                      <span className="font-[350] w-[170px] text-[14px] text-white cursor-pointer active:scale-[97%]">
-                        {noteItem}
-                      </span>
+                    <div
+                      key={noteIndex}
+                      className="mt-1 mr-[10px] flex justify-between items-center group hover:bg-mainBlack ml-[22px] hover:ml-[0px] py-2 rounded-[10px] cursor-pointer"
+                    >
+                      <div className="flex items-center">
+                        <img
+                          src={dragGray}
+                          alt="move"
+                          className="w-2 h-[15px] ml-2 hidden group-hover:block"
+                        />
+                        <img
+                          className={`w-5 h-5 ml-[0] group-hover:ml-[6px] mr-[11px]`}
+                          src={note}
+                          alt="note"
+                        />
+                        <span className="font-[350] w-[170px] text-[14px] text-white cursor-pointer active:scale-[97%]">
+                          {noteItem}
+                        </span>
+                      </div>
+                      <img
+                        src={kebabWhite}
+                        alt="kebab menu"
+                        className="w-[3px] h-[15px] mr-[10px] hidden group-hover:block"
+                      />
                     </div>
                   ))}
                 </div>
