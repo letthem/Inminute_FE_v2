@@ -7,12 +7,16 @@ interface FolderDropdownProps {
   options: string[];
   selectedOption: string;
   onOptionSelect: (option: string) => void;
+  isOpen: boolean; // 드롭다운 열림/닫힘 상태
+  setIsOpen: (open: boolean) => void; // 상태 변경 함수
 }
 
 export const FolderDropDown: React.FC<FolderDropdownProps> = ({
   options,
   selectedOption,
   onOptionSelect,
+  isOpen,
+  setIsOpen,
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -23,23 +27,21 @@ export const FolderDropDown: React.FC<FolderDropdownProps> = ({
   };
 
   // 외부 클릭 시 드롭다운 닫기
-  const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-      setIsDropdownOpen(false);
-    }
-  };
-
   useEffect(() => {
-    if (isDropdownOpen) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false); // 외부 클릭 시 드롭다운 닫기
+      }
+    };
+
+    if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isDropdownOpen]);
+  }, [isOpen, setIsOpen]);
 
   return (
     <>
@@ -87,7 +89,6 @@ export const FolderDropDown: React.FC<FolderDropdownProps> = ({
           ))}
         </ul>
       </div>
-      
     </>
   );
 };
