@@ -12,7 +12,11 @@ interface Folder {
   notes: string[];
 }
 
-export const FolderBar = ({ onFolderSelect }: { onFolderSelect: (folder: string) => void }) => {
+interface FolderBarProps {
+  onFolderSelect?: (folder: string) => void;
+}
+
+export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
   const [folders, setFolders] = useState<Folder[]>([
     { name: '학교', notes: ['해커톤 정기회의 2차', '플로우 회의'] },
     {
@@ -102,7 +106,9 @@ export const FolderBar = ({ onFolderSelect }: { onFolderSelect: (folder: string)
                   className={`mr-[10px] font-bold text-[14px] cursor-pointer active:scale-95 ${hoveredFolderIndex === index || selectedFolderIndex === index ? 'text-main04' : 'text-white'}`}
                   onClick={() => {
                     setSelectedFolderIndex(index); // 폴더 클릭 시 인덱스 저장
-                    onFolderSelect(folderItem.name); // 선택된 폴더 이름 전달
+                    if (onFolderSelect) {
+                      onFolderSelect(folderItem.name); // 선택된 폴더 이름 전달
+                    }
                   }}
                 >
                   {folderItem.name}
