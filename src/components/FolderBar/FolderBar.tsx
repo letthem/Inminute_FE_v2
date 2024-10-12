@@ -36,7 +36,6 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
   const [expandedFolders, setExpandedFolders] = useState<boolean[]>(folders.map(() => false));
   const [hoveredFolderName, setHoveredFolderName] = useState<number | null>(null); // 폴더 이름 호버 상태 관리
   const [selectedFolderName, setSelectedFolderName] = useState<number | null>(null); // 클릭 상태 관리
-  const [hoveredFolderIndex, setHoveredFolderIndex] = useState<number | null>(null); // 폴더 영역 호버 상태 관리
 
   const handleAddFolder = () => {
     if (newFolderName.trim() !== '') {
@@ -94,16 +93,17 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
           {folders.map((folderItem, index) => (
             <div key={index}>
               <div
-                onMouseEnter={() => setHoveredFolderIndex(index)} // 호버 시작
-                onMouseLeave={() => setHoveredFolderIndex(null)} // 호버 끝
-                className={`flex hover:bg-mainBlack ml-[10px] mr-6 py-2 rounded-[10px] justify-between cursor-pointer items-center`}
+                className={`group flex hover:bg-mainBlack ml-[10px] mr-6 py-2 rounded-[10px] justify-between cursor-pointer items-center`}
               >
                 <div className="flex items-center">
-                  {hoveredFolderIndex === index && (
-                    <img src={dragGray} alt="drag" className="w-2 h-[15px] ml-2" />
-                  )}
                   <img
-                    className={`w-5 h-5 ${hoveredFolderIndex === index ? 'ml-[6px]' : 'ml-[22px]'} mr-2`}
+                    src={dragGray}
+                    alt="drag"
+                    className="w-2 h-[15px] ml-2 hidden group-hover:block"
+                  />
+
+                  <img
+                    className="w-5 h-5 group-hover:ml-[6px] ml-[22px] mr-2"
                     src={
                       hoveredFolderName === index || selectedFolderName === index
                         ? folderMint
@@ -132,20 +132,22 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
                   />
                 </div>
                 <div className="mr-[10px]">
-                  {hoveredFolderIndex === index && (
-                    <img src={kebabWhite} alt="kebab menu" className="w-[3px] h-[15px]" />
-                  )}
+                  <img
+                    src={kebabWhite}
+                    alt="kebab menu"
+                    className="w-[3px] h-[15px] hidden group-hover:block"
+                  />
                 </div>
               </div>
               <div
-                className={`ml-[30px] mb-1 overflow-hidden transition-all duration-300 ease-in-out ${
+                className={`ml-[30px] overflow-hidden transition-all duration-300 ease-in-out ${
                   expandedFolders[index] ? 'max-h-[300px]' : 'max-h-0'
                 }`}
                 style={{
                   maxHeight: expandedFolders[index] ? `${folderItem.notes.length * 100}px` : '0',
                 }}
               >
-                <div className="mb-1">
+                <div className="mb-2">
                   {folderItem.notes.map((noteItem, noteIndex) => (
                     <div
                       key={noteIndex}
