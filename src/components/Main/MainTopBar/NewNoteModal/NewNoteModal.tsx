@@ -10,6 +10,7 @@ interface NewNoteModalProps {
 export const NewNoteModal: React.FC<NewNoteModalProps> = ({ onClose }) => {
   const [selectedFolderOption, setSelectedFolderOption] = useState('없음');
   const [noteTitle, setNoteTitle] = useState(''); // 회의 제목 상태
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태 관리
 
   // 모달 배경 or xBtn 클릭하면 닫힘
   const handleBackgroundClick = () => {
@@ -23,7 +24,8 @@ export const NewNoteModal: React.FC<NewNoteModalProps> = ({ onClose }) => {
 
   // 드롭다운 옵션 선택 처리 함수
   const handleOptionSelect = (option: string) => {
-    setSelectedFolderOption(option);
+    setSelectedFolderOption(option); // 옵션 선택 후 상태 업데이트
+    setIsDropdownOpen(false); // 드롭다운 닫기
   };
 
   // input change 핸들러
@@ -68,6 +70,8 @@ export const NewNoteModal: React.FC<NewNoteModalProps> = ({ onClose }) => {
           options={['없음', '학교', '직장']}
           selectedOption={selectedFolderOption}
           onOptionSelect={handleOptionSelect}
+          isOpen={isDropdownOpen}
+          setIsOpen={setIsDropdownOpen}
         />
         <div
           className={`${
