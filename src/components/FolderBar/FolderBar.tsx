@@ -83,7 +83,7 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
           {folders.map((folderItem, index) => (
             <div key={index}>
               <div
-                className={`group flex hover:bg-mainBlack ml-[10px] mr-6 py-2 rounded-[10px] justify-between cursor-pointer items-center`}
+                className={`group mb-1 flex hover:bg-mainBlack ml-[10px] mr-6 py-2 rounded-[10px] justify-between cursor-pointer items-center`}
               >
                 <div className="flex items-center">
                   <img
@@ -141,7 +141,7 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
                   {folderItem.notes.map((noteItem, noteIndex) => (
                     <div
                       key={noteIndex}
-                      className="mt-1 mr-[10px] flex justify-between items-center group hover:bg-mainBlack ml-[22px] hover:ml-[0px] py-2 rounded-[10px] cursor-pointer"
+                      className="mb-1 mr-[10px] flex justify-between items-center group hover:bg-mainBlack ml-[22px] hover:ml-[0px] py-2 rounded-[10px] cursor-pointer"
                     >
                       <div className="flex items-center">
                         <img
@@ -174,7 +174,7 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
           {unassignedNotes.map((noteItem, noteIndex) => (
             <div
               key={`unassigned-${noteIndex}`}
-              className="mt-1 ml-8 py-2 mr-6 hover:ml-[10px] rounded-[10px] flex items-center justify-between pb-2 group hover:bg-mainBlack cursor-pointer"
+              className="mb-1 ml-8 py-2 mr-6 hover:ml-[10px] rounded-[10px] flex items-center justify-between pb-2 group hover:bg-mainBlack cursor-pointer"
             >
               <div className="flex items-center">
                 <img
