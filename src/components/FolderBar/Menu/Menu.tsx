@@ -9,7 +9,10 @@ interface MenuProps {
 
 export const Menu: React.FC<MenuProps> = ({ onEdit, onDelete }) => {
   return (
-    <div className="rounded-[10px] bg-white absolute top-[7px] left-[-8px] w-[92px] h-[66px] flex flex-col overflow-visible z-10">
+    <div
+      style={{ filter: 'drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.25))' }}
+      className="rounded-[10px] bg-white absolute top-[7px] left-[-8px] w-[92px] h-[66px] flex flex-col overflow-visible z-10"
+    >
       <div
         className="ml-[6px] mt-[6px] w-20 h-[26px] flex items-center hover:bg-gray02 rounded-[4px]"
         onClick={onEdit}
