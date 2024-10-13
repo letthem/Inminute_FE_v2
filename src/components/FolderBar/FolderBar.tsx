@@ -33,6 +33,20 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
   const [hoveredFolderName, setHoveredFolderName] = useState<number | null>(null); // 폴더 이름 호버 상태 관리
   const [selectedFolderName, setSelectedFolderName] = useState<number | null>(null); // 클릭 상태 관리
 
+  // 폴더 toggle
+  const toggleFolder = (index: number) => {
+    setExpandedFolders((prevExpandedFolders) => {
+      const updatedFolders = [...prevExpandedFolders];
+      updatedFolders[index] = !updatedFolders[index]; // 열리고 접히는 상태 toggle
+      return updatedFolders;
+    });
+  };
+
+  // 폴더 삭제 핸들러
+  const handleDeleteFolder = (index: number) => {
+    setFolders((prevFolders) => prevFolders.filter((_, i) => i !== index)); // 해당 폴더 삭제
+  };
+
   // 폴더 이름 변경 함수
   const handleRenameFolder = (index: number, newName: string) => {
     setFolders((prevFolders) =>
@@ -66,15 +80,6 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
     }
   }, [folders, isAddingFolder]);
 
-  // 폴더 toggle
-  const toggleFolder = (index: number) => {
-    setExpandedFolders((prevExpandedFolders) => {
-      const updatedFolders = [...prevExpandedFolders];
-      updatedFolders[index] = !updatedFolders[index]; // 열리고 접히는 상태 toggle
-      return updatedFolders;
-    });
-  };
-
   return (
     <aside>
       <div className="w-[280px] h-full bg-subBlack flex flex-col font-nanum leading-[22px]">
@@ -94,6 +99,7 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
               setSelectedFolderName={setSelectedFolderName}
               onFolderSelect={onFolderSelect}
               onRenameFolder={handleRenameFolder}
+              onDeleteFolder={handleDeleteFolder}
             />
           ))}
           <UnassignedNotes notes={unassignedNotes} />

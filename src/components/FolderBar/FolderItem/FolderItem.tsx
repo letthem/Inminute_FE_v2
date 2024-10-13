@@ -24,6 +24,7 @@ interface FolderItemProps {
   setSelectedFolderName: (index: number) => void;
   onFolderSelect?: (folder: string) => void;
   onRenameFolder: (index: number, newName: string) => void;
+  onDeleteFolder: (index: number) => void;
 }
 
 export const FolderItem: React.FC<FolderItemProps> = ({
@@ -37,6 +38,7 @@ export const FolderItem: React.FC<FolderItemProps> = ({
   setSelectedFolderName,
   onFolderSelect,
   onRenameFolder,
+  onDeleteFolder,
 }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false); // 메뉴 표시 여부 상태 관리
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 }); // 메뉴 위치 상태 관리
@@ -180,7 +182,7 @@ export const FolderItem: React.FC<FolderItemProps> = ({
               <Menu
                 onEdit={handleRename}
                 onDelete={() => {
-                  console.log(`Delete folder: ${folderItem.name}`);
+                  onDeleteFolder(index); // 폴더 삭제 로직 호출
                   setIsMenuVisible(false); // 메뉴 닫기
                 }}
               />
