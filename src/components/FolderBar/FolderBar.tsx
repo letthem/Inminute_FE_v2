@@ -33,6 +33,13 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
   const [hoveredFolderName, setHoveredFolderName] = useState<number | null>(null); // 폴더 이름 호버 상태 관리
   const [selectedFolderName, setSelectedFolderName] = useState<number | null>(null); // 클릭 상태 관리
 
+  // 폴더 이름 변경 함수
+  const handleRenameFolder = (index: number, newName: string) => {
+    setFolders((prevFolders) =>
+      prevFolders.map((folder, i) => (i === index ? { ...folder, name: newName } : folder))
+    );
+  };
+
   const handleAddFolder = () => {
     if (newFolderName.trim() !== '') {
       // 중복 호출 방지
@@ -86,6 +93,7 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
               setHoveredFolderName={setHoveredFolderName}
               setSelectedFolderName={setSelectedFolderName}
               onFolderSelect={onFolderSelect}
+              onRenameFolder={handleRenameFolder}
             />
           ))}
           <UnassignedNotes notes={unassignedNotes} />
