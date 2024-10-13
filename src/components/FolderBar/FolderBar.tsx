@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import logo from '@/assets/webps/Layout/logo.webp';
+import { Logo } from '@/components/FolderBar/Logo/Logo';
+import { Logout } from '@/components/FolderBar/Logout/Logout';
 import folder from '@/assets/webps/FolderBar/folder.webp';
 import folderMint from '@/assets/webps/FolderBar/folderMint.webp';
 import down from '@/assets/webps/FolderBar/downGray.webp';
 import up from '@/assets/webps/FolderBar/upGray.webp';
 import note from '@/assets/webps/FolderBar/note.webp';
-import logout from '@/assets/webps/FolderBar/logout.webp';
 import kebabWhite from '@/assets/webps/FolderBar/kebabWhite.webp';
 import dragGray from '@/assets/webps/FolderBar/dragGray.webp';
 
@@ -75,17 +75,7 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
   return (
     <aside>
       <div className="w-[280px] h-full bg-subBlack flex flex-col font-nanum leading-[22px]">
-        {/* 로고 및 상단 영역 */}
-        <section className="flex-none">
-          <img className="w-[208px] mt-[47px] ml-[36px]" src={logo} alt="logo" />
-          <p className="ml-9 mt-6 font-medium text-[16px] text-white">
-            <span className="font-extrabold text-main04">
-              수연<span className="font-normal"> </span>
-            </span>
-            님의 회의공간
-          </p>
-          <div className="w-[216px] h-[1px] ml-8 mt-5 bg-gray06" />
-        </section>
+        <Logo />
 
         {/* 스크롤 영역 */}
         <section className="flex-1 overflow-y-auto mt-3 scrollbar-hide">
@@ -182,16 +172,31 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
 
           {/* 폴더에 속하지 않은 노트들 */}
           {unassignedNotes.map((noteItem, noteIndex) => (
-            <div key={`unassigned-${noteIndex}`} className="mt-2 ml-8 flex items-center pb-2">
-              <img className="w-5 h-5 mr-[10px]" src={note} alt="note" />
-              <span className="font-[350] text-[14px] text-white cursor-pointer active:scale-[97%]">
-                {noteItem}
-              </span>
+            <div
+              key={`unassigned-${noteIndex}`}
+              className="mt-1 ml-8 py-2 mr-6 hover:ml-[10px] rounded-[10px] flex items-center justify-between pb-2 group hover:bg-mainBlack cursor-pointer"
+            >
+              <div className="flex items-center">
+                <img
+                  src={dragGray}
+                  alt="move"
+                  className="w-2 h-[15px] ml-2 hidden group-hover:block"
+                />
+                <img className="w-5 h-5 group-hover:ml-[6px] mr-[10px]" src={note} alt="note" />
+                <span className="font-[350] text-[14px] text-white cursor-pointer active:scale-[97%]">
+                  {noteItem}
+                </span>
+              </div>
+              <img
+                src={kebabWhite}
+                alt="kebab menu"
+                className="w-[3px] h-[15px] mr-[10px] hidden group-hover:block"
+              />
             </div>
           ))}
 
           {/* 새 폴더 만들기 */}
-          <div className="mt-2 ml-8 flex items-center">
+          <div className="mt-3 ml-8 flex items-center">
             <img className="w-5 h-5 mr-[10px]" src={folder} alt="new folder" />
             <input
               type="text"
@@ -203,16 +208,7 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
             />
           </div>
         </section>
-
-        {/* 로그아웃 섹션 */}
-        <section className="flex-none pt-[120px] pb-9">
-          <div className="inline-flex h-[38px] ml-6 px-4 py-2 items-center cursor-pointer rounded-[10px] hover:bg-mainBlack">
-            <img className="w-5 h-5 mr-[8px]" src={logout} alt="logout" />
-            <span className="font-light text-[14px] w-[54px] text-white active:scale-95">
-              로그아웃
-            </span>
-          </div>
-        </section>
+        <Logout />
       </div>
     </aside>
   );
