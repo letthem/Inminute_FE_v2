@@ -56,6 +56,7 @@ export const FolderItem: React.FC<FolderItemProps> = ({
     setIsMenuVisible((prev) => !prev); // 메뉴 토글
   };
 
+  // 메뉴 바깥 클릭 시 메뉴 닫기
   const handleClickOutside = (event: MouseEvent) => {
     // 메뉴 외부 클릭 감지
     if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -63,24 +64,7 @@ export const FolderItem: React.FC<FolderItemProps> = ({
     }
   };
 
-  useEffect(() => {
-    if (isMenuVisible) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isMenuVisible]);
-
-  useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus(); // 이름 변경 모드에서 인풋 필드에 포커스
-    }
-  }, [isEditing]);
-
+  // 이름 수정 기능
   const handleRename = () => {
     setIsEditing(true); // 이름 변경 모드 활성화
     setIsMenuVisible(false); // 메뉴 닫기
@@ -109,6 +93,24 @@ export const FolderItem: React.FC<FolderItemProps> = ({
     }
   };
 
+  useEffect(() => {
+    if (isMenuVisible) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuVisible]);
+
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus(); // 이름 변경 모드에서 인풋 필드에 포커스
+    }
+  }, [isEditing]);
+
   return (
     <div>
       <div
@@ -118,24 +120,11 @@ export const FolderItem: React.FC<FolderItemProps> = ({
           {!isEditing && (
             <img src={dragGray} alt="drag" className="w-2 h-[15px] ml-2 hidden group-hover:block" />
           )}
-          {isEditing ? (
-            <img
-              className="w-5 h-5 mx-2"
-              src={
-                hoveredFolderName === index || selectedFolderName === index ? folderMint : folder
-              }
-              alt="folder"
-            />
-          ) : (
-            <img
-              className="w-5 h-5 group-hover:ml-[6px] ml-[22px] mr-2"
-              src={
-                hoveredFolderName === index || selectedFolderName === index ? folderMint : folder
-              }
-              alt="folder"
-            />
-          )}
-
+          <img
+            className={`w-5 h-5 ${isEditing ? 'mx-2' : 'group-hover:ml-[6px] ml-[22px] mr-2'}`}
+            src={hoveredFolderName === index || selectedFolderName === index ? folderMint : folder}
+            alt="folder"
+          />
           {isEditing ? (
             <input
               ref={inputRef}
