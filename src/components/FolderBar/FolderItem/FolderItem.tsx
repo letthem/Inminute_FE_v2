@@ -25,6 +25,9 @@ interface FolderItemProps {
   onFolderSelect?: (folder: string) => void;
   onRenameFolder: (index: number, newName: string) => void;
   onDeleteFolder: (index: number) => void;
+  onDragStart: (index: number) => void;
+  onDrop: (index: number) => void;
+  onDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
 }
 
 export const FolderItem: React.FC<FolderItemProps> = ({
@@ -39,6 +42,9 @@ export const FolderItem: React.FC<FolderItemProps> = ({
   onFolderSelect,
   onRenameFolder,
   onDeleteFolder,
+  onDragStart,
+  onDrop,
+  onDragOver,
 }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false); // 메뉴 표시 여부 상태 관리
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 }); // 메뉴 위치 상태 관리
@@ -46,6 +52,16 @@ export const FolderItem: React.FC<FolderItemProps> = ({
   const [folderName, setFolderName] = useState(folderItem.name); // 현재 폴더 이름 상태 관리
   const menuRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null); // 인풋 필드에 접근하기 위한 ref
+  const folderRef = useRef<HTMLDivElement | null>(null);
+
+  // 드래그 영역
+  const handleDragStart = (e: React.DragEvent) => {
+    // 커스텀 드래그 이미지 설정
+    if (folderRef.current) {
+      e.dataTransfer.setDragImage(folderRef.current, 0, 0); // div 전체를 드래그 이미지로 설정
+    }
+    onDragStart(index); // 드래그 시작 처리
+  };
 
   // 메뉴 토글 및 위치 설정
   const handleToggleMenu = (event: React.MouseEvent) => {
@@ -116,11 +132,20 @@ export const FolderItem: React.FC<FolderItemProps> = ({
   return (
     <div>
       <div
+        ref={folderRef}
+        onDrop={() => onDrop(index)} // 드랍 시 호출
+        onDragOver={onDragOver} // 드래그 오버 이벤트
         className={`${isEditing ? 'bg-mainBlack ml-6 mr-6' : 'ml-[10px] mr-6'} group mb-1 flex hover:bg-mainBlack py-2 rounded-[10px] justify-between cursor-pointer items-center`}
       >
         <div className="flex items-center">
           {!isEditing && (
-            <img src={dragGray} alt="drag" className="w-2 h-[15px] ml-2 hidden group-hover:block" />
+            <img
+              draggable // 폴더를 드래그 가능하도록 설정
+              onDragStart={handleDragStart} // 드래그 시작 시 호출
+              src={dragGray}
+              alt="drag"
+              className="w-2 h-[15px] ml-2 hidden group-hover:block cursor-pointer"
+            />
           )}
           <img
             className={`w-5 h-5 ${isEditing ? 'mx-2' : 'group-hover:ml-[6px] ml-[22px] mr-2'}`}

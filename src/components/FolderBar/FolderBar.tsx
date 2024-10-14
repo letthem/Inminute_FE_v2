@@ -32,6 +32,28 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
   const [expandedFolders, setExpandedFolders] = useState<boolean[]>(folders.map(() => false));
   const [hoveredFolderName, setHoveredFolderName] = useState<number | null>(null); // 폴더 이름 호버 상태 관리
   const [selectedFolderName, setSelectedFolderName] = useState<number | null>(null); // 클릭 상태 관리
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+
+  // 드래그 시작
+  const handleDragStart = (index: number) => {
+    setDraggedIndex(index); // 드래그 시작 시 인덱스 저장
+  };
+
+  // 드래그 drop
+  const handleDrop = (index: number) => {
+    if (draggedIndex === null) return;
+
+    const updatedFolders = [...folders];
+    const [draggedFolder] = updatedFolders.splice(draggedIndex, 1); // 드래그된 폴더 삭제
+    updatedFolders.splice(index, 0, draggedFolder); // 드랍된 위치에 삽입
+
+    setFolders(updatedFolders); // 업데이트된 폴더 배열 저장
+    setDraggedIndex(null); // 드래그 인덱스 초기화
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault(); // 드래그 오버 시 기본 동작 방지
+  };
 
   // 폴더 toggle
   const toggleFolder = (index: number) => {
@@ -100,6 +122,9 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
               onFolderSelect={onFolderSelect}
               onRenameFolder={handleRenameFolder}
               onDeleteFolder={handleDeleteFolder}
+              onDragStart={handleDragStart}
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
             />
           ))}
           <UnassignedNotes notes={unassignedNotes} />
