@@ -30,7 +30,9 @@ export const NavBar = () => {
         <div
           className={`flex font-nanum leading-[22px] z-10 ${currentPath === '/about' ? 'bg-transparent' : 'bg-bg'} justify-between`}
         >
-          <ul className={`flex ${currentPath === '/about' ? 'ml-[15px] mt-11' : 'ml-9 mt-12'}  mb-4`}>
+          <ul
+            className={`flex ${currentPath === '/about' ? 'ml-[15px] mt-11' : 'ml-9 mt-12'}  mb-4`}
+          >
             {navItems.map((item) => (
               <li
                 key={item.path}

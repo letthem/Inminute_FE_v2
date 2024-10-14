@@ -1,3 +1,4 @@
+import { JoinModal } from '@/components/Login/JoinModal/JoinModal';
 import { NavBar } from '@/components/NavBar/NavBar';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
