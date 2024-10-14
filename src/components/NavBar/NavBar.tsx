@@ -30,7 +30,7 @@ export const NavBar = () => {
         <div
           className={`flex font-nanum leading-[22px] z-10 ${currentPath === '/about' ? 'bg-transparent' : 'bg-bg'} justify-between`}
         >
-          <ul className="flex ml-9 mt-12 mb-4">
+          <ul className={`flex ${currentPath === '/about' ? 'ml-[15px] mt-11' : 'ml-9 mt-12'}  mb-4`}>
             {navItems.map((item) => (
               <li
                 key={item.path}
@@ -51,9 +51,9 @@ export const NavBar = () => {
           {currentPath === '/about' && (
             <div
               onClick={openLoginModal}
-              className="w-[102px] h-[42px] bg-mainBlack rounded-[3.2px] flex justify-center items-center cursor-pointer mt-10 mr-11"
+              className="w-[93px] h-[38px] bg-mainBlack rounded-[3.2px] flex justify-center items-center cursor-pointer mt-10 mr-12"
             >
-              <span className="text-white text-[14px] font-medium">로그인 하기</span>
+              <span className="text-white text-[13px] font-medium">로그인 하기</span>
             </div>
           )}
         </div>
