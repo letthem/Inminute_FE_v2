@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import logo from '@/assets/webps/Layout/logo.webp';
-import folder from '@/assets/webps/FolderBar/folder.webp';
-import folderMint from '@/assets/webps/FolderBar/folderMint.webp';
-import down from '@/assets/webps/FolderBar/downGray.webp';
-import up from '@/assets/webps/FolderBar/upGray.webp';
-import note from '@/assets/webps/FolderBar/note.webp';
-import logout from '@/assets/webps/FolderBar/logout.webp';
+import { Logo } from '@/components/FolderBar/Logo/Logo';
+import { Logout } from '@/components/FolderBar/Logout/Logout';
+import { UnassignedNotes } from '@/components/FolderBar/UnassignedNotes/UnassignedNotes';
+import { NewFolderInput } from '@/components/FolderBar/NewFolderInput/NewFolderInput';
+import { FolderItem } from '@/components/FolderBar/FolderItem/FolderItem';
 
 interface Folder {
   name: string;
@@ -32,8 +30,51 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
   const [newFolderName, setNewFolderName] = useState('');
   const [isAddingFolder, setIsAddingFolder] = useState(false);
   const [expandedFolders, setExpandedFolders] = useState<boolean[]>(folders.map(() => false));
-  const [hoveredFolderIndex, setHoveredFolderIndex] = useState<number | null>(null); // 호버 상태 관리
-  const [selectedFolderIndex, setSelectedFolderIndex] = useState<number | null>(null); // 클릭 상태 관리
+  const [hoveredFolderName, setHoveredFolderName] = useState<number | null>(null); // 폴더 이름 호버 상태 관리
+  const [selectedFolderName, setSelectedFolderName] = useState<number | null>(null); // 클릭 상태 관리
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+
+  // 드래그 시작
+  const handleDragStart = (index: number) => {
+    setDraggedIndex(index); // 드래그 시작 시 인덱스 저장
+  };
+
+  // 드래그 drop
+  const handleDrop = (index: number) => {
+    if (draggedIndex === null) return;
+
+    const updatedFolders = [...folders];
+    const [draggedFolder] = updatedFolders.splice(draggedIndex, 1); // 드래그된 폴더 삭제
+    updatedFolders.splice(index, 0, draggedFolder); // 드랍된 위치에 삽입
+
+    setFolders(updatedFolders); // 업데이트된 폴더 배열 저장
+    setDraggedIndex(null); // 드래그 인덱스 초기화
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault(); // 드래그 오버 시 기본 동작 방지
+  };
+
+  // 폴더 toggle
+  const toggleFolder = (index: number) => {
+    setExpandedFolders((prevExpandedFolders) => {
+      const updatedFolders = [...prevExpandedFolders];
+      updatedFolders[index] = !updatedFolders[index]; // 열리고 접히는 상태 toggle
+      return updatedFolders;
+    });
+  };
+
+  // 폴더 삭제 핸들러
+  const handleDeleteFolder = (index: number) => {
+    setFolders((prevFolders) => prevFolders.filter((_, i) => i !== index)); // 해당 폴더 삭제
+  };
+
+  // 폴더 이름 변경 함수
+  const handleRenameFolder = (index: number, newName: string) => {
+    setFolders((prevFolders) =>
+      prevFolders.map((folder, i) => (i === index ? { ...folder, name: newName } : folder))
+    );
+  };
 
   const handleAddFolder = () => {
     if (newFolderName.trim() !== '') {
@@ -61,120 +102,40 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
     }
   }, [folders, isAddingFolder]);
 
-  // 폴더 toggle
-  const toggleFolder = (index: number) => {
-    setExpandedFolders((prevExpandedFolders) => {
-      const updatedFolders = [...prevExpandedFolders];
-      updatedFolders[index] = !updatedFolders[index]; // 열리고 접히는 상태 toggle
-      return updatedFolders;
-    });
-  };
-
   return (
     <aside>
       <div className="w-[280px] h-full bg-subBlack flex flex-col font-nanum leading-[22px]">
-        {/* 로고 및 상단 영역 */}
-        <section className="flex-none">
-          <img className="w-[208px] mt-[47px] ml-[36px]" src={logo} alt="logo" />
-          <p className="ml-9 mt-6 font-medium text-[16px] text-white">
-            <span className="font-extrabold text-main04">
-              수연<span className="font-normal"> </span>
-            </span>
-            님의 회의공간
-          </p>
-          <div className="w-[216px] h-[1px] ml-8 mt-5 bg-gray06" />
-        </section>
+        <Logo />
 
-        {/* 스크롤 영역 */}
-        <section className="flex-1 overflow-y-auto mt-5 scrollbar-hide">
-          {/* 폴더와 해당 폴더에 속한 노트들 */}
+        <section className="flex-1 overflow-y-auto mt-3 scrollbar-hide">
           {folders.map((folderItem, index) => (
-            <div key={index}>
-              <div className={`flex ${index !== 0 ? 'mt-4' : ''}`}>
-                <img
-                  className="w-5 h-5 ml-8 mr-2"
-                  src={
-                    hoveredFolderIndex === index || selectedFolderIndex === index
-                      ? folderMint
-                      : folder
-                  } // 호버에 따른 이미지 변경
-                  alt="folder"
-                />
-                <span
-                  onMouseEnter={() => setHoveredFolderIndex(index)} // 호버 시작
-                  onMouseLeave={() => setHoveredFolderIndex(null)} // 호버 끝
-                  className={`mr-[10px] font-bold text-[14px] cursor-pointer active:scale-95 ${hoveredFolderIndex === index || selectedFolderIndex === index ? 'text-main04' : 'text-white'}`}
-                  onClick={() => {
-                    setSelectedFolderIndex(index); // 폴더 클릭 시 인덱스 저장
-                    if (onFolderSelect) {
-                      onFolderSelect(folderItem.name); // 선택된 폴더 이름 전달
-                    }
-                  }}
-                >
-                  {folderItem.name}
-                </span>
-                <img
-                  className="w-5 h-5 mr-6 cursor-pointer transition-transform duration-300 ease-in-out"
-                  src={expandedFolders[index] ? up : down}
-                  alt={expandedFolders[index] ? 'up' : 'down'}
-                  onClick={() => toggleFolder(index)}
-                />
-              </div>
-              <div
-                className={`ml-[52px] overflow-hidden transition-all duration-300 ease-in-out ${
-                  expandedFolders[index] ? 'max-h-[300px]' : 'max-h-0'
-                }`}
-                style={{
-                  maxHeight: expandedFolders[index] ? `${folderItem.notes.length * 100}px` : '0',
-                }}
-              >
-                <div className="mb-1">
-                  {folderItem.notes.map((noteItem, noteIndex) => (
-                    <div key={noteIndex} className="mt-4 flex">
-                      <img className="w-5 h-5 mr-[10px]" src={note} alt="note" />
-                      <span className="font-[350] w-[170px] text-[14px] text-white cursor-pointer active:scale-[97%]">
-                        {noteItem}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
-
-          {/* 폴더에 속하지 않은 노트들 */}
-          {unassignedNotes.map((noteItem, noteIndex) => (
-            <div key={`unassigned-${noteIndex}`} className="mt-4 ml-8 flex items-center">
-              <img className="w-5 h-5 mr-[10px]" src={note} alt="note" />
-              <span className="font-[350] text-[14px] text-white cursor-pointer active:scale-[97%]">
-                {noteItem}
-              </span>
-            </div>
-          ))}
-
-          {/* 새 폴더 만들기 */}
-          <div className="mt-4 ml-8 flex items-center">
-            <img className="w-5 h-5 mr-[10px]" src={folder} alt="new folder" />
-            <input
-              type="text"
-              className="font-[350] text-[14px] placeholder-gray07 text-white bg-transparent focus:outline-none"
-              placeholder="새 폴더"
-              value={newFolderName}
-              onChange={(e) => setNewFolderName(e.target.value)}
-              onKeyDown={handleKeyDown}
+            <FolderItem
+              key={index}
+              index={index}
+              folderItem={folderItem}
+              expanded={expandedFolders[index]}
+              hoveredFolderName={hoveredFolderName}
+              selectedFolderName={selectedFolderName}
+              toggleFolder={toggleFolder}
+              setHoveredFolderName={setHoveredFolderName}
+              setSelectedFolderName={setSelectedFolderName}
+              onFolderSelect={onFolderSelect}
+              onRenameFolder={handleRenameFolder}
+              onDeleteFolder={handleDeleteFolder}
+              onDragStart={handleDragStart}
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
             />
-          </div>
+          ))}
+          <UnassignedNotes notes={unassignedNotes} />
+          <NewFolderInput
+            newFolderName={newFolderName}
+            setNewFolderName={setNewFolderName}
+            handleKeyDown={handleKeyDown}
+          />
         </section>
 
-        {/* 로그아웃 섹션 */}
-        <section className="flex-none pt-[120px] pb-9">
-          <div className="inline-flex h-[38px] ml-6 px-4 py-2 items-center cursor-pointer rounded-[10px] hover:bg-mainBlack">
-            <img className="w-5 h-5 mr-[8px]" src={logout} alt="logout" />
-            <span className="font-light text-[14px] w-[54px] text-white active:scale-95">
-              로그아웃
-            </span>
-          </div>
-        </section>
+        <Logout />
       </div>
     </aside>
   );
