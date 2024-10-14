@@ -1,3 +1,4 @@
+import { instance } from '@/apis/Instance';
 import React, { useRef, useState } from 'react';
 
 interface JoinModalProps {
@@ -22,6 +23,19 @@ export const JoinModal: React.FC<JoinModalProps> = ({ onClose }) => {
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length <= 7) {
       setUserName(e.target.value);
+    }
+  };
+
+  // 이름 제출 함수
+  const handleSubmit = async () => {
+    if (userName.length >= 1 && userName.length <= 7) {
+      try {
+        // 서버로 patch 요청 보내기
+        await instance.patch('/members', { nickname: userName });
+        window.location.href = '/'; // 완료 후 '/'로 리다이렉트
+      } catch (error) {
+        console.log('닉네임 저장 에러:', error);
+      }
     }
   };
 
@@ -53,8 +67,9 @@ export const JoinModal: React.FC<JoinModalProps> = ({ onClose }) => {
           <li>7글자 이내로 입력해주세요</li>
         </ul>
         <div
+          onClick={handleSubmit}
           className={`w-[59px] h-[46px] mt-8 rounded-[4px] flex justify-center items-center cursor-pointer mx-auto ${
-            userName.length > 0 && userName.length <= 7 ? 'bg-mainBlack' : 'bg-gray03'
+            userName.length > 0 && userName.length <= 7 ? 'bg-mainBlack' : 'bg-gray-300'
           }`}
         >
           <span className="text-white text-[14px] leading-[22px] font-500">완료</span>
