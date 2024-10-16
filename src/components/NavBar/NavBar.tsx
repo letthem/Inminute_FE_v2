@@ -1,4 +1,4 @@
-import { checkMemberStatus } from '@/apis/checkMember';
+import { checkMemberStatus } from '@/apis/Member/checkMember';
 import { LoginModal } from '@/components/Login/LoginModal/LoginModal';
 import { isMemberState } from '@/recoil/atoms/authState';
 import { useEffect, useState } from 'react';
