@@ -2,8 +2,26 @@ import calendarBlack from '@/assets/webps/Note/calendarBlack.webp';
 import timeBlack from '@/assets/webps/Note/timeBlack.webp';
 import link from '@/assets/svgs/Note/link.svg';
 import mic from '@/assets/svgs/Note/mic.svg';
+import { useState } from 'react';
 
 export const NoteTitle = () => {
+  const [isCopied, setIsCopied] = useState(false);
+
+  // 링크 복사 함수
+  const handleCopyLink = async () => {
+    try {
+      const currentUrl = window.location.href;
+      await navigator.clipboard.writeText(currentUrl); // ClipBoard API 사용 - 현재 페이지 URL 복사
+      setIsCopied(true); // 복사 성공 상태 업데이트
+      if (isCopied) {
+        alert('링크가 복사되었습니다 !');
+      }
+      setTimeout(() => setIsCopied(false), 2000); // 2초 후 상태 초기화
+    } catch (error) {
+      console.error('링크 복사 실패:', error);
+    }
+  };
+
   return (
     <section className="flex flex-col">
       <div className="flex justify-between items-center mt-[30px]">
@@ -11,7 +29,10 @@ export const NoteTitle = () => {
           브랜드 아이덴티티 전략 회의
         </p>
         <div className="flex text-white text-[10.5px] leading-[18px]">
-          <div className="flex items-center w-[88px] h-[30px] mr-3 bg-mainBlack rounded-[3.2px] cursor-pointer">
+          <div
+            onClick={handleCopyLink}
+            className="flex items-center w-[88px] h-[30px] mr-3 bg-mainBlack rounded-[3.2px] cursor-pointer"
+          >
             <img className="w-[15px] h-[15px] ml-3 mr-[6px]" src={link} alt="link" />
             <span className="font-[500]">링크 복사</span>
           </div>
