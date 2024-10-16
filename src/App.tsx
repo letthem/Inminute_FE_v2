@@ -7,10 +7,10 @@ import { AboutPage } from '@/pages/About/AboutPage';
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<MainPage />} />
+      <Route path="/home" element={<MainPage />} />
       <Route path="/note/:noteId" element={<NotePage />} />
       <Route path="/calendar" element={<CalendarPage />} />
-      <Route path="/about" element={<AboutPage />} />
+      <Route path="/" element={<AboutPage />} />
     </Routes>
   );
 }

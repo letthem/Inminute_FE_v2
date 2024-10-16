@@ -9,9 +9,9 @@ export const NavBar = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const navItems = [
-    { path: '/', label: '회의록', width: '57px' },
+    { path: '/home', label: '회의록', width: '57px' },
     { path: '/calendar', label: '캘린더', width: '57px' },
-    { path: '/about', label: 'ABOUT', width: '77px' },
+    { path: '/', label: 'ABOUT', width: '77px' },
   ];
 
   // 로그인 하기 클릭하면 LoginModal 열기
@@ -46,7 +46,7 @@ export const NavBar = () => {
               </li>
             ))}
           </ul>
-          {currentPath === '/about' && (
+          {currentPath === '/' && (
             <div
               onClick={openLoginModal}
               className="w-[93px] h-[38px] bg-mainBlack rounded-[3.2px] flex justify-center items-center cursor-pointer mt-[42px] mr-12"

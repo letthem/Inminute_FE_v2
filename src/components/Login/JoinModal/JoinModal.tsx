@@ -32,7 +32,7 @@ export const JoinModal: React.FC<JoinModalProps> = ({ onClose }) => {
       try {
         // 서버로 patch 요청 보내기
         await instance.patch('/members', { nickname: userName });
-        window.location.href = '/'; // 완료 후 '/'로 리다이렉트
+        window.location.href = '/home'; // 완료 후 '/home'로 리다이렉트
       } catch (error) {
         console.log('닉네임 저장 에러:', error);
       }
