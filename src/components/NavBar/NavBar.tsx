@@ -1,12 +1,16 @@
+import { checkMemberStatus } from '@/apis/checkMember';
 import { LoginModal } from '@/components/Login/LoginModal/LoginModal';
-import { useState } from 'react';
+import { isMemberState } from '@/recoil/atoms/authState';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 export const NavBar = () => {
   const nav = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const isMember = useRecoilValue(isMemberState); // 회원 상태 확인
 
   const navItems = [
     { path: '/home', label: '회의록', width: '57px' },
@@ -24,6 +28,21 @@ export const NavBar = () => {
     setIsLoginModalOpen(false);
   };
 
+  // 회원 상태 확인
+  useEffect(() => {
+    checkMemberStatus(); // 컴포넌트 마운트 시 회원 상태 체크
+  }, []);
+
+  // 네비게이션 제어
+  const handleNavigation = (path: string) => {
+    if (!isMember && (path === '/home' || path === '/calendar')) {
+      // 회원이 아닌 경우 네비게이션 차단 & 로그인 모달 띄워주기
+      openLoginModal();
+    } else {
+      nav(path); // 네비게이션 진행
+    }
+  };
+
   return (
     <>
       <header>
@@ -35,7 +54,7 @@ export const NavBar = () => {
                 className={`ml-8 flex flex-col cursor-pointer font-bold text-[20px] transition-all duration-300 transform ${
                   currentPath === item.path ? 'text-mainBlack' : 'text-gray03 hover:text-mainBlack'
                 } hover:scale-[102%] active:scale-100`}
-                onClick={() => nav(item.path)}
+                onClick={() => handleNavigation(item.path)}
               >
                 <span>{item.label}</span>
                 {currentPath === item.path && (
