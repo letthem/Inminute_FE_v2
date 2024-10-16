@@ -10,7 +10,7 @@ function App() {
     <RecoilRoot>
       <Routes>
         <Route path="/home" element={<MainPage />} />
-        <Route path="/note/:noteId" element={<NotePage />} />
+        <Route path="/note/:uuid" element={<NotePage />} />
         <Route path="/calendar" element={<CalendarPage />} />
         <Route path="/" element={<AboutPage />} />
       </Routes>

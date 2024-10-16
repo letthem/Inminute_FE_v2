@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FolderDropDown } from '@/components/Main/MainTopBar/NewNoteModal/FolderDropDown/FolderDropDown';
 import newNoteModalBg from '@/assets/webps/Main/newNoteModalBg.webp';
 import xGray from '@/assets/svgs/Main/xGray.svg';
+import { addNote } from '@/apis/Note/addNote';
 
 interface NewNoteModalProps {
   onClose: () => void;
@@ -30,7 +31,24 @@ export const NewNoteModal: React.FC<NewNoteModalProps> = ({ onClose }) => {
 
   // input change 핸들러
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNoteTitle(e.target.value);
+    const trimmedValue = e.target.value.replace(/\s/g, ''); // 띄어쓰기 제외
+    if (trimmedValue.length <= 11) {
+      setNoteTitle(e.target.value); // 띄어쓰기 제외 11자 이내에서만 제출 가능
+    }
+  };
+
+  // 새 노트 만들기
+  const handleSubmit = async () => {
+    if (!noteTitle.trim()) return; // 제목이 없을 경우 무시
+
+    try {
+      const folderId = selectedFolderOption === '없음' ? null : Number(selectedFolderOption);
+      const data = await addNote(noteTitle.trim(), folderId); // addNote API 호출
+      const noteUUID = data.result.uuid; // 서버 응답에서 UUID 가져오기
+      window.location.href = `/note/${noteUUID}`; // 해당 노트 페이지로 리다이렉트
+    } catch (error) {
+      console.error('노트 생성 중 에러 발생:', error);
+    }
   };
 
   return (
@@ -74,6 +92,7 @@ export const NewNoteModal: React.FC<NewNoteModalProps> = ({ onClose }) => {
           setIsOpen={setIsDropdownOpen}
         />
         <div
+          onClick={handleSubmit}
           className={`${
             noteTitle.trim() ? 'bg-mainBlack cursor-pointer' : 'bg-gray03 cursor-default'
           } w-[72px] h-[46px] rounded-[4px] mt-[34px] flex justify-center items-center`}
