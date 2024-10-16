@@ -44,7 +44,7 @@ export const NewNoteModal: React.FC<NewNoteModalProps> = ({ onClose }) => {
     try {
       const folderId = selectedFolderOption === '없음' ? null : Number(selectedFolderOption);
       const data = await addNote(noteTitle.trim(), folderId); // addNote API 호출
-      const noteUUID = data.result.uuid; // 서버 응답에서 UUID 가져오기
+      const noteUUID = data.uuid; // 서버 응답에서 UUID 가져오기
       window.location.href = `/note/${noteUUID}`; // 해당 노트 페이지로 리다이렉트
     } catch (error) {
       console.error('노트 생성 중 에러 발생:', error);
