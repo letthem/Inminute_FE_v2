@@ -1,4 +1,4 @@
-import { checkMemberStatus } from '@/apis/checkMember';
+import { checkMemberStatus } from '@/apis/Member/checkMember';
 import { LoginModal } from '@/components/Login/LoginModal/LoginModal';
 import { isMemberState } from '@/recoil/atoms/authState';
 import { useEffect, useState } from 'react';
@@ -66,7 +66,7 @@ export const NavBar = () => {
               </li>
             ))}
           </ul>
-          {currentPath === '/' && (
+          {!isMember && currentPath === '/' && (
             <div
               onClick={openLoginModal}
               className="w-[93px] h-[38px] bg-mainBlack rounded-[3.2px] flex justify-center items-center cursor-pointer mt-[42px] mr-12"

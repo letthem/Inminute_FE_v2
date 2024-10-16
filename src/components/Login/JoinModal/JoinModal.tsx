@@ -1,4 +1,4 @@
-import { instance } from '@/apis/Instance';
+import { updateNickname } from '@/apis/Member/updateNickname';
 import React, { useRef, useState } from 'react';
 
 interface JoinModalProps {
@@ -30,11 +30,10 @@ export const JoinModal: React.FC<JoinModalProps> = ({ onClose }) => {
   const handleSubmit = async () => {
     if (userName.length >= 1 && userName.length <= 7) {
       try {
-        // 서버로 patch 요청 보내기
-        await instance.patch('/members', { nickname: userName });
+        await updateNickname(userName); // API patch
         window.location.href = '/home'; // 완료 후 '/home'로 리다이렉트
       } catch (error) {
-        console.log('닉네임 저장 에러:', error);
+        console.error('닉네임 저장 에러:', error);
       }
     }
   };
