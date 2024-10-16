@@ -2,7 +2,7 @@ import calendarBlack from '@/assets/webps/Note/calendarBlack.webp';
 import timeBlack from '@/assets/webps/Note/timeBlack.webp';
 import link from '@/assets/svgs/Note/link.svg';
 import mic from '@/assets/svgs/Note/mic.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const NoteTitle = () => {
   const [isCopied, setIsCopied] = useState(false);
@@ -13,14 +13,18 @@ export const NoteTitle = () => {
       const currentUrl = window.location.href;
       await navigator.clipboard.writeText(currentUrl); // ClipBoard API 사용 - 현재 페이지 URL 복사
       setIsCopied(true); // 복사 성공 상태 업데이트
-      if (isCopied) {
-        alert('링크가 복사되었습니다 !');
-      }
-      setTimeout(() => setIsCopied(false), 2000); // 2초 후 상태 초기화
     } catch (error) {
       console.error('링크 복사 실패:', error);
     }
   };
+
+  // isCopied 상태 변경 감지
+  useEffect(() => {
+    if (isCopied) {
+      alert('링크가 복사되었습니다!');
+      setTimeout(() => setIsCopied(false), 2000); // 2초 후 상태 초기화
+    }
+  }, [isCopied]);
 
   return (
     <section className="flex flex-col">
