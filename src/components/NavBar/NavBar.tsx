@@ -66,7 +66,7 @@ export const NavBar = () => {
               </li>
             ))}
           </ul>
-          {currentPath === '/' && (
+          {!isMember && currentPath === '/' && (
             <div
               onClick={openLoginModal}
               className="w-[93px] h-[38px] bg-mainBlack rounded-[3.2px] flex justify-center items-center cursor-pointer mt-[42px] mr-12"
