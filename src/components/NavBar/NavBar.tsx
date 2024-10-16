@@ -1,17 +1,21 @@
+import { checkMemberStatus } from '@/apis/checkMember';
 import { LoginModal } from '@/components/Login/LoginModal/LoginModal';
-import { useState } from 'react';
+import { isMemberState } from '@/recoil/atoms/authState';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 export const NavBar = () => {
   const nav = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const isMember = useRecoilValue(isMemberState); // 회원 상태 확인
 
   const navItems = [
-    { path: '/', label: '회의록', width: '57px' },
+    { path: '/home', label: '회의록', width: '57px' },
     { path: '/calendar', label: '캘린더', width: '57px' },
-    { path: '/about', label: 'ABOUT', width: '77px' },
+    { path: '/', label: 'ABOUT', width: '77px' },
   ];
 
   // 로그인 하기 클릭하면 LoginModal 열기
@@ -24,22 +28,33 @@ export const NavBar = () => {
     setIsLoginModalOpen(false);
   };
 
+  // 회원 상태 확인
+  useEffect(() => {
+    checkMemberStatus(); // 컴포넌트 마운트 시 회원 상태 체크
+  }, []);
+
+  // 네비게이션 제어
+  const handleNavigation = (path: string) => {
+    if (!isMember && (path === '/home' || path === '/calendar')) {
+      // 회원이 아닌 경우 네비게이션 차단 & 로그인 모달 띄워주기
+      openLoginModal();
+    } else {
+      nav(path); // 네비게이션 진행
+    }
+  };
+
   return (
     <>
       <header>
-        <div
-          className={`flex font-nanum leading-[22px] z-10 ${currentPath === '/about' ? 'bg-transparent' : 'bg-bg'} justify-between`}
-        >
-          <ul
-            className={`flex ${currentPath === '/about' ? 'ml-[15px] mt-11' : 'ml-9 mt-12'}  mb-4`}
-          >
+        <div className={`fixed w-screen flex font-nanum leading-[22px] z-10 bg-bg justify-between`}>
+          <ul className={`flex ml-9 mt-12 mb-4`}>
             {navItems.map((item) => (
               <li
                 key={item.path}
                 className={`ml-8 flex flex-col cursor-pointer font-bold text-[20px] transition-all duration-300 transform ${
                   currentPath === item.path ? 'text-mainBlack' : 'text-gray03 hover:text-mainBlack'
                 } hover:scale-[102%] active:scale-100`}
-                onClick={() => nav(item.path)}
+                onClick={() => handleNavigation(item.path)}
               >
                 <span>{item.label}</span>
                 {currentPath === item.path && (
@@ -50,10 +65,10 @@ export const NavBar = () => {
               </li>
             ))}
           </ul>
-          {currentPath === '/about' && (
+          {currentPath === '/' && (
             <div
               onClick={openLoginModal}
-              className="w-[93px] h-[38px] bg-mainBlack rounded-[3.2px] flex justify-center items-center cursor-pointer mt-10 mr-12"
+              className="w-[93px] h-[38px] bg-mainBlack rounded-[3.2px] flex justify-center items-center cursor-pointer mt-[42px] mr-12"
             >
               <span className="text-white text-[13px] font-medium">로그인 하기</span>
             </div>

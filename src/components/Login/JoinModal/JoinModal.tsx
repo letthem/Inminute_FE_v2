@@ -32,7 +32,7 @@ export const JoinModal: React.FC<JoinModalProps> = ({ onClose }) => {
       try {
         // 서버로 patch 요청 보내기
         await instance.patch('/members', { nickname: userName });
-        window.location.href = '/'; // 완료 후 '/'로 리다이렉트
+        window.location.href = '/home'; // 완료 후 '/home'로 리다이렉트
       } catch (error) {
         console.log('닉네임 저장 에러:', error);
       }
@@ -62,7 +62,7 @@ export const JoinModal: React.FC<JoinModalProps> = ({ onClose }) => {
             onChange={handleNameChange}
           />
         </div>
-        <ul className="mt-4 text-gray04 text-[11px] font-600 list list-outside list-disc ml-[60px]">
+        <ul className="mt-4 text-gray04 text-[11px] font-600 list list-outside list-disc ml-[60px] leading-[22px]">
           <li>변경이 불가능하니, 신중하게 입력해주세요</li>
           <li>7글자 이내로 입력해주세요</li>
         </ul>

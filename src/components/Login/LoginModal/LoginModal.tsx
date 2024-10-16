@@ -42,7 +42,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
           <span>스크립트부터 요약까지 한 번에 !</span>
         </p>
 
-        <div className="mt-9">
+        <div className="mt-9 font-pretendard">
           <SocialLoginButton
             imgSrc={google}
             altText="google login"
