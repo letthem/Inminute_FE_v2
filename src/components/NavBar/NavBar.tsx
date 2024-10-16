@@ -3,7 +3,7 @@ import { LoginModal } from '@/components/Login/LoginModal/LoginModal';
 import { isMemberState } from '@/recoil/atoms/authState';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 export const NavBar = () => {
   const nav = useNavigate();
@@ -11,6 +11,7 @@ export const NavBar = () => {
   const currentPath = location.pathname;
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const isMember = useRecoilValue(isMemberState); // 회원 상태 확인
+  const setIsMember = useSetRecoilState(isMemberState); // 회원 상태 업데이트 함수
 
   const navItems = [
     { path: '/home', label: '회의록', width: '57px' },
@@ -23,15 +24,15 @@ export const NavBar = () => {
     setIsLoginModalOpen(true);
   };
 
-  // 모달 외부 클릭 시 LoginModal 닫기 - props로 전달
+  // 모달 외부 클릭 시 LoginModal 닫기
   const closeLoginModal = () => {
     setIsLoginModalOpen(false);
   };
 
   // 회원 상태 확인
   useEffect(() => {
-    checkMemberStatus(); // 컴포넌트 마운트 시 회원 상태 체크
-  }, []);
+    checkMemberStatus(setIsMember); // 회원 상태 체크할 때 상태 업데이트 함수 전달
+  }, [setIsMember]);
 
   // 네비게이션 제어
   const handleNavigation = (path: string) => {
