@@ -30,7 +30,10 @@ export const NewNoteModal: React.FC<NewNoteModalProps> = ({ onClose }) => {
 
   // input change 핸들러
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNoteTitle(e.target.value);
+    const trimmedValue = e.target.value.replace(/\s/g, ''); // 띄어쓰기 제외
+    if (trimmedValue.length <= 11) {
+      setNoteTitle(e.target.value); // 띄어쓰기 제외 11자 이내에서만 제출 가능
+    }
   };
 
   return (
