@@ -80,7 +80,7 @@ export const CalendarPage = () => {
 
         days.push(
           <div
-            className={`w-[14.3%] aspect-[4/3] border-[0.3px] border-gray03 flex flex-col 
+            className={`w-[14.3%] aspect-[4/3] border-[0.3px] border-gray03 flex flex-col bg-white
               ${rowIndex === 0 && i === 0 ? 'rounded-tl-[10px]' : ''} 
               ${rowIndex === 0 && i === 6 ? 'rounded-tr-[10px]' : ''} 
               ${isLastRow && i === 0 ? 'rounded-bl-[10px]' : ''} 
