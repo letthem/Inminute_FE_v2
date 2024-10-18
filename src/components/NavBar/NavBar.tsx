@@ -50,6 +50,11 @@ export const NavBar = () => {
     const params = new URLSearchParams(location.search);
     const source = params.get('source');
     const redirectUuid = params.get('redirect');
+    
+    // uuid가 있으면 LocalStorage에 저장
+    if (redirectUuid) {
+      localStorage.setItem('redirectUuid', redirectUuid); // LocalStorage에 uuid 저장
+    }
 
     if (!isMember && redirectUuid) {
       setIsLoginModalOpen(true); // LoginModal 열기
@@ -59,9 +64,13 @@ export const NavBar = () => {
       setIsJoinModalOpen(true); // JoinModal 열기 (회원가입 절차)
     }
 
-    if (isMember && redirectUuid) {
-      // 회원가입 또는 로그인 후, 공유된 노트 페이지로 리다이렉트
-      nav(`/note/${redirectUuid}`);
+    if (isMember) {
+      const storedUuid = localStorage.getItem('redirectUuid');
+      if (storedUuid) {
+        // 로그인 후 공유된 노트 페이지로 리다이렉트
+        nav(`/note/${storedUuid}`);
+        localStorage.removeItem('redirectUuid'); // 사용 후 LocalStorage에서 uuid 삭제
+      }
     }
   }, [location, isMember, setIsMember, nav]);
 
