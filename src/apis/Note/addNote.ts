@@ -3,7 +3,7 @@ import { instance } from '@/apis/Instance';
 // 노트 추가 함수
 export const addNote = async (name: string, folderId: number | null) => {
   try {
-    const response = await instance.post('/api/notes', {
+    const response = await instance.post('/notes', {
       name, // 노트 이름
       folderId, // 폴더 ID
     });

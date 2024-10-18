@@ -1,7 +1,5 @@
-import { JoinModal } from '@/components/Login/JoinModal/JoinModal';
 import { NavBar } from '@/components/NavBar/NavBar';
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import pain1 from '@/assets/svgs/About/pain1.svg';
 import pain2 from '@/assets/svgs/About/pain2.svg';
 import pain3 from '@/assets/svgs/About/pain3.svg';
@@ -9,19 +7,6 @@ import double from '@/assets/svgs/About/double.svg';
 
 export const AboutPage = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
-  const location = useLocation();
-
-  useEffect(() => {
-    // 쿼리 파라미터에서 source 값을 확인하여 소셜 로그인 이후 리다이렉트인지 확인
-    const params = new URLSearchParams(location.search);
-    const source = params.get('source');
-
-    // url에서 source가 'login'이면 JoinModal을 열기
-    if (source === 'login') {
-      setIsJoinModalOpen(true);
-    }
-  }, [location]);
 
   // about 페이지 로드 시 애니메이션 트리거
   useEffect(() => {
@@ -80,8 +65,6 @@ export const AboutPage = () => {
           </div>
         </div>
       </section>
-
-      {isJoinModalOpen && <JoinModal onClose={() => setIsJoinModalOpen(false)} />}
     </>
   );
 };
