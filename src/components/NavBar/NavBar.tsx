@@ -1,15 +1,17 @@
 import { checkMemberStatus } from '@/apis/Member/checkMember';
 import { LoginModal } from '@/components/Login/LoginModal/LoginModal';
+import { JoinModal } from '@/components/Login/JoinModal/JoinModal';
 import { isMemberState } from '@/recoil/atoms/authState';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 export const NavBar = () => {
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const nav = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const isMember = useRecoilValue(isMemberState); // 회원 상태 확인
   const setIsMember = useSetRecoilState(isMemberState); // 회원 상태 업데이트 함수
 
@@ -29,11 +31,6 @@ export const NavBar = () => {
     setIsLoginModalOpen(false);
   };
 
-  // 회원 상태 확인
-  useEffect(() => {
-    checkMemberStatus(setIsMember); // 회원 상태 체크할 때 상태 업데이트 함수 전달
-  }, [setIsMember]);
-
   // 네비게이션 제어
   const handleNavigation = (path: string) => {
     if (!isMember && (path === '/home' || path === '/calendar')) {
@@ -43,6 +40,22 @@ export const NavBar = () => {
       nav(path); // 네비게이션 진행
     }
   };
+
+  // 회원 상태 확인
+  useEffect(() => {
+    checkMemberStatus(setIsMember); // 회원 상태 체크할 때 상태 업데이트 함수 전달
+  }, [setIsMember]);
+
+  useEffect(() => {
+    // 쿼리 파라미터에서 source 값을 확인하여 소셜 로그인 이후 리다이렉트인지 확인
+    const params = new URLSearchParams(location.search);
+    const source = params.get('source');
+
+    // url에서 source가 'login'이면 JoinModal을 열기
+    if (source === 'login') {
+      setIsJoinModalOpen(true);
+    }
+  }, [location]);
 
   return (
     <>
@@ -78,6 +91,7 @@ export const NavBar = () => {
       </header>
 
       {isLoginModalOpen && <LoginModal onClose={closeLoginModal} />}
+      {isJoinModalOpen && <JoinModal onClose={() => setIsJoinModalOpen(false)} />}
     </>
   );
 };
