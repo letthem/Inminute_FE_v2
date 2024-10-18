@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { instance } from '@/apis/Instance';
+import { getNoteDetail } from '@/apis/Note/getNote';
 import { FolderBar } from '@/components/FolderBar/FolderBar';
 import { NoteMain } from '@/components/Note/NoteMain/NoteMain';
 import { NoteAside } from '@/components/Note/NoteAside/NoteAside';
@@ -12,10 +12,10 @@ export const NotePage = () => {
 
   useEffect(() => {
     if (!uuid) return; // uuid가 없으면 아무 것도 하지 않음
-    
+
     const fetchNoteDetail = async () => {
       try {
-        await instance.get(`/notes/detail/${uuid}`);
+        await getNoteDetail(uuid);
         // 노트 정상적으로 로드됨 (로그인된 경우)
       } catch (error: unknown) {
         if (axios.isAxiosError(error) && error.response && error.response.status === 401) {
