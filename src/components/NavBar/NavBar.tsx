@@ -47,15 +47,23 @@ export const NavBar = () => {
   }, [setIsMember]);
 
   useEffect(() => {
-    // 쿼리 파라미터에서 source 값을 확인하여 소셜 로그인 이후 리다이렉트인지 확인
     const params = new URLSearchParams(location.search);
     const source = params.get('source');
+    const redirectUuid = params.get('redirect');
 
-    // url에서 source가 'login'이면 JoinModal을 열기
-    if (source === 'login') {
-      setIsJoinModalOpen(true);
+    if (!isMember && redirectUuid) {
+      setIsLoginModalOpen(true); // LoginModal 열기
     }
-  }, [location]);
+
+    if (!isMember && source === 'login') {
+      setIsJoinModalOpen(true); // JoinModal 열기 (회원가입 절차)
+    }
+
+    if (isMember && redirectUuid) {
+      // 회원가입 또는 로그인 후, 공유된 노트 페이지로 리다이렉트
+      nav(`/note/${redirectUuid}`);
+    }
+  }, [location, isMember, setIsMember, nav]);
 
   return (
     <>
