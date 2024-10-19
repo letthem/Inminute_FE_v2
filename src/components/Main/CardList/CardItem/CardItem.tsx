@@ -71,7 +71,7 @@ export const CardItem = ({ date, title, summary }: CardItemProps) => {
 
   return (
     <div
-      className="min-w-[280px] h-[187px] border border-gray03 hover:border-mainBlack transition-all duration-100 ease-in-out rounded-[20px] bg-white flex font-nanum leading-[22px] flex-col cursor-pointer active:scale-95"
+      className="max-w-[408px] min-w-[308px] h-[187px] border border-gray03 hover:border-mainBlack transition-all duration-100 ease-in-out rounded-[20px] bg-white flex font-nanum leading-[22px] flex-col cursor-pointer active:scale-95"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={() => nav('/note/:id')}

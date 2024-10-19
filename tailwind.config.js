@@ -5,6 +5,10 @@ import scrollbar from 'tailwind-scrollbar';
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
+    screens: {
+      s10: '1044px',
+      s13: '1364px',
+    },
     extend: {
       colors: {
         bg: '#F8F8F8',
