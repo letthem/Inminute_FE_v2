@@ -6,8 +6,8 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     screens: {
-      s10: '1044px',
-      s13: '1364px',
+      s10: '1064px',
+      s13: '1390px',
     },
     extend: {
       colors: {
