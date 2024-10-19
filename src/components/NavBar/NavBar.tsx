@@ -63,11 +63,11 @@ export const NavBar = () => {
       setIsLoginModalOpen(true); // LoginModal 열기
     }
 
-    if (source === 'login') {
-      setIsJoinModalOpen(true);
-    }
-
     if (isMember) {
+      if (source === 'login') {
+        setIsJoinModalOpen(true);
+      }
+
       // 로그인 후에 uuid가 있으면 해당 노트 페이지로 리다이렉트
       const storedUuid = localStorage.getItem('redirectUuid');
       if (storedUuid) {
