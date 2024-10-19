@@ -57,13 +57,15 @@ export const NavBar = () => {
     }
 
     // 로그인이 안 된 상태면 로그인 모달을 열기
-    if (!isMember) {
+    if (!isMember && redirectUuid) {
       setIsLoginModalOpen(true); // LoginModal 열기
-      // 만약 source가 'login'이면 회원가입 절차로 JoinModal 열기
-      if (source === 'login') {
-        setIsJoinModalOpen(true);
-      }
-    } else if (isMember) {
+    }
+
+    if (source === 'login') {
+      setIsJoinModalOpen(true);
+    }
+
+    if (isMember) {
       // 로그인 후에 uuid가 있으면 해당 노트 페이지로 리다이렉트
       const storedUuid = localStorage.getItem('redirectUuid');
       if (storedUuid) {
