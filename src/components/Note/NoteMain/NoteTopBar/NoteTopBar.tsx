@@ -12,11 +12,9 @@ export const NoteTopBar = () => {
         className="w-[18px] h-[18px] cursor-pointer ml-9"
         onClick={() => nav(-1)}
       />
-      <img
-        src={kebab}
-        alt="kebab menu"
-        className="w-[18px] h-[18px] mr-[26px] px-2 cursor-pointer"
-      />
+      <div className="px-2 mr-[18px] cursor-pointer">
+        <img src={kebab} alt="kebab menu" className="h-[18.2px]" />
+      </div>
     </section>
   );
 };

@@ -21,19 +21,9 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
     e.stopPropagation();
   };
 
-  // 구글 로그인
-  const loginWithGoogle = () => {
-    window.location.href = `${import.meta.env.VITE_API_URL}/oauth2/authorization/google`;
-  };
-
-  // 카카오 로그인
-  const loginWithKakao = () => {
-    window.location.href = `${import.meta.env.VITE_API_URL}/oauth2/authorization/kakao`;
-  };
-
-  // 네이버 로그인
-  const loginWithNaver = () => {
-    window.location.href = `${import.meta.env.VITE_API_URL}/oauth2/authorization/naver`;
+  // 소셜 로그인 처리
+  const handleSocialLogin = (provider: string) => {
+    window.location.href = `${import.meta.env.VITE_API_URL}/oauth2/authorization/${provider}`;
   };
 
   return (
@@ -52,27 +42,27 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
           <span>스크립트부터 요약까지 한 번에 !</span>
         </p>
 
-        <div className="mt-9">
+        <div className="mt-9 font-pretendard">
           <SocialLoginButton
             imgSrc={google}
             altText="google login"
             text="구글로 시작하기"
             marginLeft="93px"
-            onClick={loginWithGoogle}
+            onClick={() => handleSocialLogin('google')}
           />
           <SocialLoginButton
             imgSrc={kakao}
             altText="kakao login"
             text="카카오로 시작하기"
             marginLeft="86px"
-            onClick={loginWithKakao}
+            onClick={() => handleSocialLogin('kakao')}
           />
           <SocialLoginButton
             imgSrc={naver}
             altText="naver login"
             text="네이버로 시작하기"
             marginLeft="86px"
-            onClick={loginWithNaver}
+            onClick={() => handleSocialLogin('naver')}
           />
         </div>
       </div>
