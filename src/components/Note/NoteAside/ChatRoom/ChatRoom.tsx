@@ -7,8 +7,8 @@ interface ChatRoomProps {
 }
 
 interface ChatMessage {
-  username: string;
-  message: string;
+  nickname: string;
+  content: string;
 }
 
 const ChatRoom: React.FC<ChatRoomProps> = ({ uuid }) => {
@@ -52,8 +52,8 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ uuid }) => {
     const stompClient = stompClientRef.current;
     if (stompClient && inputMessage.trim() !== '') {
       const chatMessage: ChatMessage = {
-        username: 'User', // 사용자 이름 필요
-        message: inputMessage,
+        nickname: 'User', // 사용자 이름 필요
+        content: inputMessage,
       };
 
       stompClient.publish({
@@ -84,7 +84,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ uuid }) => {
       <div>
         {messages.map((msg, index) => (
           <div key={index}>
-            <strong>{msg.username}:</strong> {msg.message}
+            <strong>{msg.nickname}:</strong> {msg.content}
           </div>
         ))}
       </div>
