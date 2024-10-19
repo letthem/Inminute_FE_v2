@@ -71,7 +71,7 @@ export const CardItem = ({ date, title, summary }: CardItemProps) => {
 
   return (
     <div
-      className="min-w-[280px] h-[187px] border border-gray03 hover:border-mainBlack transition-all duration-100 ease-in-out rounded-[20px] bg-white flex font-nanum leading-[22px] flex-col cursor-pointer active:scale-95"
+      className="max-w-[408px] min-w-[308px] h-[187px] border border-gray03 hover:border-mainBlack transition-all duration-100 ease-in-out rounded-[20px] bg-white flex font-nanum leading-[22px] flex-col cursor-pointer active:scale-95"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={() => nav('/note/:id')}
@@ -80,7 +80,7 @@ export const CardItem = ({ date, title, summary }: CardItemProps) => {
         <img src={calendar} alt="calendar" className="w-[11px] h-[11px] mr-[3.6px] ml-[10px]" />
         <span className="text-white text-[8.5px] font-bold">{date}</span>
       </div>
-      <p className="ml-6 mt-4 text-mainBlack text-[20px] font-bold ">{title}</p>
+      <p className="ml-6 mt-4 text-mainBlack text-[20px] font-bold">{title}</p>
       <div className="relative mx-6 my-5">
         <div className="bg-gray01 h-[68px] pl-4 pr-2 py-3 rounded-[10px]">
           <div

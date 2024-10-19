@@ -16,7 +16,7 @@ export const CardList: React.FC<CardListProps> = ({ cards }) => {
     <>
       <div className="absolute mt-[192px] w-[calc(100vw-280px)] h-4 bg-gradient-to-b from-bg to-transparent" />
       <div className="overflow-y-auto scrollbar-hide">
-        <div className="ml-[72px] mr-[92px] mt-4 mb-10 grid grid-cols-3 gap-x-[28px] gap-y-6">
+        <div className="ml-[72px] mr-[92px] gap-y-6 gap-x-6 s10:max-w-[calc(840px)] s13:max-w-[calc(100vw-444px)] mt-4 mb-10 grid grid-cols-1 s10:grid-cols-2 s13:grid-cols-3">
           {cards.map((card, index) => (
             <CardItem
               key={index}
