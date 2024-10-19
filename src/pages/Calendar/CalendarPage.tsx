@@ -47,7 +47,7 @@ export const CalendarPage = () => {
   const renderDays = () => {
     const days = ['일', '월', '화', '수', '목', '금', '토'];
     return (
-      <div className="w-[calc(100vw-480px)] flex mb-5">
+      <div className="w-full flex mb-5">
         {days.map((day) => (
           <div
             key={day}
@@ -116,9 +116,9 @@ export const CalendarPage = () => {
   return (
     <div className="w-screen h-screen flex flex-row bg-bg">
       <FolderBar />
-      <section className="flex flex-col w-[calc(100vw-280px)] h-full overflow-y-auto scrollbar-hide">
+      <section className="flex flex-col w-full h-full overflow-y-auto scrollbar-hide">
         <NavBar />
-        <div className="mt-[96px] mx-[100px] flex flex-col items-center font-nanum leading-[22px]">
+        <div className="mt-[96px] mx-[7%] flex flex-col items-center font-nanum leading-[22px]">
           {renderHeader()}
           {renderDays()}
           {renderCells()}
