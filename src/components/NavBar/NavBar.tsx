@@ -66,13 +66,13 @@ export const NavBar = () => {
     if (isMember) {
       if (source === 'login') {
         setIsJoinModalOpen(true);
-      }
-
-      // 로그인 후에 uuid가 있으면 해당 노트 페이지로 리다이렉트
-      const storedUuid = localStorage.getItem('redirectUuid');
-      if (storedUuid) {
-        nav(`/note/${storedUuid}`); // 로그인 후 노트 페이지로 이동
-        localStorage.removeItem('redirectUuid'); // 사용 후 uuid 삭제
+      } else {
+        // 로그인 후에 uuid가 있으면 해당 노트 페이지로 리다이렉트
+        const storedUuid = localStorage.getItem('redirectUuid');
+        if (storedUuid) {
+          nav(`/note/${storedUuid}`); // 로그인 후 노트 페이지로 이동
+          localStorage.removeItem('redirectUuid'); // 사용 후 uuid 삭제
+        }
       }
     }
   }, [location, isMember, setIsMember, nav]);
