@@ -33,9 +33,11 @@ export const NavBar = () => {
 
   // 네비게이션 제어
   const handleNavigation = (path: string) => {
-    if (!isMember && (path === '/home' || path === '/calendar')) {
-      // 회원이 아닌 경우 네비게이션 차단 & 로그인 모달 띄워주기
-      openLoginModal();
+    if (!isMember && path !== '/') {
+      // 회원이 아닌 상태에서 'ABOUT' 페이지를 제외한 다른 페이지에 접근 시 로그인 모달을 띄움
+      if (path === '/home' || path === '/calendar') {
+        openLoginModal();
+      }
     } else {
       nav(path); // 네비게이션 진행
     }
@@ -50,26 +52,27 @@ export const NavBar = () => {
     const params = new URLSearchParams(location.search);
     const source = params.get('source');
     const redirectUuid = params.get('redirect');
-    
+
     // uuid가 있으면 LocalStorage에 저장
     if (redirectUuid) {
       localStorage.setItem('redirectUuid', redirectUuid); // LocalStorage에 uuid 저장
     }
 
+    // 로그인이 안 된 상태면 로그인 모달을 열기
     if (!isMember && redirectUuid) {
       setIsLoginModalOpen(true); // LoginModal 열기
     }
 
-    if (!isMember && source === 'login') {
-      setIsJoinModalOpen(true); // JoinModal 열기 (회원가입 절차)
-    }
-
     if (isMember) {
-      const storedUuid = localStorage.getItem('redirectUuid');
-      if (storedUuid) {
-        // 로그인 후 공유된 노트 페이지로 리다이렉트
-        nav(`/note/${storedUuid}`);
-        localStorage.removeItem('redirectUuid'); // 사용 후 LocalStorage에서 uuid 삭제
+      if (source === 'login') {
+        setIsJoinModalOpen(true);
+      } else {
+        // 로그인 후에 uuid가 있으면 해당 노트 페이지로 리다이렉트
+        const storedUuid = localStorage.getItem('redirectUuid');
+        if (storedUuid) {
+          nav(`/note/${storedUuid}`); // 로그인 후 노트 페이지로 이동
+          localStorage.removeItem('redirectUuid'); // 사용 후 uuid 삭제
+        }
       }
     }
   }, [location, isMember, setIsMember, nav]);
