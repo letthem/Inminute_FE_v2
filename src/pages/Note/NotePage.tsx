@@ -7,7 +7,7 @@ import { NoteMain } from '@/components/Note/NoteMain/NoteMain';
 import { NoteAside } from '@/components/Note/NoteAside/NoteAside';
 
 export const NotePage = () => {
-  const { uuid } = useParams(); // uuid 값 받아오기
+  const { uuid } = useParams<{ uuid: string }>();
   const nav = useNavigate();
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export const NotePage = () => {
         <FolderBar />
         <div className="flex w-[calc(100vw-280px)] h-full">
           <NoteMain />
-          <NoteAside />
+          {uuid && <NoteAside uuid={uuid} />} 
         </div>
       </div>
     </>
