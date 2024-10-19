@@ -30,7 +30,7 @@ export const CalendarPage = () => {
           src={leftBlack}
           alt="prev month"
         />
-        <h2 className="text-mainBlack text-[32px] font-[700] leading-[35px]">
+        <h2 className="text-mainBlack text-[32px] font-[750] leading-[35px]">
           {format(currentMonth, 'yyyy.MM')}
         </h2>
         <img
@@ -80,7 +80,7 @@ export const CalendarPage = () => {
 
         days.push(
           <div
-            className={`w-[14.3%] aspect-[4/3] border-[0.3px] border-gray03 flex flex-col bg-white
+            className={`w-[14.3%] h-[130px] border-[0.3px] border-gray03 flex flex-col bg-white
               ${rowIndex === 0 && i === 0 ? 'rounded-tl-[10px]' : ''} 
               ${rowIndex === 0 && i === 6 ? 'rounded-tr-[10px]' : ''} 
               ${isLastRow && i === 0 ? 'rounded-bl-[10px]' : ''} 
