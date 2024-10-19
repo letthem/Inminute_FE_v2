@@ -10,4 +10,5 @@ export default defineConfig({
   resolve: {
     alias: [{ find: '@', replacement: '/src' }],
   },
+  define: {global: 'window'},
 });

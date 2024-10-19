@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ScriptList } from '@/components/Note/NoteAside/ScriptList/ScriptList';
 import aside from '@/assets/webps/Note/aside.webp';
-import { ChatRoom } from '@/components/Note/NoteAside/ChatRoom/ChatRoom';
+import ChatRoom from '@/components/Note/NoteAside/ChatRoom/ChatRoom';
 
 interface NoteAsideProps {
   uuid: string;
