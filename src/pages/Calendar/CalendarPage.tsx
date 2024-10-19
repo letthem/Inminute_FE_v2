@@ -30,7 +30,7 @@ export const CalendarPage = () => {
           src={leftBlack}
           alt="prev month"
         />
-        <h2 className="text-mainBlack text-[32px] font-[700] leading-[35px]">
+        <h2 className="text-mainBlack text-[32px] font-[750] leading-[35px]">
           {format(currentMonth, 'yyyy.MM')}
         </h2>
         <img
@@ -47,7 +47,7 @@ export const CalendarPage = () => {
   const renderDays = () => {
     const days = ['일', '월', '화', '수', '목', '금', '토'];
     return (
-      <div className="w-[calc(100vw-480px)] flex mb-5">
+      <div className="w-full flex mb-5">
         {days.map((day) => (
           <div
             key={day}
@@ -80,7 +80,7 @@ export const CalendarPage = () => {
 
         days.push(
           <div
-            className={`w-[14.3%] aspect-[4/3] border-[0.3px] border-gray03 flex flex-col bg-white
+            className={`w-[14.3%] h-[130px] border-[0.3px] border-gray03 flex flex-col bg-white
               ${rowIndex === 0 && i === 0 ? 'rounded-tl-[10px]' : ''} 
               ${rowIndex === 0 && i === 6 ? 'rounded-tr-[10px]' : ''} 
               ${isLastRow && i === 0 ? 'rounded-bl-[10px]' : ''} 
@@ -116,9 +116,9 @@ export const CalendarPage = () => {
   return (
     <div className="w-screen h-screen flex flex-row bg-bg">
       <FolderBar />
-      <section className="flex flex-col w-[calc(100vw-280px)] h-full overflow-y-auto scrollbar-hide">
+      <section className="flex flex-col w-full h-full overflow-y-auto scrollbar-hide">
         <NavBar />
-        <div className="mt-[96px] mx-[100px] flex flex-col items-center font-nanum leading-[22px]">
+        <div className="mt-[96px] mx-[7%] flex flex-col items-center font-nanum leading-[22px]">
           {renderHeader()}
           {renderDays()}
           {renderCells()}
