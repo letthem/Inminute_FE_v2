@@ -33,9 +33,11 @@ export const NavBar = () => {
 
   // 네비게이션 제어
   const handleNavigation = (path: string) => {
-    if (!isMember && (path === '/home' || path === '/calendar')) {
-      // 회원이 아닌 경우 네비게이션 차단 & 로그인 모달 띄워주기
-      openLoginModal();
+    if (!isMember && path !== '/') {
+      // 회원이 아닌 상태에서 'ABOUT' 페이지를 제외한 다른 페이지에 접근 시 로그인 모달을 띄움
+      if (path === '/home' || path === '/calendar') {
+        openLoginModal();
+      }
     } else {
       nav(path); // 네비게이션 진행
     }
