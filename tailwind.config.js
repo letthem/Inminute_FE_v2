@@ -32,6 +32,7 @@ export default {
       },
       fontFamily: {
         nanum: ['"NanumSquare Neo"', 'sans-serif'],
+        nanumv: ['"NanumSquare Neo variable"', 'sans-serif'],
         pretendard: ['"Pretendard Variable"', 'sans-serif'],
       },
     },
