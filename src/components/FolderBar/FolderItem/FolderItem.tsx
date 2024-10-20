@@ -190,12 +190,12 @@ export const FolderItem: React.FC<FolderItemProps> = ({
             />
           )}
         </div>
-        <div className="mr-[6px]">
+        <div className="mr-[7.5px]">
           {!isEditing && (
             <img
               src={kebabWhite}
               alt="kebab menu"
-              className="w-[11px] h-[15px] px-1 hidden group-hover:block"
+              className="w-[10.5px] h-[13.5px] px-1 hidden group-hover:block"
               onClick={handleToggleMenu}
             />
           )}
