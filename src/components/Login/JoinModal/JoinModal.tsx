@@ -1,14 +1,11 @@
 import { updateNickname } from '@/apis/Member/updateNickname';
-import { userNameState } from '@/recoil/atoms/authState';
 import React, { useRef, useState } from 'react';
-import { useSetRecoilState } from 'recoil';
 
 interface JoinModalProps {
   onClose: () => void;
 }
 
 export const JoinModal: React.FC<JoinModalProps> = ({ onClose }) => {
-  const setUserName = useSetRecoilState(userNameState);
   const [inputName, setInputName] = useState(''); // 사용자 이름 입력 상태
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -35,7 +32,6 @@ export const JoinModal: React.FC<JoinModalProps> = ({ onClose }) => {
       try {
         const response = await updateNickname(inputName); // API patch
         if (response.status === 200) {
-          setUserName(inputName); // Recoil 상태로 닉네임 업데이트
           window.location.href = '/home'; // 완료 후 '/home'로 리다이렉트
         }
       } catch (error) {

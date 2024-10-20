@@ -1,9 +1,6 @@
 import logo from '@/assets/webps/Layout/logo.webp';
-import { userNameState } from '@/recoil/atoms/authState';
-import { useRecoilValue } from 'recoil';
 
 export const Logo = () => {
-  const username = useRecoilValue(userNameState);
 
   return (
     <section className="flex-none">
