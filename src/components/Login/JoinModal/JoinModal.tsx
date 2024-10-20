@@ -1,12 +1,15 @@
 import { updateNickname } from '@/apis/Member/updateNickname';
+import { userNameState } from '@/recoil/atoms/authState';
 import React, { useRef, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 
 interface JoinModalProps {
   onClose: () => void;
 }
 
 export const JoinModal: React.FC<JoinModalProps> = ({ onClose }) => {
-  const [userName, setUserName] = useState(''); // 사용자 이름 상태
+  const setUserName = useSetRecoilState(userNameState);
+  const [inputName, setInputName] = useState(''); // 사용자 이름 입력 상태
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   // 모달 배경을 클릭하면 닫힘
@@ -22,16 +25,19 @@ export const JoinModal: React.FC<JoinModalProps> = ({ onClose }) => {
   // 이름 입력 핸들러 - 7자 이내로 입력 제한
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length <= 7) {
-      setUserName(e.target.value);
+      setInputName(e.target.value);
     }
   };
 
   // 이름 제출 함수
   const handleSubmit = async () => {
-    if (userName.length >= 1 && userName.length <= 7) {
+    if (inputName.length >= 1 && inputName.length <= 7) {
       try {
-        await updateNickname(userName); // API patch
-        window.location.href = '/home'; // 완료 후 '/home'로 리다이렉트
+        const response = await updateNickname(inputName); // API patch
+        if (response.status === 200) {
+          setUserName(inputName); // Recoil 상태로 닉네임 업데이트
+          window.location.href = '/home'; // 완료 후 '/home'로 리다이렉트
+        }
       } catch (error) {
         console.error('닉네임 저장 에러:', error);
       }
@@ -52,7 +58,7 @@ export const JoinModal: React.FC<JoinModalProps> = ({ onClose }) => {
             사용할 이름을 입력해주세요
           </p>
           <input
-            value={userName}
+            value={inputName}
             ref={inputRef}
             className="w-[392px] h-[68px] mt-10 rounded-[10px] px-5 text-[17px] leading-[24px] font-[600] text-[#444444] focus:outline-none"
             style={{ boxShadow: '0 0 0 1px #D9D9D9 inset' }}
@@ -68,7 +74,7 @@ export const JoinModal: React.FC<JoinModalProps> = ({ onClose }) => {
         <div
           onClick={handleSubmit}
           className={`w-[59px] h-[46px] mt-8 rounded-[4px] flex justify-center items-center cursor-pointer mx-auto ${
-            userName.length > 0 && userName.length <= 7 ? 'bg-mainBlack' : 'bg-gray-300'
+            inputName.length > 0 && inputName.length <= 7 ? 'bg-mainBlack' : 'bg-gray-300'
           }`}
         >
           <span className="text-white text-[14px] leading-[22px] font-500">완료</span>
