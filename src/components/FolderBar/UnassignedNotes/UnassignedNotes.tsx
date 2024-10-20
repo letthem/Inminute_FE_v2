@@ -24,7 +24,7 @@ export const UnassignedNotes: React.FC<UnassignedNotesProps> = ({ notes }) => (
         <img
           src={kebabWhite}
           alt="kebab menu"
-          className="w-[3px] h-[15px] mr-[10px] hidden group-hover:block"
+          className="w-[2.5px] h-[13px] mr-[11.5px] hidden group-hover:block"
         />
       </div>
     ))}
