@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-
 import { NavBar } from '@/components/NavBar/NavBar';
 import { Title } from '@/components/About/Title';
 import { MainFeature } from '@/components/About/MainFeature/MainFeature';
+import { SubFeature } from '@/components/About/SubFeature/SubFeature';
 
 export const AboutPage = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -22,6 +22,7 @@ export const AboutPage = () => {
         <NavBar />
         <Title />
         <MainFeature />
+        <SubFeature />
       </main>
     </>
   );
