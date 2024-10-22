@@ -21,6 +21,7 @@ export default {
         main07: '#16CBB3',
         mainBlack: '#2B2B2B',
         subBlack: '#212121',
+        sub2Black: '#141414',
         black01: '#4D4D4D',
         gray01: '#F2F2F2',
         gray02: '#ECECEC',
