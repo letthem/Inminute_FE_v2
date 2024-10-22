@@ -85,7 +85,7 @@ export const NavBar = () => {
       <header>
         <div
           className={`fixed w-screen flex font-nanum leading-[22px] z-10 bg-bg justify-between
-          ${isAbout && 'static bg-sub2Black'} `}
+          ${isAbout && 'relative bg-sub2Black'} `}
         >
           <ul className={`flex ml-9 mt-12 mb-4 ${isAbout && 'ml-[26px]'}`}>
             {navItems.map((item) => (
