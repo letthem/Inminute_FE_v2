@@ -1,10 +1,11 @@
-import { checkMemberStatus } from '@/apis/Member/checkMember';
-import { LoginModal } from '@/components/Login/LoginModal/LoginModal';
-import { JoinModal } from '@/components/Login/JoinModal/JoinModal';
-import { isMemberState } from '@/recoil/atoms/authState';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { checkMemberStatus } from '@/apis/Member/checkMember';
+import { isMemberState } from '@/recoil/atoms/authState';
+import { LoginModal } from '@/components/Login/LoginModal/LoginModal';
+import { JoinModal } from '@/components/Login/JoinModal/JoinModal';
+
 
 export const NavBar = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -114,9 +115,6 @@ export const NavBar = () => {
           )}
         </div>
       </header>
-      <section>
-        <div className="w-[1158px] h-[661px]"></div>
-      </section>
 
       {isLoginModalOpen && <LoginModal onClose={closeLoginModal} />}
       {isJoinModalOpen && <JoinModal onClose={() => setIsJoinModalOpen(false)} />}

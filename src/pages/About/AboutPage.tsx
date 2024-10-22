@@ -1,5 +1,7 @@
-import { NavBar } from '@/components/NavBar/NavBar';
 import { useEffect, useState } from 'react';
+import Lottie from 'lottie-react';
+import { NavBar } from '@/components/NavBar/NavBar';
+import aboutTitle from '@/assets/lotties/aboutTitle.json';
 
 export const AboutPage = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -17,6 +19,11 @@ export const AboutPage = () => {
         }`}
       >
         <NavBar />
+        <section>
+          <div className="s10:mx-[117px] mt-[240px] s10:w-[967px]">
+            <Lottie animationData={aboutTitle} />
+          </div>
+        </section>
       </section>
     </>
   );

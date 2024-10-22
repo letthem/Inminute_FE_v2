@@ -6,6 +6,9 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     screens: {
+      dt: '1025px',
+      tab: '768px',
+      ph: '329px',
       s10: '1064px',
       s13: '1390px',
     },
