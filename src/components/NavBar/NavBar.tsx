@@ -15,6 +15,8 @@ export const NavBar = () => {
   const isMember = useRecoilValue(isMemberState); // 회원 상태 확인
   const setIsMember = useSetRecoilState(isMemberState); // 회원 상태 업데이트 함수
 
+  const isAbout = currentPath === '/';
+
   const navItems = [
     { path: '/home', label: '회의록', width: '57px' },
     { path: '/calendar', label: '캘린더', width: '57px' },
@@ -80,12 +82,15 @@ export const NavBar = () => {
   return (
     <>
       <header>
-        <div className={`fixed w-screen flex font-nanum leading-[22px] z-10 bg-bg justify-between`}>
-          <ul className={`flex ml-9 mt-12 mb-4`}>
+        <div
+          className={`fixed w-screen flex font-nanum leading-[22px] z-10 bg-bg justify-between
+          ${isAbout && 'static bg-sub2Black'} `}
+        >
+          <ul className={`flex ml-9 mt-12 mb-4 ${isAbout && 'ml-[26px]'}`}>
             {navItems.map((item) => (
               <li
                 key={item.path}
-                className={`ml-8 flex flex-col cursor-pointer font-bold text-[20px] transition-all duration-300 transform ${
+                className={`${isAbout && 'ml-[30px] text-gray06 hover:text-white'} ${isAbout && currentPath === item.path && 'text-white'} ml-8 flex flex-col cursor-pointer font-bold text-[20px] transition-all duration-300 transform ${
                   currentPath === item.path ? 'text-mainBlack' : 'text-gray03 hover:text-mainBlack'
                 } hover:scale-[102%] active:scale-100`}
                 onClick={() => handleNavigation(item.path)}
@@ -93,13 +98,13 @@ export const NavBar = () => {
                 <span>{item.label}</span>
                 {currentPath === item.path && (
                   <div
-                    className={`mt-2 h-[2px] w-[${item.width}] bg-mainBlack transition-all duration-300`}
+                    className={`mt-2 h-[2px] w-[${item.width}] bg-mainBlack ${isAbout && 'bg-white'} transition-all duration-300`}
                   />
                 )}
               </li>
             ))}
           </ul>
-          {!isMember && currentPath === '/' && (
+          {!isMember && isAbout && (
             <div
               onClick={openLoginModal}
               className="w-[93px] h-[38px] bg-mainBlack rounded-[3.2px] flex justify-center items-center cursor-pointer mt-[42px] mr-12"
@@ -109,6 +114,9 @@ export const NavBar = () => {
           )}
         </div>
       </header>
+      <section>
+        <div className="w-[1158px] h-[661px]"></div>
+      </section>
 
       {isLoginModalOpen && <LoginModal onClose={closeLoginModal} />}
       {isJoinModalOpen && <JoinModal onClose={() => setIsJoinModalOpen(false)} />}
