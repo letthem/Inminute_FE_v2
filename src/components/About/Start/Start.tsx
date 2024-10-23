@@ -32,7 +32,11 @@ export const Start = () => {
   const getNickNameState = async () => {
     try {
       const data = await getMemberInfo();
-      setIsNickName(!!data?.nickname); // 닉네임이 있으면 true, 없으면 false
+      if (data?.nickname) {
+        setIsNickName(true); // 닉네임이 존재하면 true로 업데이트
+      } else {
+        setIsNickName(false); // 닉네임이 없으면 false로 설정
+      }
     } catch (error) {
       console.error('Error fetching member info:', error);
     }

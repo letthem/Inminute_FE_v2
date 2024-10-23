@@ -1,5 +1,7 @@
 import { updateNickname } from '@/apis/Member/updateNickname';
+import { isNickNameState } from '@/recoil/atoms/authState';
 import React, { useRef, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 
 interface JoinModalProps {
   onClose: () => void;
@@ -7,6 +9,7 @@ interface JoinModalProps {
 
 export const JoinModal: React.FC<JoinModalProps> = ({ onClose }) => {
   const [inputName, setInputName] = useState(''); // 사용자 이름 입력 상태
+  const setIsNickName = useSetRecoilState(isNickNameState); // 닉네임 상태 업데이트 함수
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   // 모달 배경을 클릭하면 닫힘
@@ -32,6 +35,7 @@ export const JoinModal: React.FC<JoinModalProps> = ({ onClose }) => {
       try {
         const response = await updateNickname(inputName); // API patch
         if (response.status === 200) {
+          setIsNickName(true); // 성공적으로 닉네임이 패치되면 상태를 업데이트
           window.location.href = '/home'; // 완료 후 '/home'로 리다이렉트
         }
       } catch (error) {

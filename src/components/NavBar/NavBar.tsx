@@ -57,20 +57,28 @@ export const NavBar = () => {
     // 닉네임 상태 체크
     getNickNameState();
 
-    // 로그인 및 닉네임 상태 처리
     if (isMember) {
+      // 로그인 시도 중이거나 닉네임이 없는 경우 JoinModal을 연다
       if (source === 'login' || !isNickName) {
-        setIsJoinModalOpen(true); // 닉네임 모달 열기
+        setIsJoinModalOpen(true);
       } else if (redirectUuid) {
-        nav(`/note/${redirectUuid}`); // 로그인 후, 링크 공유된 노트로 이동
+        // 로그인 후 링크 공유된 노트로 이동
+        nav(`/note/${redirectUuid}`);
         localStorage.removeItem('redirectUuid');
+        setIsJoinModalOpen(false); // 리다이렉트가 완료되면 모달을 닫는다
       } else {
-        // redirectUuid가 없을 경우 로그인 후 '/home'으로 리다이렉트
+        // 닉네임이 있고 리다이렉트가 없을 경우 홈으로 이동
         nav('/home');
+        setIsJoinModalOpen(false); // 홈으로 이동할 때 모달을 닫는다
       }
     } else if (!isMember && redirectUuid) {
-      setIsLoginModalOpen(true); // 로그인 모달 열기
-      localStorage.setItem('redirectUuid', redirectUuid); // uuid 저장
+      // 로그인이 안 된 상태에서 링크 공유된 노트 접근 시 로그인 모달 열기
+      setIsLoginModalOpen(true);
+      localStorage.setItem('redirectUuid', redirectUuid);
+      setIsJoinModalOpen(false); // 로그인 모달이 열렸으므로 JoinModal은 닫는다
+    } else {
+      // 회원이 아니고 리다이렉트도 없는 경우 모달 닫기
+      setIsJoinModalOpen(false);
     }
   }, [isMember, isNickName, location, nav, setIsMember, setIsNickName]);
 
