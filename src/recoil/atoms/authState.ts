@@ -5,7 +5,7 @@ export const isMemberState = atom<boolean | null>({
   default: null, // 초기값: null (로딩 상태)
 });
 
-export const isNickNameState = atom<boolean>({
+export const isNickNameState = atom<boolean | null>({
   key: 'isNickNameState',
-  default: false,
+  default: null,
 });
