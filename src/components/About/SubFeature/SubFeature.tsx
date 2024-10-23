@@ -1,3 +1,5 @@
+import zoom from '@/assets/webps/About/zoom.webp';
+
 export const SubFeature = () => {
   return (
     <article className="bg-bg leading-[170%]">
@@ -38,7 +40,14 @@ export const SubFeature = () => {
               </div>
             </div>
             <div className="w-[400px] h-[440px] bg-white rounded-[20px] shadow-subFeature">
-              카드2
+              <img src={zoom} alt="zoom logo" className="w-[285px] h-[74px] mt-[110px] mx-auto" />
+              <div className="ml-[42px] mt-[98px]">
+                <p className="text-mainBlack font-[800] leading-[170%] text-[32px]">ZOOM과 연동</p>
+                <div className="text-gray05 text-[16px] font-[400] leading-[170%] mt-3">
+                  <p>zoom과 함께 더욱 편하게</p>
+                  <p>비대면 회의를 진행하세요.</p>
+                </div>
+              </div>
             </div>
           </div>
           <div className="flex gap-9">
