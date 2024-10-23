@@ -1,4 +1,5 @@
 import zoom from '@/assets/webps/About/zoom.webp';
+import calendar from '@/assets/webps/About/calendar.webp';
 
 export const SubFeature = () => {
   return (
@@ -52,7 +53,14 @@ export const SubFeature = () => {
           </div>
           <div className="flex gap-9">
             <div className="w-[400px] h-[440px] bg-white rounded-[20px] shadow-subFeature">
-              카드3
+              <img src={calendar} alt="calendar" className="w-[238px] mt-[28px] mx-auto" />
+              <div className="ml-[42px] mt-[27.7px]">
+                <p className="text-mainBlack font-[800] leading-[170%] text-[32px]">캘린더</p>
+                <div className="text-gray05 text-[16px] font-[400] leading-[170%] mt-3">
+                  <p>정기적인 회의 일정을 등록하고</p>
+                  <p>편리하게 관리하세요.</p>
+                </div>
+              </div>
             </div>
             <div className="col-span-2 w-[856px] h-[440px] bg-white rounded-[20px] shadow-subFeature">
               카드4
