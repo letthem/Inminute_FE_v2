@@ -32,17 +32,13 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
       onClick={handleBackgroundClick}
     >
       <div
-        className="bg-white w-[522px] h-[502px] rounded-[20px] relative flex flex-col items-center"
+        className="bg-white w-[522px] h-[442px] rounded-[20px] relative flex flex-col items-center"
         onClick={handleModalClick}
       >
         <img src={note} alt="note" className="w-[108.6px] absolute top-[-78px] left-[210px]" />
         <img src={logoBlack} alt="logo" className="w-[240px] h-[45.52px] mt-[72px]" />
-        <p className="font-pretendard font-[350] text-[14px] text-[#444444] leading-[24px] flex flex-col items-center mt-[24.5px]">
-          <span>나를 위한 AI 회의록 서비스,</span>
-          <span>스크립트부터 요약까지 한 번에 !</span>
-        </p>
 
-        <div className="mt-9 font-pretendard">
+        <div className="mt-12 font-pretendard">
           <SocialLoginButton
             imgSrc={google}
             altText="google login"
