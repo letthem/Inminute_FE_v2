@@ -7,8 +7,8 @@ export const Logo = () => {
 
   const fetchMemberInfo = async () => {
     try {
-      const response = await getMemberInfo();
-      setUsername(response.data.result.nickname);
+      const data = await getMemberInfo();
+      setUsername(data.result.nickname);
     } catch (error) {
       console.error('회원 정보 가져오는 중 에러 발생:', error);
     }

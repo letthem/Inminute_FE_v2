@@ -1,5 +1,6 @@
 import { instance } from '@/apis/Instance';
 
 export const getMemberInfo = async () => {
-  return await instance.get('/members');
+  const response = await instance.get('/members');
+  return response.data;
 };

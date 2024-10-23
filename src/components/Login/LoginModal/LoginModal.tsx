@@ -28,7 +28,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-mainBlack bg-opacity-60"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-sub2Black bg-opacity-80"
       onClick={handleBackgroundClick}
     >
       <div

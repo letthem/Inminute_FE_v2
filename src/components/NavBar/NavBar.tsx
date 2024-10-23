@@ -2,19 +2,21 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { checkMemberStatus } from '@/apis/Member/checkMember';
-import { isMemberState } from '@/recoil/atoms/authState';
+import { getMemberInfo } from '@/apis/Member/getMemberInfo';
+import { isMemberState, isNickNameState } from '@/recoil/atoms/authState';
 import { LoginModal } from '@/components/Login/LoginModal/LoginModal';
 import { JoinModal } from '@/components/Login/JoinModal/JoinModal';
-
 
 export const NavBar = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
+  const isMember = useRecoilValue(isMemberState); // 회원 상태 확인
+  const isNickName = useRecoilValue(isNickNameState); // 닉네임 상태 확인
+  const setIsMember = useSetRecoilState(isMemberState); // 회원 상태 업데이트 함수
+  const setIsNickName = useSetRecoilState(isNickNameState); // 닉네임 상태 업데이트 함수
   const nav = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
-  const isMember = useRecoilValue(isMemberState); // 회원 상태 확인
-  const setIsMember = useSetRecoilState(isMemberState); // 회원 상태 업데이트 함수
 
   const isAbout = currentPath === '/';
 
@@ -24,61 +26,53 @@ export const NavBar = () => {
     { path: '/', label: 'ABOUT', width: '77px' },
   ];
 
-  // 로그인 하기 클릭하면 LoginModal 열기
-  const openLoginModal = () => {
-    setIsLoginModalOpen(true);
-  };
-
-  // 모달 외부 클릭 시 LoginModal 닫기
-  const closeLoginModal = () => {
-    setIsLoginModalOpen(false);
-  };
-
   // 네비게이션 제어
   const handleNavigation = (path: string) => {
     if (!isMember && path !== '/') {
-      // 회원이 아닌 상태에서 'ABOUT' 페이지를 제외한 다른 페이지에 접근 시 로그인 모달을 띄움
       if (path === '/home' || path === '/calendar') {
-        openLoginModal();
+        setIsLoginModalOpen(true);
       }
     } else {
       nav(path); // 네비게이션 진행
     }
   };
 
-  // 회원 상태 확인
-  useEffect(() => {
-    checkMemberStatus(setIsMember); // 회원 상태 체크할 때 상태 업데이트 함수 전달
-  }, [setIsMember]);
+  const getNickNameState = async () => {
+    try {
+      const data = await getMemberInfo();
+      setIsNickName(!!data?.nickname); // 닉네임이 있으면 true, 없으면 false
+    } catch (error) {
+      console.error('회원 정보 가져오는 중 에러 발생:', error);
+    }
+  };
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const source = params.get('source');
     const redirectUuid = params.get('redirect');
 
-    // uuid가 있으면 LocalStorage에 저장
-    if (redirectUuid) {
-      localStorage.setItem('redirectUuid', redirectUuid); // LocalStorage에 uuid 저장
-    }
+    // 회원 상태 체크
+    checkMemberStatus(setIsMember);
 
-    // 로그인이 안 된 상태면 로그인 모달을 열기
-    if (!isMember && redirectUuid) {
-      setIsLoginModalOpen(true); // LoginModal 열기
-    }
+    // 닉네임 상태 체크
+    getNickNameState();
 
+    // 로그인 및 닉네임 상태 처리
     if (isMember) {
-      if (source === 'login') {
-        setIsJoinModalOpen(true);
+      if (source === 'login' || !isNickName) {
+        setIsJoinModalOpen(true); // 닉네임 모달 열기
+      } else if (redirectUuid) {
+        nav(`/note/${redirectUuid}`); // 로그인 후, 링크 공유된 노트로 이동
+        localStorage.removeItem('redirectUuid');
       } else {
-        // 로그인 후에 uuid가 있으면 해당 노트 페이지로 리다이렉트
-        const storedUuid = localStorage.getItem('redirectUuid');
-        if (storedUuid) {
-          nav(`/note/${storedUuid}`); // 로그인 후 노트 페이지로 이동
-          localStorage.removeItem('redirectUuid'); // 사용 후 uuid 삭제
-        }
+        // redirectUuid가 없을 경우 로그인 후 '/home'으로 리다이렉트
+        nav('/home');
       }
+    } else if (!isMember && redirectUuid) {
+      setIsLoginModalOpen(true); // 로그인 모달 열기
+      localStorage.setItem('redirectUuid', redirectUuid); // uuid 저장
     }
-  }, [location, isMember, setIsMember, nav]);
+  }, [isMember, isNickName, location, nav, setIsMember, setIsNickName]);
 
   return (
     <>
@@ -105,18 +99,10 @@ export const NavBar = () => {
               </li>
             ))}
           </ul>
-          {!isMember && isAbout && (
-            <div
-              onClick={openLoginModal}
-              className="w-[93px] h-[38px] bg-mainBlack rounded-[3.2px] flex justify-center items-center cursor-pointer mt-[42px] mr-12"
-            >
-              <span className="text-white text-[13px] font-medium">로그인 하기</span>
-            </div>
-          )}
         </div>
       </header>
 
-      {isLoginModalOpen && <LoginModal onClose={closeLoginModal} />}
+      {isLoginModalOpen && <LoginModal onClose={() => setIsLoginModalOpen(false)} />}
       {isJoinModalOpen && <JoinModal onClose={() => setIsJoinModalOpen(false)} />}
     </>
   );
