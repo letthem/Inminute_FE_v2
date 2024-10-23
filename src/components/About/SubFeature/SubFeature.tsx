@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import AOS from 'aos';
 import zoom from '@/assets/webps/About/zoom.webp';
 import calendar from '@/assets/webps/About/calendar.webp';
 import link from '@/assets/svgs/About/link.svg';
@@ -5,8 +7,16 @@ import plane from '@/assets/webps/About/plane.webp';
 import folder from '@/assets/webps/About/folder.webp';
 import helix from '@/assets/webps/About/helix.webp';
 import spheres from '@/assets/webps/About/spheres.webp';
+import 'aos/dist/aos.css';
 
 export const SubFeature = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 700,
+      once: false,
+    });
+  }, []);
+
   return (
     <article className="bg-bg leading-[170%] relative">
       <div className="flex justify-center mt-[262px] text-mainBlack text-[52px] font-[800] leading-[170%]">

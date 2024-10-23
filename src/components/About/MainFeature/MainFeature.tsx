@@ -1,5 +1,5 @@
-import demo1 from '@/assets/svgs/About/demo1.svg';
 import { TextItem } from '@/components/About/MainFeature/TextItem/TextItem';
+import demo1 from '@/assets/svgs/About/demo1.svg';
 
 const textItems = [
   {
@@ -29,11 +29,11 @@ export const MainFeature = () => {
     <article className="flex flex-col bg-sub2Black">
       <div className="flex">
         <div>
-          <div className="sticky top-[17%] transform translate-y-[0%]">
+          <div className="sticky top-[23%] transform translate-y-[0%]">
             <img
               src={demo1}
               alt="demo animation"
-              className="max-w-[859.5px] max-h-[572.4px] ml-[129px]"
+              className="max-w-[850px] max-h-[451px] ml-[149px]"
             />
           </div>
         </div>

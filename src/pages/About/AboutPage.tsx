@@ -4,22 +4,12 @@ import { Title } from '@/components/About/Title';
 import { MainFeature } from '@/components/About/MainFeature/MainFeature';
 import { SubFeature } from '@/components/About/SubFeature/SubFeature';
 import { Start } from '@/components/About/Start/Start';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 
 export const AboutPage = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   // about 페이지 로드 시 애니메이션 트리거
   useEffect(() => {
-    setIsVisible(true);
-  }, []);
-
-  useEffect(() => {
-    AOS.init({
-      duration: 700,
-      once: false,
-    });
     setIsVisible(true);
   }, []);
 
