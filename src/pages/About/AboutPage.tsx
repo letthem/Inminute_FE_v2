@@ -16,7 +16,7 @@ export const AboutPage = () => {
   return (
     <>
       <main
-        className={`font-nanum flex flex-col w-screen h-screen transition-opacity duration-500 ease-in-out overflow-y-auto scrollbar-hide ${
+        className={`font-nanum flex flex-col w-full h-full transition-opacity duration-500 ease-in-out ${
           isVisible ? 'opacity-100' : 'opacity-0'
         }`}
       >

@@ -29,3 +29,14 @@
     background: transparent; /* 스크롤 트랙 배경을 투명하게 설정 */
   }
 }
+
+html,
+body {
+  overflow-x: hidden; /* 가로 스크롤바 완전히 숨기기 */
+  -ms-overflow-style: none; /* IE와 Edge에서 스크롤바 숨기기 */
+  scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera에서 스크롤바 숨기기 */
+}
