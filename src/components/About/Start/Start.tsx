@@ -32,7 +32,7 @@ export const Start = () => {
   const getNickNameState = async () => {
     try {
       const data = await getMemberInfo();
-      if (data?.nickname) {
+      if (data?.result.nickname) {
         setIsNickName(true); // 닉네임이 존재하면 true로 업데이트
       } else {
         setIsNickName(false); // 닉네임이 없으면 false로 설정
@@ -54,6 +54,17 @@ export const Start = () => {
         {!isMember && (
           <div
             onClick={handleStartClick}
+            className="bg-subBlack w-[374px] h-[98px] rounded-[60px] flex justify-center items-center cursor-pointer"
+          >
+            <span className="text-white font-[700] leading-[180%] text-[28px] mr-[14px]">
+              Inminute 시작하기
+            </span>
+            <img src={right} alt="right" className="w-[32px] h-[25px]" />
+          </div>
+        )}
+        {isMember && (
+          <div
+            onClick={() => nav('/home')}
             className="bg-subBlack w-[374px] h-[98px] rounded-[60px] flex justify-center items-center cursor-pointer"
           >
             <span className="text-white font-[700] leading-[180%] text-[28px] mr-[14px]">
