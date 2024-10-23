@@ -3,20 +3,32 @@ import calendar from '@/assets/webps/About/calendar.webp';
 import link from '@/assets/svgs/About/link.svg';
 import plane from '@/assets/webps/About/plane.webp';
 import folder from '@/assets/webps/About/folder.webp';
+import helix from '@/assets/webps/About/helix.webp';
+import spheres from '@/assets/webps/About/spheres.webp';
 
 export const SubFeature = () => {
   return (
-    <article className="bg-bg leading-[170%]">
+    <article className="bg-bg leading-[170%] relative">
       <div className="flex justify-center mt-[262px] text-mainBlack text-[52px] font-[800] leading-[170%]">
         <div className="flex flex-col w-[1292px]">
           <p>인미닛에서는,</p>
           <p>이런 것도 할 수 있어요!</p>
         </div>
       </div>
+      <img
+        src={helix}
+        alt="helix"
+        className="w-[424px] h-[424px] top-[167px] right-[74px] absolute z-0"
+      />
+      <img
+        src={spheres}
+        alt="spheres"
+        className="w-[380px] h-[380px] top-[1769px] left-[19px] absolute z-0"
+      />
       <section className="flex justify-center mt-[72px] mb-[384px]">
         <div className="flex flex-col gap-9">
           <div className="flex gap-9">
-            <div className="flex col-span-2 w-[856px] h-[440px] bg-white rounded-[20px] shadow-subFeature">
+            <div className="flex col-span-2 w-[856px] h-[440px] bg-white rounded-[20px] shadow-subFeature z-10">
               <div className="ml-[42px] mt-[38px]">
                 <p className="text-mainBlack font-[800] leading-[170%] text-[32px]">Q&A</p>
                 <div className="text-gray05 text-[16px] font-[400] leading-[170%] mt-3">
@@ -43,7 +55,7 @@ export const SubFeature = () => {
                 </div>
               </div>
             </div>
-            <div className="w-[400px] h-[440px] bg-white rounded-[20px] shadow-subFeature">
+            <div className="w-[400px] h-[440px] bg-white rounded-[20px] shadow-subFeature z-10">
               <img src={zoom} alt="zoom logo" className="w-[285px] h-[74px] mt-[110px] mx-auto" />
               <div className="ml-[42px] mt-[98px]">
                 <p className="text-mainBlack font-[800] leading-[170%] text-[32px]">ZOOM과 연동</p>
@@ -55,7 +67,7 @@ export const SubFeature = () => {
             </div>
           </div>
           <div className="flex gap-9">
-            <div className="w-[400px] h-[440px] bg-white rounded-[20px] shadow-subFeature">
+            <div className="w-[400px] h-[440px] bg-white rounded-[20px] shadow-subFeature z-10">
               <img src={calendar} alt="calendar" className="w-[238px] mt-[28px] mx-auto" />
               <div className="ml-[42px] mt-[27.7px]">
                 <p className="text-mainBlack font-[800] leading-[170%] text-[32px]">캘린더</p>
@@ -65,7 +77,7 @@ export const SubFeature = () => {
                 </div>
               </div>
             </div>
-            <div className="col-span-2 w-[856px] h-[440px] bg-white rounded-[20px] shadow-subFeature relative">
+            <div className="col-span-2 w-[856px] h-[440px] bg-white rounded-[20px] shadow-subFeature relative z-10">
               <div className="ml-[42px] mt-[38px]">
                 <p className="text-mainBlack font-[800] leading-[170%] text-[32px]">회의록 공유</p>
                 <div className="text-gray05 text-[16px] font-[400] leading-[170%] mt-3">
@@ -89,7 +101,7 @@ export const SubFeature = () => {
             </div>
           </div>
           <div className="flex gap-9">
-            <div className="col-span-2 w-[856px] h-[440px] bg-white rounded-[20px] shadow-subFeature relative">
+            <div className="col-span-2 w-[856px] h-[440px] bg-white rounded-[20px] shadow-subFeature relative z-10">
               <div className="ml-[42px] mt-[38px]">
                 <p className="text-mainBlack font-[800] leading-[170%] text-[32px]">
                   회의록 수정 기능
@@ -123,7 +135,7 @@ export const SubFeature = () => {
               <div className="absolute top-[225px] right-[165px] w-[197px] h-[3px] bg-[#666666] rounded-lg" />
               <div className="absolute top-[343px] right-[266px] w-[3px] h-[32px] bg-[#666666] rounded-lg" />
             </div>
-            <div className="w-[400px] h-[440px] bg-white rounded-[20px] shadow-subFeature">
+            <div className="w-[400px] h-[440px] bg-white rounded-[20px] shadow-subFeature z-10">
               <img src={folder} alt="folder" className="w-[221px] h-[202px] mt-[44px] mx-auto" />
               <div className="ml-[42px] mt-[36px]">
                 <p className="text-mainBlack font-[800] leading-[170%] text-[32px]">폴더로 정리</p>
