@@ -5,19 +5,8 @@ import plane from '@/assets/webps/About/plane.webp';
 import folder from '@/assets/webps/About/folder.webp';
 import helix from '@/assets/webps/About/helix.webp';
 import spheres from '@/assets/webps/About/spheres.webp';
-import { useEffect } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 
 export const SubFeature = () => {
-  useEffect(() => {
-    AOS.init({
-      duration: 900,
-      once: false,
-      mirror: false,
-    });
-  }, []);
-
   return (
     <article className="bg-bg leading-[170%] relative">
       <div className="flex justify-center mt-[262px] text-mainBlack text-[52px] font-[800] leading-[170%]">

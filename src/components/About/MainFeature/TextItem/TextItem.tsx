@@ -8,7 +8,7 @@ interface TextItemProps {
 
 export const TextItem: React.FC<TextItemProps> = ({ feature, desc1, desc2 }) => {
   return (
-    <div className="mt-[72px] mb-[484px]">
+    <div data-aos="fade-up" className="mt-[72px] mb-[1000px] last:mb-[400px]">
       <p className="leading-[76px] text-[40px] font-bold font-nanumv text-white">{feature}</p>
       <div className="text-gray05 leading-[170%] text-[18px] font-[400] mt-[6px]">
         <p>{desc1}</p>

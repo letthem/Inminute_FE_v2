@@ -1,4 +1,4 @@
-import demo from '@/assets/webps/About/demo.webp';
+import demo1 from '@/assets/svgs/About/demo1.svg';
 import { TextItem } from '@/components/About/MainFeature/TextItem/TextItem';
 
 const textItems = [
@@ -27,13 +27,17 @@ const textItems = [
 export const MainFeature = () => {
   return (
     <article className="flex flex-col bg-sub2Black">
-      <div className="flex relative">
-        <img
-          src={demo}
-          alt="demo animation"
-          className="max-w-[859.5px] max-h-[572.4px] ml-[129px] sticky top-[17%] transform translate-y-[0%]"
-        />
-        <section className="ml-[188.5px]">
+      <div className="flex">
+        <div>
+          <div className="sticky top-[17%] transform translate-y-[0%]">
+            <img
+              src={demo1}
+              alt="demo animation"
+              className="max-w-[859.5px] max-h-[572.4px] ml-[129px]"
+            />
+          </div>
+        </div>
+        <section className="ml-[188.5px] h-auto">
           {textItems.map((textItem, index) => (
             <TextItem
               key={index}
@@ -44,7 +48,7 @@ export const MainFeature = () => {
           ))}
         </section>
       </div>
-      <div className="h-[132px]" />
+      <div className="h-[262px]" />
     </article>
   );
 };

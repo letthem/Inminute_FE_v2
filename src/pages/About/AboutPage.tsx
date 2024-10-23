@@ -4,6 +4,8 @@ import { Title } from '@/components/About/Title';
 import { MainFeature } from '@/components/About/MainFeature/MainFeature';
 import { SubFeature } from '@/components/About/SubFeature/SubFeature';
 import { Start } from '@/components/About/Start/Start';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 export const AboutPage = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -13,10 +15,18 @@ export const AboutPage = () => {
     setIsVisible(true);
   }, []);
 
+  useEffect(() => {
+    AOS.init({
+      duration: 700,
+      once: false,
+    });
+    setIsVisible(true);
+  }, []);
+
   return (
     <>
       <main
-        className={`font-nanum flex flex-col w-full h-full transition-opacity duration-500 ease-in-out ${
+        className={`font-nanum flex flex-col transition-opacity duration-500 ease-in-out ${
           isVisible ? 'opacity-100' : 'opacity-0'
         }`}
       >
