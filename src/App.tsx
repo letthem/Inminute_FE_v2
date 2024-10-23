@@ -1,12 +1,12 @@
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import AOS from 'aos';
 import { RecoilRoot } from 'recoil';
 import { MainPage } from '@/pages/Main/MainPage';
 import { NotePage } from '@/pages/Note/NotePage';
 import { CalendarPage } from '@/pages/Calendar/CalendarPage';
 import { AboutPage } from '@/pages/About/AboutPage';
-import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { useEffect } from 'react';
 
 function App() {
   useEffect(() => {
