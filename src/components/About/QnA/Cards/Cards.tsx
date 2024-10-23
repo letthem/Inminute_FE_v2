@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { motion, useMotionValue, useTransform, PanInfo } from 'framer-motion';
+import loupe from '@/assets/webps/About/loupe.webp';
+import bulb from '@/assets/webps/About/bulb.webp';
 
 interface CardData {
   question: string;
@@ -21,8 +23,8 @@ const cardData: CardData[] = [
 export const Cards = () => {
   const [index, setIndex] = useState(0);
   const y = useMotionValue(0); // Y 축 드래그 값
-  const opacity = useTransform(y, [-300, 0, 10], [0.9, 1, 1]); // 드래그에 따라 투명도 변화
-  const rotate = useTransform(y, [-200, 0, 200], [8, 0, 0]); // Y값에 따라 카드 회전
+  const opacity = useTransform(y, [-300, 0, 0], [0.9, 1, 1]); // 드래그에 따라 투명도 변화
+  const rotate = useTransform(y, [-200, 0, 0], [8, 0, 0]); // Y값에 따라 카드 회전
 
   const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (info.offset.y < -100) {
@@ -33,8 +35,19 @@ export const Cards = () => {
   };
 
   return (
-    <div className="relative h-screen flex items-center justify-center mt-[201px]">
-      <div className="w-[764px] h-[512px] bg-[#BBB] absolute top-0 rounded-[36px]" />
+    <div className="relative h-screen flex items-center justify-center mt-[201px] mb-[91px]">
+      <div className="w-[764px] h-[512px] bg-[#BBB] absolute top-0 rounded-[36px]">
+        <img
+          src={loupe}
+          alt="loupe"
+          className="w-[282px] h-[281px] absolute z-20 top-[-128px] left-[-325px]"
+        />
+        <img
+          src={bulb}
+          alt="bulb"
+          className="w-[422px] h-[422.45px] absolute z-20 left-[641px] top-[442px]"
+        />
+      </div>
       <div className="w-[804px] h-[512px] bg-[#666] absolute top-[42px] rounded-[36px]" />
 
       {cardData.map((card, i) => (
