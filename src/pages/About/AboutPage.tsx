@@ -4,6 +4,8 @@ import { Title } from '@/components/About/Title';
 import { MainFeature } from '@/components/About/MainFeature/MainFeature';
 import { SubFeature } from '@/components/About/SubFeature/SubFeature';
 import { Start } from '@/components/About/Start/Start';
+import { QnA } from '@/components/About/QnA/QnA';
+import { Footer } from '@/components/About/Footer/Footer';
 
 export const AboutPage = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -25,6 +27,8 @@ export const AboutPage = () => {
         <MainFeature />
         <SubFeature />
         <Start />
+        <QnA />
+        <Footer />
       </main>
     </>
   );

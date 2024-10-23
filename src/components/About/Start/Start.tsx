@@ -45,7 +45,7 @@ export const Start = () => {
   }, [setIsMember, setIsNickName]);
 
   return (
-    <>
+    <article>
       <section className="bg-bg flex justify-center pb-[277px]">
         {!isMember && (
           <div
@@ -62,6 +62,6 @@ export const Start = () => {
 
       {isLoginModalOpen && <LoginModal onClose={() => setIsLoginModalOpen(false)} />}
       {isJoinModalOpen && <JoinModal onClose={() => setIsJoinModalOpen(false)} />}
-    </>
+    </article>
   );
 };
