@@ -2,6 +2,7 @@ import zoom from '@/assets/webps/About/zoom.webp';
 import calendar from '@/assets/webps/About/calendar.webp';
 import link from '@/assets/svgs/About/link.svg';
 import plane from '@/assets/webps/About/plane.webp';
+import folder from '@/assets/webps/About/folder.webp';
 
 export const SubFeature = () => {
   return (
@@ -123,7 +124,14 @@ export const SubFeature = () => {
               <div className="absolute top-[343px] right-[266px] w-[3px] h-[32px] bg-[#666666] rounded-lg" />
             </div>
             <div className="w-[400px] h-[440px] bg-white rounded-[20px] shadow-subFeature">
-              카드6
+              <img src={folder} alt="folder" className="w-[221px] h-[202px] mt-[44px] mx-auto" />
+              <div className="ml-[42px] mt-[36px]">
+                <p className="text-mainBlack font-[800] leading-[170%] text-[32px]">폴더로 정리</p>
+                <div className="text-gray05 text-[16px] font-[400] leading-[170%] mt-3">
+                  <p>수많은 회의록을</p>
+                  <p>폴더로 보기 좋게 정리해요.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
