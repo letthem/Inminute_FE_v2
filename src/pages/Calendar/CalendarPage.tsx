@@ -118,7 +118,7 @@ export const CalendarPage = () => {
       <FolderBar />
       <section className="flex flex-col w-full h-full overflow-y-auto scrollbar-hide">
         <NavBar />
-        <div className="mt-[96px] mx-[7%] flex flex-col items-center font-nanum leading-[22px]">
+        <div className="mt-[96px] mx-[4.7%] flex flex-col items-center font-nanum leading-[22px]">
           {renderHeader()}
           {renderDays()}
           {renderCells()}
