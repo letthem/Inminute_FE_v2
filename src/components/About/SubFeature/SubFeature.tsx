@@ -67,13 +67,17 @@ export const SubFeature = () => {
             <div className="col-span-2 w-[856px] h-[440px] bg-white rounded-[20px] shadow-subFeature relative">
               <div className="ml-[42px] mt-[38px]">
                 <p className="text-mainBlack font-[800] leading-[170%] text-[32px]">회의록 공유</p>
-                <div className="text-gray05 text-[16px] font-[500] leading-[170%] mt-3">
+                <div className="text-gray05 text-[16px] font-[400] leading-[170%] mt-3">
                   <p>링크를 공유해서 사용자를 초대하고 회의를 진행하세요!</p>
                   <p>하나의 회의록을 함께 공유할 수 있어요.</p>
                 </div>
               </div>
               <div className="bg-[#ECECEC] w-[444px] h-[162px] rounded-tl-[20px] rounded-br-[20px] absolute bottom-0 right-0">
-                <img src={plane} alt="plane" className='w-[88px] h-[86px] absolute top-[-104px] left-[-83px]'/>
+                <img
+                  src={plane}
+                  alt="plane"
+                  className="w-[88px] h-[86px] absolute top-[-104px] left-[-83px]"
+                />
                 <div className="w-[175px] h-[60px] px-6 py-3 gap-3 flex items-center bg-mainBlack rounded-[6px] mt-[32px] ml-9">
                   <img src={link} alt="link" className="w-[30px] h-[30px]" />
                   <span className="text-white text-[21px] font-[500] leading-[36px]">
@@ -84,8 +88,39 @@ export const SubFeature = () => {
             </div>
           </div>
           <div className="flex gap-9">
-            <div className="col-span-2 w-[856px] h-[440px] bg-white rounded-[20px] shadow-subFeature">
-              카드5
+            <div className="col-span-2 w-[856px] h-[440px] bg-white rounded-[20px] shadow-subFeature relative">
+              <div className="ml-[42px] mt-[38px]">
+                <p className="text-mainBlack font-[800] leading-[170%] text-[32px]">
+                  회의록 수정 기능
+                </p>
+                <div className="text-gray05 text-[16px] font-[400] leading-[170%] mt-3">
+                  <p>스크립트부터 한 줄 요약, TO DO</p>
+                  <p>까지 원하는대로 수정 가능해요!</p>
+                </div>
+              </div>
+              <div>
+                <div className="w-[346px] h-[70px] bg-[#FFF2B5] rounded-[40px] py-4 flex absolute top-[58px] right-[42px]">
+                  <span className="mx-auto text-[#AB942C] font-pretendard text-[19px] font-[600] leading-[200%]">
+                    다음 회의까지 해야 할 일이 변경되었어!
+                  </span>
+                </div>
+                <div className="absolute top-[126px] right-[82px] w-0 h-0 border border-t-[14px] border-t-[#FFF2B5] border-r-[16px] border-r-[#FFF2B5] border-l-[16px] border-l-transparent border-b-[14px] border-b-transparent" />
+              </div>
+              <div className="absolute top-[194px] right-[171px]">
+                <ul className="list-inside list-disc text-[#666666] font-pretendard font-[700] text-[33px] leading-[200%]">
+                  <li>
+                    <span className="ml-[-16px]">회의 장소 예약</span>
+                  </li>
+                  <li>
+                    <span className="ml-[-16px]">카드뉴스 제작</span>
+                  </li>
+                  <li>
+                    <span className="ml-[-16px]">레퍼런</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="absolute top-[225px] right-[165px] w-[197px] h-[3px] bg-[#666666] rounded-lg" />
+              <div className="absolute top-[343px] right-[266px] w-[3px] h-[32px] bg-[#666666] rounded-lg" />
             </div>
             <div className="w-[400px] h-[440px] bg-white rounded-[20px] shadow-subFeature">
               카드6
