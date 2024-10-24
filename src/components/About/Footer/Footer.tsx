@@ -7,7 +7,7 @@ export const Footer = () => {
   return (
     // 링크들 추후 수정
     <article className="h-[204px] bg-sub2Black">
-      <div className="flex gap-[18px] mt-[61px] ml-[50px]">
+      <div className="flex mt-[61px] ml-[50px] items-center gap-[18px]">
         <Link to="https://www.instagram.com/letthembeloved/" target="_blank">
           <img src={insta} alt="insta" className="w-[44px] h-[44px]" />
         </Link>
