@@ -32,8 +32,12 @@ export const NavBar = () => {
       if (path === '/home' || path === '/calendar') {
         setIsLoginModalOpen(true);
       }
+    } else if (!isNickName && path != '/') {
+      if (path === '/home' || path === '/calendar') {
+        setIsJoinModalOpen(true);
+      }
     } else {
-      nav(path); // 네비게이션 진행
+      nav(path);
     }
   };
 
@@ -60,6 +64,7 @@ export const NavBar = () => {
     if (isMember) {
       // 로그인 시도 중이거나 닉네임이 없는 경우 JoinModal을 연다
       if (source === 'login' || !isNickName) {
+        nav('/');
         setIsJoinModalOpen(true);
       } else if (redirectUuid) {
         // 로그인 후 링크 공유된 노트로 이동

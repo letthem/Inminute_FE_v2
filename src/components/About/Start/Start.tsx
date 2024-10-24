@@ -22,6 +22,7 @@ export const Start = () => {
     if (!isMember) {
       setIsLoginModalOpen(true); // 로그인 모달 열기
     } else if (!isNickName) {
+      nav('/');
       setIsJoinModalOpen(true); // 닉네임 모달 열기
     } else {
       nav('/home'); // 로그인, 닉네임 완료 시 회의록 페이지로 이동
