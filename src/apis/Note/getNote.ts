@@ -9,3 +9,13 @@ export const getNoteDetail = async (uuid: string) => {
     throw error;
   }
 };
+
+export const getNoteAll = async () => {
+  try {
+    const response = await instance.get('/notes/all');
+    return response.data;
+  } catch (error) {
+    console.error('전체 노트 로드 중 오류 발생:', error);
+    throw error;
+  }
+};
