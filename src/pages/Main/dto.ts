@@ -1,6 +1,7 @@
 export interface CardData {
   date: string;
   title: string;
+  createdAt: string;
   summary: string;
   folder: string;
 }

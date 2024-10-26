@@ -17,6 +17,7 @@ const transformNoteData = (note: NoteResponse) => {
     title: note.name,
     summary: note.summary || '아직 한 줄 요약이 없어요!',
     folder: note.folderName,
+    createdAt: note.createdAt,
   };
 };
 
@@ -34,8 +35,7 @@ export const MainPage = () => {
   };
 
   const parseDate = (dateString: string) => {
-    const [year, month, day] = dateString.split('.').map(Number);
-    return new Date(year + 2000, month - 1, day);
+    return new Date(dateString);
   };
 
   // 폴더 선택, 검색어, SortDropDown에 맞는 카드 필터링
@@ -50,9 +50,9 @@ export const MainPage = () => {
     .filter((card) => card.title.toLowerCase().includes(searchQuery.toLowerCase()))
     .sort((a, b) => {
       if (sortOption === '최신순') {
-        return parseDate(b.date).getTime() - parseDate(a.date).getTime();
+        return parseDate(b.createdAt).getTime() - parseDate(a.createdAt).getTime();
       } else if (sortOption === '오래된 순') {
-        return parseDate(a.date).getTime() - parseDate(b.date).getTime();
+        return parseDate(a.createdAt).getTime() - parseDate(b.createdAt).getTime();
       } else if (sortOption === '가나다 순') {
         return a.title.localeCompare(b.title);
       }
