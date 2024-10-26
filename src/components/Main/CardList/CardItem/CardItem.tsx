@@ -85,7 +85,7 @@ export const CardItem = ({ date, title, summary }: CardItemProps) => {
         <div className="bg-gray01 h-[68px] pl-4 pr-2 py-3 rounded-[10px]">
           <div
             ref={contentRef}
-            className={`bg-gray01 h-[44px] overflow-y-auto cursor-auto ${
+            className={`bg-gray01 h-[44px] overflow-y-auto cursor-auto mr-[3px] ${
               isHovered ? 'mr-[1px] scrollbar-visible scrollbar-thin-custom' : 'scrollbar-hide'
             }`}
           >
