@@ -6,12 +6,8 @@ export const Logout = () => {
   const nav = useNavigate();
 
   const handleLogout = async () => {
-    try {
-      await logout();
-      nav('/'); // about 페이지로 이동
-    } catch (error) {
-      console.error('로그아웃 실패:', error);
-    }
+    await logout(); // 여기서는 에러 처리를 하지 않음
+    nav('/'); // about 페이지로 이동
   };
 
   return (

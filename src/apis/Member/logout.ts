@@ -1,5 +1,9 @@
 import { instance } from '@/apis/Instance';
 
 export const logout = async () => {
-  return instance.post('/logout'); // 로그아웃 요청
+  try {
+    await instance.post('/logout'); // 로그아웃 요청
+  } catch (error) {
+    console.error('로그아웃 중 오류 발생:', error);
+  }
 };

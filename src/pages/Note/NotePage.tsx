@@ -18,37 +18,38 @@ export const NotePage = () => {
   const { data: isNickName } = useNickNameStatus();
 
   useEffect(() => {
-    if (!uuid) return;
+    const fetchNoteDetail = async () => {
+      if (!uuid) return;
 
-    const redirectUuid = localStorage.getItem('redirectUuid');
+      const redirectUuid = localStorage.getItem('redirectUuid');
 
-    // 회원이 아니라면
-    if (!isMember) {
-      localStorage.setItem('redirectUuid', uuid);
-      nav('/');
-      setIsLoginModalOpen(true);
-      return;
-    }
-
-    // 닉네임이 없다면
-    if (isMember && !isNickName) {
-      localStorage.setItem('redirectUuid', uuid);
-      nav('/');
-      setIsJoinModalOpen(true);
-      return;
-    }
-
-    // 회원 + 닉네임이 있다면
-    if (isMember && isNickName) {
-      if (redirectUuid) {
-        nav(`/note/${redirectUuid}`);
-        localStorage.removeItem('redirectUuid');
-      } else {
-        getNoteDetail(uuid).catch((error) => {
-          console.error('Error loading note details:', error);
-        });
+      // 회원이 아니라면
+      if (!isMember) {
+        localStorage.setItem('redirectUuid', uuid);
+        nav('/');
+        setIsLoginModalOpen(true);
+        return;
       }
-    }
+
+      // 닉네임이 없다면
+      if (isMember && !isNickName) {
+        localStorage.setItem('redirectUuid', uuid);
+        nav('/');
+        setIsJoinModalOpen(true);
+        return;
+      }
+
+      // 회원 + 닉네임이 있다면
+      if (isMember && isNickName) {
+        if (redirectUuid) {
+          nav(`/note/${redirectUuid}`);
+          localStorage.removeItem('redirectUuid');
+        } else {
+          await getNoteDetail(uuid);
+        }
+      }
+    };
+    fetchNoteDetail();
   }, [isMember, isNickName, uuid, nav]);
 
   return (

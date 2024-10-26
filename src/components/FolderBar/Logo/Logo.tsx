@@ -6,12 +6,8 @@ export const Logo = () => {
   const [username, setUsername] = useState('');
 
   const fetchMemberInfo = async () => {
-    try {
-      const data = await getMemberInfo();
-      setUsername(data.result.nickname);
-    } catch (error) {
-      console.error('회원 정보 가져오는 중 에러 발생:', error);
-    }
+    const data = await getMemberInfo(); // 에러 처리 필요 없음
+    setUsername(data.result.nickname); // 에러 발생 시 이 줄은 실행되지 않음
   };
 
   useEffect(() => {
