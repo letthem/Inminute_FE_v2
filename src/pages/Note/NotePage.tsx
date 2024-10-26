@@ -1,34 +1,55 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import { useMemberStatus, useNickNameStatus } from '@/apis/Member/hooks';
 import { getNoteDetail } from '@/apis/Note/getNote';
 import { FolderBar } from '@/components/FolderBar/FolderBar';
 import { NoteMain } from '@/components/Note/NoteMain/NoteMain';
 import { NoteAside } from '@/components/Note/NoteAside/NoteAside';
+import { LoginModal } from '@/components/Login/LoginModal/LoginModal';
+import { JoinModal } from '@/components/Login/JoinModal/JoinModal';
 
 export const NotePage = () => {
   const { uuid } = useParams<{ uuid: string }>();
   const nav = useNavigate();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
+
+  const { data: isMember } = useMemberStatus();
+  const { data: isNickName } = useNickNameStatus();
 
   useEffect(() => {
-    if (!uuid) return; // uuid가 없으면 아무 것도 하지 않음
+    if (!uuid) return;
 
-    const fetchNoteDetail = async () => {
-      try {
-        await getNoteDetail(uuid);
-        // 노트 정상적으로 로드됨 (로그인된 경우)
-      } catch (error: unknown) {
-        if (axios.isAxiosError(error) && error.response && error.response.status === 401) {
-          // 로그인이 안 된 경우 '/'로 리다이렉트 + 로그인 모달 띄우기
-          nav(`/?redirect=${uuid}`);
-        } else {
-          console.error('회원 상태 확인 중 오류 발생:', error);
-        }
+    const redirectUuid = localStorage.getItem('redirectUuid');
+
+    // 회원이 아니라면
+    if (isMember === false) {
+      localStorage.setItem('redirectUuid', uuid);
+      nav('/');
+      setIsLoginModalOpen(true);
+      return;
+    }
+
+    // 닉네임이 없다면
+    if (isMember && isNickName === false) {
+      localStorage.setItem('redirectUuid', uuid);
+      nav('/');
+      setIsJoinModalOpen(true);
+      return;
+    }
+
+    // 회원 + 닉네임이 있다면
+    if (isMember && isNickName) {
+      if (redirectUuid) {
+        nav(`/note/${redirectUuid}`);
+        localStorage.removeItem('redirectUuid');
+      } else {
+        getNoteDetail(uuid).catch((error) => {
+          console.error('Error loading note details:', error);
+        });
       }
-    };
-
-    fetchNoteDetail();
-  }, [uuid, nav]);
+    }
+  }, [isMember, isNickName, uuid, nav]);
 
   return (
     <>
@@ -36,9 +57,12 @@ export const NotePage = () => {
         <FolderBar />
         <div className="flex w-[calc(100vw-280px)] h-full">
           <NoteMain />
-          {uuid && <NoteAside uuid={uuid} />} 
+          {uuid && <NoteAside uuid={uuid} />}
         </div>
       </div>
+
+      {isLoginModalOpen && <LoginModal onClose={() => setIsLoginModalOpen(false)} />}
+      {isJoinModalOpen && <JoinModal onClose={() => setIsJoinModalOpen(false)} />}
     </>
   );
 };

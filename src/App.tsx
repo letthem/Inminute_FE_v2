@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import AOS from 'aos';
 import { MainPage } from '@/pages/Main/MainPage';
 import { NotePage } from '@/pages/Note/NotePage';
