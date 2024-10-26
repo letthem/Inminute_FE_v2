@@ -23,7 +23,7 @@ export const NotePage = () => {
     const redirectUuid = localStorage.getItem('redirectUuid');
 
     // 회원이 아니라면
-    if (isMember === false) {
+    if (!isMember) {
       localStorage.setItem('redirectUuid', uuid);
       nav('/');
       setIsLoginModalOpen(true);
@@ -31,7 +31,7 @@ export const NotePage = () => {
     }
 
     // 닉네임이 없다면
-    if (isMember && isNickName === false) {
+    if (isMember && !isNickName) {
       localStorage.setItem('redirectUuid', uuid);
       nav('/');
       setIsJoinModalOpen(true);

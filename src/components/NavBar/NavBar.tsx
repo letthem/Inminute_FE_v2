@@ -21,14 +21,20 @@ export const NavBar = () => {
   ];
 
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
     const redirectUuid = localStorage.getItem('redirectUuid');
+    const source = params.get('source');
 
     // 비회원이 note/{uuid} 접근 시
     if (!isMember && redirectUuid) {
       setIsLoginModalOpen(true); // 로그인 모달 열기
       nav('/'); // '/'로 리다이렉트
     }
-  }, [isMember, nav]);
+    // source가 'login'일 경우 JoinModal 띄우기
+    if (isMember && !isNickName && source === 'login') {
+      setIsJoinModalOpen(true);
+    }
+  }, [isMember, isNickName, location, nav]);
 
   // 로그인 및 닉네임 설정 완료 시 원래 노트 페이지로 리다이렉트
   useEffect(() => {
