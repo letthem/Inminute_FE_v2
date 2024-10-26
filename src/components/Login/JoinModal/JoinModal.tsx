@@ -1,3 +1,4 @@
+import { useQueryClient } from 'react-query';
 import { updateNickname } from '@/apis/Member/updateNickname';
 import React, { useRef, useState } from 'react';
 
@@ -7,6 +8,7 @@ interface JoinModalProps {
 
 export const JoinModal: React.FC<JoinModalProps> = ({ onClose }) => {
   const [inputName, setInputName] = useState(''); // 사용자 이름 입력 상태
+  const queryClient = useQueryClient(); // React Query 클라이언트 사용
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   // 모달 배경을 클릭하면 닫힘
@@ -29,13 +31,12 @@ export const JoinModal: React.FC<JoinModalProps> = ({ onClose }) => {
   // 이름 제출 함수
   const handleSubmit = async () => {
     if (inputName.length >= 1 && inputName.length <= 7) {
-      try {
-        const response = await updateNickname(inputName); // API patch
-        if (response.status === 200) {
-          window.location.href = '/home'; // 완료 후 '/home'로 리다이렉트
-        }
-      } catch (error) {
-        console.error('닉네임 저장 에러:', error);
+      const response = await updateNickname(inputName); // API 호출
+      // response가 undefined가 아닌 경우에만 처리
+      if (response) {
+        await queryClient.invalidateQueries('isNickName'); // 캐시 무효화
+        queryClient.refetchQueries('isNickName'); // 즉시 다시 데이터 가져오기
+        window.location.href = '/home'; // 완료 후 '/home'로 리다이렉트
       }
     }
   };
