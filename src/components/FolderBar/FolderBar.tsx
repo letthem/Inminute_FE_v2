@@ -4,6 +4,7 @@ import { Logout } from '@/components/FolderBar/Logout/Logout';
 import { UnassignedNotes } from '@/components/FolderBar/UnassignedNotes/UnassignedNotes';
 import { NewFolderInput } from '@/components/FolderBar/NewFolderInput/NewFolderInput';
 import { FolderItem } from '@/components/FolderBar/FolderItem/FolderItem';
+import { addFolder } from '@/apis/Folder/addFolder';
 
 interface Folder {
   name: string;
@@ -76,13 +77,17 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
     );
   };
 
-  const handleAddFolder = () => {
+  const handleAddFolder = async () => {
     if (newFolderName.trim() !== '') {
       // 중복 호출 방지
       if (isAddingFolder) return;
 
       setIsAddingFolder(true);
-      setFolders((prevFolders) => [...prevFolders, { name: newFolderName.trim(), notes: [] }]);
+      const result = await addFolder(newFolderName.trim());
+      if (result) {
+        setFolders((prevFolders) => [...prevFolders, { name: newFolderName.trim(), notes: [] }]);
+      }
+      setIsAddingFolder(false);
     }
   };
 
