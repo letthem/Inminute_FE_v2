@@ -66,7 +66,9 @@ export const FolderDropDown: React.FC<FolderDropdownProps> = ({
       </div>
       <div
         className={`w-[408px] h-[122px] absolute top-[303px] bg-white rounded-[10px] shadow-[0_0_4px_0_rgba(0,0,0,0.25)] z-20 transition-all duration-200 ease-in-out overflow-hidden ${
-          isDropdownOpen ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'
+          isDropdownOpen
+            ? 'max-h-[200px] opacity-100 overflow-y-auto scrollbar-hide'
+            : 'max-h-0 opacity-0'
         }`}
       >
         <ul className="mx-[10px] mt-[7px]">

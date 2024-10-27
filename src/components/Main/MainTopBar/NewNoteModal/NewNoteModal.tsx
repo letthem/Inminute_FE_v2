@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FolderDropDown } from '@/components/Main/MainTopBar/NewNoteModal/FolderDropDown/FolderDropDown';
 import newNoteModalBg from '@/assets/webps/Main/newNoteModalBg.webp';
 import xGray from '@/assets/svgs/Main/xGray.svg';
 import { addNote } from '@/apis/Note/addNote';
+import { getFolder } from '@/apis/Folder/getFolder';
+import { Folder } from '@/components/FolderBar/dto';
 
 interface NewNoteModalProps {
   onClose: () => void;
@@ -12,6 +14,7 @@ export const NewNoteModal: React.FC<NewNoteModalProps> = ({ onClose }) => {
   const [selectedFolderOption, setSelectedFolderOption] = useState('없음');
   const [noteTitle, setNoteTitle] = useState(''); // 회의 제목 상태
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태 관리
+  const [folders, setFolders] = useState<Folder[]>([]);
 
   // 모달 배경 or xBtn 클릭하면 닫힘
   const handleBackgroundClick = () => {
@@ -51,6 +54,15 @@ export const NewNoteModal: React.FC<NewNoteModalProps> = ({ onClose }) => {
     }
   };
 
+  const fetchFolders = async () => {
+    const data = await getFolder();
+    setFolders(data.result.folders);
+  };
+
+  useEffect(() => {
+    fetchFolders();
+  }, []);
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-mainBlack bg-opacity-60"
@@ -85,7 +97,7 @@ export const NewNoteModal: React.FC<NewNoteModalProps> = ({ onClose }) => {
           </p>
         </div>
         <FolderDropDown
-          options={['없음', '학교', '직장']}
+          options={['없음', ...folders.map((folder) => folder.name)]}
           selectedOption={selectedFolderOption}
           onOptionSelect={handleOptionSelect}
           isOpen={isDropdownOpen}
