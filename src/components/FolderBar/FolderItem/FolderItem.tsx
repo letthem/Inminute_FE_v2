@@ -7,11 +7,7 @@ import down from '@/assets/webps/FolderBar/downGray.webp';
 import up from '@/assets/webps/FolderBar/upGray.webp';
 import kebabWhite from '@/assets/webps/FolderBar/kebabWhite.webp';
 import dragGray from '@/assets/webps/FolderBar/dragGray.webp';
-
-interface Folder {
-  name: string;
-  notes: string[];
-}
+import { Folder } from '@/components/FolderBar/dto';
 
 interface FolderItemProps {
   index: number;

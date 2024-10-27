@@ -5,35 +5,43 @@ import { UnassignedNotes } from '@/components/FolderBar/UnassignedNotes/Unassign
 import { NewFolderInput } from '@/components/FolderBar/NewFolderInput/NewFolderInput';
 import { FolderItem } from '@/components/FolderBar/FolderItem/FolderItem';
 import { addFolder } from '@/apis/Folder/addFolder';
-
-interface Folder {
-  name: string;
-  notes: string[];
-}
+import { getFolder } from '@/apis/Folder/getFolder';
+import { Folder, Note } from '@/components/FolderBar/dto';
 
 interface FolderBarProps {
   onFolderSelect?: (folder: string) => void;
 }
 
 export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
-  const [folders, setFolders] = useState<Folder[]>([
-    { name: '학교', notes: ['해커톤 정기회의 2차', '플로우 회의'] },
-    {
-      name: '직장',
-      notes: ['브랜드 아이덴티티 전략 회의'],
-    },
-  ]);
-  const [unassignedNotes] = useState<string[]>([
-    'TF팀 회의',
-    '해커톤 정기회의 3차',
-    '업무 역할 분배',
-  ]);
+  const [folders, setFolders] = useState<Folder[]>([]);
+  const [unassignedNotes, setUnassignedNotes] = useState<Note[]>([]);
   const [newFolderName, setNewFolderName] = useState('');
   const [isAddingFolder, setIsAddingFolder] = useState(false);
   const [expandedFolders, setExpandedFolders] = useState<boolean[]>(folders.map(() => false));
   const [hoveredFolderName, setHoveredFolderName] = useState<number | null>(null); // 폴더 이름 호버 상태 관리
   const [selectedFolderName, setSelectedFolderName] = useState<number | null>(null); // 클릭 상태 관리
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+
+  const fetchData = async () => {
+    const data = await getFolder(); // 폴더와 노트 데이터 가져오기
+    if (data?.isSuccess) {
+      const fetchedFolders = data.result.folders.map(
+        (folder: { id: number; name: string; create_at: Date; notes: string }) => ({
+          id: folder.id,
+          name: folder.name,
+          create_at: folder.create_at,
+          notes: folder.notes,
+        })
+      );
+      setFolders(fetchedFolders);
+      setUnassignedNotes(data.result.notes); // API로부터 받은 노트 데이터 설정
+      setExpandedFolders(fetchedFolders.map(() => false)); // 모든 폴더의 확장 상태 초기화
+    }
+  };
+
+  useEffect(() => {
+    fetchData(); // 컴포넌트 마운트 시 폴더 및 노트 데이터 가져오기
+  }, []);
 
   // 드래그 시작
   const handleDragStart = (index: number) => {
@@ -77,15 +85,16 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
     );
   };
 
+  // 폴더 추가
   const handleAddFolder = async () => {
-    if (newFolderName.trim() !== '') {
-      // 중복 호출 방지
-      if (isAddingFolder) return;
-
+    if (newFolderName.trim() !== '' && !isAddingFolder) {
       setIsAddingFolder(true);
       const result = await addFolder(newFolderName.trim());
       if (result) {
-        setFolders((prevFolders) => [...prevFolders, { name: newFolderName.trim(), notes: [] }]);
+        setFolders((prevFolders) => [
+          ...prevFolders,
+          { id: result.id, name: newFolderName.trim(), create_at: result.create_at, notes: [] },
+        ]);
       }
       setIsAddingFolder(false);
     }
