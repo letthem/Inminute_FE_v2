@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMemberStatus, useNickNameStatus } from '@/apis/Member/hooks';
 import { getNoteDetail } from '@/apis/Note/getNote';
-import { FolderBar } from '@/components/FolderBar/FolderBar';
 import { NoteMain } from '@/components/Note/NoteMain/NoteMain';
 import { NoteAside } from '@/components/Note/NoteAside/NoteAside';
 import { LoginModal } from '@/components/Login/LoginModal/LoginModal';
@@ -58,13 +57,10 @@ export const NotePage = () => {
 
   return (
     <>
-      <div className="w-screen h-screen flex flex-row bg-bg font-nanum leading-[22px]">
-        <FolderBar />
-        <div className="flex w-[calc(100vw-280px)] h-full">
-          <NoteMain noteData={noteData} />
-          {uuid && <NoteAside noteData={noteData} />}
-        </div>
-      </div>
+      <section className="flex w-[calc(100vw-280px)] h-full">
+        <NoteMain noteData={noteData} />
+        {uuid && <NoteAside noteData={noteData} />}
+      </section>
 
       {isLoginModalOpen && <LoginModal onClose={() => setIsLoginModalOpen(false)} />}
       {isJoinModalOpen && <JoinModal onClose={() => setIsJoinModalOpen(false)} />}

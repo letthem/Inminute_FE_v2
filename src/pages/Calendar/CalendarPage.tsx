@@ -12,7 +12,6 @@ import {
   isSameDay,
   subDays,
 } from 'date-fns';
-import { FolderBar } from '@/components/FolderBar/FolderBar';
 import { NavBar } from '@/components/NavBar/NavBar';
 import leftBlack from '@/assets/webps/Calendar/leftBlack.webp';
 import rightBlack from '@/assets/webps/Calendar/rightBlack.webp';
@@ -114,16 +113,13 @@ export const CalendarPage = () => {
   };
 
   return (
-    <div className="w-screen h-screen flex flex-row bg-bg">
-      <FolderBar />
-      <section className="flex flex-col w-full h-full overflow-y-auto scrollbar-hide">
-        <NavBar />
-        <div className="mt-[96px] mx-[4.7%] flex flex-col items-center font-nanum leading-[22px]">
-          {renderHeader()}
-          {renderDays()}
-          {renderCells()}
-        </div>
-      </section>
-    </div>
+    <section className="flex flex-col w-full h-full overflow-y-auto scrollbar-hide">
+      <NavBar />
+      <div className="mt-[96px] mx-[4.7%] flex flex-col items-center font-nanum leading-[22px]">
+        {renderHeader()}
+        {renderDays()}
+        {renderCells()}
+      </div>
+    </section>
   );
 };

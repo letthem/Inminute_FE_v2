@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getNoteAll } from '@/apis/Note/getNote';
 import { CardData, NoteResponse } from '@/pages/Main/dto';
-import { FolderBar } from '@/components/FolderBar/FolderBar';
 import { MainTopBar } from '@/components/Main/MainTopBar/MainTopBar';
 import { NavBar } from '@/components/NavBar/NavBar';
 import { CardList } from '@/components/Main/CardList/CardList';
@@ -25,7 +24,7 @@ const transformNoteData = (note: NoteResponse) => {
 export const MainPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOption, setSortOption] = useState('최신순');
-  const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
+  const [selectedFolder] = useState<string | null>(null);
   const [cardData, setCardData] = useState<CardData[]>([]); // 카드 데이터 상태 추가
 
   const fetchNotes = async () => {
@@ -66,30 +65,27 @@ export const MainPage = () => {
 
   return (
     <>
-      <div className="w-screen h-screen flex flex-row bg-bg font-nanum leading-[22px]">
-        <FolderBar onFolderSelect={setSelectedFolder} />
-        <section className="flex flex-col w-[calc(100vw-280px)] h-full">
-          <NavBar />
-          <MainTopBar onSearch={setSearchQuery} onSort={setSortOption} />
-          {filteredCards.length > 0 ? (
-            <CardList cards={filteredCards} />
-          ) : searchQuery ? (
-            <div className="flex flex-col items-center justify-center">
-              <img className="w-[131px] h-[139.5px] mt-[159px]" src={searchMint} alt="search" />
-              <p className="mt-[19.5px] text-mainBlack font-medium text-[15px]">
-                검색 결과가 존재하지 않습니다!
-              </p>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center">
-              <img className="w-[147px] h-[154px] mt-[136px]" src={noteMint} alt="note" />
-              <p className="mt-[27.5px] text-mainBlack font-medium text-[15px]">
-                회의 노트를 추가해보세요 !
-              </p>
-            </div>
-          )}
-        </section>
-      </div>
+      <section className="flex flex-col w-[calc(100vw-280px)] h-full">
+        <NavBar />
+        <MainTopBar onSearch={setSearchQuery} onSort={setSortOption} />
+        {filteredCards.length > 0 ? (
+          <CardList cards={filteredCards} />
+        ) : searchQuery ? (
+          <div className="flex flex-col items-center justify-center">
+            <img className="w-[131px] h-[139.5px] mt-[159px]" src={searchMint} alt="search" />
+            <p className="mt-[19.5px] text-mainBlack font-medium text-[15px]">
+              검색 결과가 존재하지 않습니다!
+            </p>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center">
+            <img className="w-[147px] h-[154px] mt-[136px]" src={noteMint} alt="note" />
+            <p className="mt-[27.5px] text-mainBlack font-medium text-[15px]">
+              회의 노트를 추가해보세요 !
+            </p>
+          </div>
+        )}
+      </section>
     </>
   );
 };
