@@ -19,3 +19,13 @@ export const getNoteAll = async () => {
     throw error;
   }
 };
+
+export const getNoteDetailById = async (id: number) => {
+  try {
+    const response = await instance.get(`/notes/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('노트 상세 정보 로드 중 오류 발생:', error);
+    throw error;
+  }
+};
