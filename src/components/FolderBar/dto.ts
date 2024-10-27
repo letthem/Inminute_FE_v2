@@ -2,6 +2,7 @@ export interface Note {
   id: number;
   name: string;
   createdAt: Date;
+  uuid: string;
 }
 
 export interface Folder {
@@ -15,4 +16,5 @@ export interface UnassignedNote {
   id: number;
   name: string;
   createdAt: Date;
+  uuid: string;
 }

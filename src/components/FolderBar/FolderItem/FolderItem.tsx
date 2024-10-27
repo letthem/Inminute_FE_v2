@@ -8,8 +8,6 @@ import up from '@/assets/webps/FolderBar/upGray.webp';
 import kebabWhite from '@/assets/webps/FolderBar/kebabWhite.webp';
 import dragGray from '@/assets/webps/FolderBar/dragGray.webp';
 import { Folder } from '@/components/FolderBar/dto';
-import { useNavigate } from 'react-router-dom';
-import { getNoteDetailById } from '@/apis/Note/getNote';
 
 interface FolderItemProps {
   index: number;
@@ -51,22 +49,6 @@ export const FolderItem: React.FC<FolderItemProps> = ({
   const menuRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null); // 인풋 필드에 접근하기 위한 ref
   const folderRef = useRef<HTMLDivElement | null>(null);
-
-  const nav = useNavigate();
-
-  const handleNoteClick = async (id: number) => {
-    try {
-      const data = await getNoteDetailById(id); // ID로 API 호출
-      if (data.isSuccess) {
-        const noteUUID = data.result.uuid; // UUID 가져오기
-        nav(`/note/${noteUUID}`); // 해당 노트 페이지로 이동
-      } else {
-        console.error('노트 정보를 가져오는 데 실패했습니다.');
-      }
-    } catch (error) {
-      console.error('노트 정보를 가져오는 중 에러 발생:', error);
-    }
-  };
 
   // 드래그 영역
   const handleDragStart = (e: React.DragEvent) => {
@@ -239,7 +221,7 @@ export const FolderItem: React.FC<FolderItemProps> = ({
       >
         <div className="mb-2">
           {folderItem.notes.map((noteItem, noteIndex) => (
-            <NoteItem key={noteIndex} noteItem={noteItem} onClick={handleNoteClick} />
+            <NoteItem key={noteIndex} noteItem={noteItem} />
           ))}
         </div>
       </div>
