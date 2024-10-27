@@ -5,7 +5,7 @@ export const Title = () => {
   return (
     <article className="bg-sub2Black">
       <div className="s10:mx-[117px] mt-[144px] s10:w-[967px] mb-[292px]">
-        <Lottie animationData={aboutTitle} loop={false} />
+        <Lottie animationData={aboutTitle} />
       </div>
     </article>
   );
