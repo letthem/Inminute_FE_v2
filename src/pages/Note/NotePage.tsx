@@ -7,6 +7,7 @@ import { NoteMain } from '@/components/Note/NoteMain/NoteMain';
 import { NoteAside } from '@/components/Note/NoteAside/NoteAside';
 import { LoginModal } from '@/components/Login/LoginModal/LoginModal';
 import { JoinModal } from '@/components/Login/JoinModal/JoinModal';
+import { NoteDetail } from '@/pages/Note/dto';
 
 export const NotePage = () => {
   const { uuid } = useParams<{ uuid: string }>();
@@ -16,6 +17,7 @@ export const NotePage = () => {
 
   const { data: isMember } = useMemberStatus();
   const { data: isNickName } = useNickNameStatus();
+  const [noteData, setNoteData] = useState<NoteDetail | null>(null);
 
   useEffect(() => {
     const fetchNoteDetail = async () => {
@@ -45,7 +47,9 @@ export const NotePage = () => {
           nav(`/note/${redirectUuid}`);
           localStorage.removeItem('redirectUuid');
         } else {
-          await getNoteDetail(uuid);
+          const data = await getNoteDetail(uuid);
+          const detail = data.result;
+          setNoteData(detail);
         }
       }
     };
@@ -57,8 +61,8 @@ export const NotePage = () => {
       <div className="w-screen h-screen flex flex-row bg-bg font-nanum leading-[22px]">
         <FolderBar />
         <div className="flex w-[calc(100vw-280px)] h-full">
-          <NoteMain />
-          {uuid && <NoteAside uuid={uuid} />}
+          <NoteMain noteData={noteData} />
+          {uuid && <NoteAside noteData={noteData} />}
         </div>
       </div>
 

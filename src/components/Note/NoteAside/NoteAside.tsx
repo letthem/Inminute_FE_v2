@@ -2,12 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ScriptList } from '@/components/Note/NoteAside/ScriptList/ScriptList';
 import aside from '@/assets/webps/Note/aside.webp';
 import ChatRoom from '@/components/Note/NoteAside/ChatRoom/ChatRoom';
+import { NoteDetail } from '@/pages/Note/dto';
+import { useParams } from 'react-router-dom';
 
 interface NoteAsideProps {
-  uuid: string;
+  noteData: NoteDetail | null;
 }
 
-export const NoteAside: React.FC<NoteAsideProps> = ({ uuid }) => {
+export const NoteAside: React.FC<NoteAsideProps> = ({ noteData }) => {
+  const { uuid } = useParams<{ uuid: string }>();
   const [showScript] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [hasScrollbar, setHasScrollbar] = useState(false);
@@ -42,6 +45,10 @@ export const NoteAside: React.FC<NoteAsideProps> = ({ uuid }) => {
     setIsHovered(false);
   };
 
+  if (!noteData) {
+    return <div>노트 데이터가 없습니다.</div>;
+  }
+
   return (
     <aside className="w-[375px] flex flex-col border-l border-gray03 overflow-hidden">
       <div className="h-12" />
@@ -75,9 +82,9 @@ export const NoteAside: React.FC<NoteAsideProps> = ({ uuid }) => {
       )}
 
       {!showScript && (
-        <section className='flex flex-col'>
+        <section className="flex flex-col">
           <div>socket test용 채팅 구현</div>
-          <ChatRoom uuid={uuid} />
+          <ChatRoom uuid={uuid as string} />
         </section>
       )}
     </aside>
