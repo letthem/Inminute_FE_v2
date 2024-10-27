@@ -1,7 +1,7 @@
 import { NoteTopBar } from '@/components/Note/NoteMain/NoteTopBar/NoteTopBar';
 import { NoteTitle } from '@/components/Note/NoteMain/NoteTitle/NoteTitle';
 // import { ParticipantList } from '@/components/Note/NoteMain/ParticipantList/ParticipantList';
-// import { OneLineSummary } from '@/components/Note/NoteMain/OneLineSummary/OneLineSummary';
+import { OneLineSummary } from '@/components/Note/NoteMain/OneLineSummary/OneLineSummary';
 // import { SummaryBySpeakerList } from '@/components/Note/NoteMain/SummaryBySpeakerList/SummaryBySpeakerList';
 // import { ToDoList } from '@/components/Note/NoteMain/ToDoList/ToDoList';
 import { useState } from 'react';
@@ -26,9 +26,9 @@ export const NoteMain: React.FC<NoteMainProps> = ({ noteData }) => {
       <div className="overflow-y-auto scrollbar-hide">
         {showContent && (
           <>
-            {/* <ParticipantList noteData={noteData} />
+            {/* <ParticipantList noteData={noteData} /> */}
             <OneLineSummary noteData={noteData} />
-            <SummaryBySpeakerList noteData={noteData} />
+            {/* <SummaryBySpeakerList noteData={noteData} />
             <ToDoList noteData={noteData} /> */}
           </>
         )}
