@@ -13,6 +13,7 @@ const transformNoteData = (note: NoteResponse) => {
   const formattedDate = `${date.getFullYear().toString().slice(-2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
 
   return {
+    uuid: note.uuid,
     date: formattedDate,
     title: note.name,
     summary: note.summary || '아직 한 줄 요약이 없어요!',

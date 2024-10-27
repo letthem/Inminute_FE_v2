@@ -3,13 +3,14 @@ import calendar from '@/assets/webps/Main/calendar.webp';
 import { useNavigate } from 'react-router-dom';
 
 interface CardItemProps {
+  uuid: string;
   date: string;
   title: string;
   summary: string;
   folder: string;
 }
 
-export const CardItem = ({ date, title, summary }: CardItemProps) => {
+export const CardItem = ({ uuid, date, title, summary }: CardItemProps) => {
   const [isBottomOverlayVisible, setIsBottomOverlayVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -74,7 +75,7 @@ export const CardItem = ({ date, title, summary }: CardItemProps) => {
       className="max-w-[408px] min-w-[308px] h-[187px] border border-gray03 hover:border-mainBlack transition-all duration-100 ease-in-out rounded-[20px] bg-white flex font-nanum leading-[22px] flex-col cursor-pointer active:scale-95"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onClick={() => nav('/note/:id')}
+      onClick={() => nav(`/note/${uuid}`)}
     >
       <div className="w-[75.6px] h-[23px] mt-5 ml-[23px] flex items-center bg-main06 rounded-[14.6px]">
         <img src={calendar} alt="calendar" className="w-[11px] h-[11px] mr-[3.6px] ml-[10px]" />

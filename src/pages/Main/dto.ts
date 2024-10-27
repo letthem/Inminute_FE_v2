@@ -1,4 +1,5 @@
 export interface CardData {
+  uuid: string;
   date: string;
   title: string;
   createdAt: string;
@@ -8,6 +9,7 @@ export interface CardData {
 
 export interface NoteResponse {
   id: number;
+  uuid: string;
   name: string;
   createdAt: string;
   summary: string | null;
