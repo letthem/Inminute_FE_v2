@@ -28,6 +28,48 @@
   .scrollbar-mid-custom::-webkit-scrollbar-track {
     background: transparent; /* 스크롤 트랙 배경을 투명하게 설정 */
   }
+
+  .text-fade-in {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  }
+  
+  .text-fade-out {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  }
+
+  .fade-in {
+    animation: fadeIn 0.5s forwards;
+  }
+
+  .fade-out {
+    animation: fadeOut 0.5s forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px); /* 아래에서 올라오는 효과 */
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-20px); /* 위로 사라지는 효과 */
+    }
+  }
 }
 
 html,

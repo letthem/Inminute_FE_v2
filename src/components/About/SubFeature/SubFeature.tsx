@@ -1,6 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import AOS from 'aos';
 import zoom from '@/assets/webps/About/zoom.webp';
+import webex from '@/assets/webps/About/webex.webp';
+import googleMeet from '@/assets/webps/About/googleMeet.webp';
+import microsoftTeams from '@/assets/webps/About/microsoftTeams.webp';
 import calendar from '@/assets/webps/About/calendar.webp';
 import link from '@/assets/svgs/About/link.svg';
 import plane from '@/assets/webps/About/plane.webp';
@@ -9,7 +12,54 @@ import helix from '@/assets/webps/About/helix.webp';
 import spheres from '@/assets/webps/About/spheres.webp';
 import 'aos/dist/aos.css';
 
+const platforms = [
+  {
+    logo: zoom,
+    name: 'ZOOM',
+    color: 'text-[#0B5CFF]',
+    className: 'w-[285px] h-[74px] mt-[110px] mx-auto mb-[98px]',
+  },
+  {
+    logo: webex,
+    name: 'WEBEX',
+    color: 'text-[#22CDE4]',
+    className: 'w-[364px] h-[138px] mt-[77px] ml-1 mb-[67px]',
+  },
+  {
+    logo: googleMeet,
+    name: 'MEET',
+    color: 'text-[#4CBA6E]',
+    className: 'w-[360px] h-[70px] mt-[114px] mx-auto mb-[98px]',
+  },
+  {
+    logo: microsoftTeams,
+    name: 'TEAMS',
+    color: 'text-[#6B73DE]',
+    className: 'w-[366px] h-[89px] mt-[104px] ml-[10px] mb-[89px]',
+  },
+];
+
 export const SubFeature = () => {
+  const [currentPlatformIndex, setCurrentPlatformIndex] = useState(0);
+  const [fadeClass, setFadeClass] = useState('fade-in');
+  const [textFadeClass, setTextFadeClass] = useState('text-fade-in');
+  const changePlatform = () => {
+    setFadeClass('fade-out'); // 페이드 아웃 시작
+    setTextFadeClass('text-fade-out'); // 텍스트 페이드 아웃 시작
+
+    setTimeout(() => {
+      setCurrentPlatformIndex((prevIndex) => (prevIndex + 1) % platforms.length);
+      setFadeClass('fade-in'); // 페이드 인 시작
+      setTextFadeClass('text-fade-in'); // 텍스트 페이드 인 시작
+    }, 300); // 페이드 아웃 시간이 지난 후에 실행
+  };
+
+  // 플랫폼 변경
+  useEffect(() => {
+    const interval = setInterval(changePlatform, 3000); // 3초마다 변경
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 클리어
+  }, []);
+
   useEffect(() => {
     AOS.init({
       duration: 700,
@@ -68,16 +118,28 @@ export const SubFeature = () => {
                 </div>
               </div>
             </div>
+
             <div
               data-aos="fade-up"
               data-aos-delay="200"
               className="w-[400px] h-[440px] bg-white rounded-[20px] shadow-subFeature z-10"
             >
-              <img src={zoom} alt="zoom logo" className="w-[285px] h-[74px] mt-[110px] mx-auto" />
-              <div className="ml-[42px] mt-[98px]">
-                <p className="text-mainBlack font-[800] leading-[170%] text-[32px]">ZOOM과 연동</p>
+              <div className={`transition-opacity duration-300 ${fadeClass}`}>
+                <img
+                  src={platforms[currentPlatformIndex].logo}
+                  alt={`${platforms[currentPlatformIndex].name} logo`}
+                  className={`${platforms[currentPlatformIndex].className}`}
+                />
+              </div>
+              <div className="ml-[42px]">
+                <p className="text-mainBlack font-[800] leading-[170%] text-[32px]">
+                  with{' '}
+                  <span className={`${platforms[currentPlatformIndex].color} ${textFadeClass}`}>
+                    {platforms[currentPlatformIndex].name}
+                  </span>
+                </p>
                 <div className="text-gray05 text-[16px] font-[400] leading-[170%] mt-3">
-                  <p>zoom과 함께 더욱 편하게</p>
+                  <p>회의 서비스와 함께 더욱 편하게</p>
                   <p>비대면 회의를 진행하세요.</p>
                 </div>
               </div>
