@@ -1,5 +1,8 @@
 import { TextItem } from '@/components/About/MainFeature/TextItem/TextItem';
-import demo1 from '@/assets/svgs/About/demo1.svg';
+import mainFeature1 from '@/assets/lotties/mainFeature1.json';
+import mainFeature2 from '@/assets/lotties/mainFeature2.json';
+import Lottie from 'lottie-react';
+import { useEffect, useState } from 'react';
 
 const textItems = [
   {
@@ -24,20 +27,55 @@ const textItems = [
   },
 ];
 
+const animations = [mainFeature1, mainFeature2];
+
 export const MainFeature = () => {
+  const [currentAnimationIndex, setCurrentAnimationIndex] = useState(0);
+  const [animationStyles, setAnimationStyles] = useState({
+    width: '1000px',
+    marginLeft: '20px',
+  });
+  const [fadeClass, setFadeClass] = useState('fade-in');
+
+  const handleScroll = () => {
+    const scrollY = window.scrollY; // 현재 스크롤 위치
+
+    // Lottie 애니메이션 및 스타일 변경 조건
+    const index = Math.min(Math.floor(scrollY / 1200), animations.length - 1);
+    if (index !== currentAnimationIndex) {
+      setFadeClass('fade-out');
+      setTimeout(() => {
+        setCurrentAnimationIndex(index);
+        setAnimationStyles({
+          width: index === 0 ? '1000px' : '1100px',
+          marginLeft: index === 0 ? '80px' : '40px',
+        });
+        setFadeClass('fade-in');
+      }, 300);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [currentAnimationIndex]);
+
   return (
     <article className="flex flex-col bg-sub2Black">
       <div className="flex">
         <div>
-          <div className="sticky top-[23%] transform translate-y-[0%]">
-            <img
-              src={demo1}
-              alt="demo animation"
-              className="max-w-[850px] max-h-[451px] ml-[149px]"
-            />
+          <div className="sticky top-[20%] transform translate-y-[0%]">
+            <div
+              style={{ width: animationStyles.width, marginLeft: animationStyles.marginLeft }}
+              className={`transition-opacity duration-300 ${fadeClass}`}
+            >
+              <Lottie animationData={animations[currentAnimationIndex]} />
+            </div>
           </div>
         </div>
-        <section className="ml-[188.5px] h-auto">
+        <section className="mx-auto w-[383px] h-auto">
           {textItems.map((textItem, index) => (
             <TextItem
               key={index}
