@@ -1,8 +1,10 @@
+import { useEffect, useState } from 'react';
+import Lottie from 'lottie-react';
 import { TextItem } from '@/components/About/MainFeature/TextItem/TextItem';
 import mainFeature1 from '@/assets/lotties/mainFeature1.json';
 import mainFeature2 from '@/assets/lotties/mainFeature2.json';
-import Lottie from 'lottie-react';
-import { useEffect, useState } from 'react';
+import mainFeature3 from '@/assets/lotties/mainFeature3.json';
+import mainFeature4 from '@/assets/lotties/mainFeature4.json';
 
 const textItems = [
   {
@@ -27,7 +29,7 @@ const textItems = [
   },
 ];
 
-const animations = [mainFeature1, mainFeature2];
+const animations = [mainFeature1, mainFeature2, mainFeature3, mainFeature4];
 
 export const MainFeature = () => {
   const [currentAnimationIndex, setCurrentAnimationIndex] = useState(0);
@@ -40,15 +42,35 @@ export const MainFeature = () => {
   const handleScroll = () => {
     const scrollY = window.scrollY; // 현재 스크롤 위치
 
-    // Lottie 애니메이션 및 스타일 변경 조건
-    const index = Math.min(Math.floor(scrollY / 1200), animations.length - 1);
+    let index = 0;
+    let width = '1000px';
+    let marginLeft = '40px';
+
+    if (scrollY < 1600) {
+      index = 0;
+      width = '1000px';
+      marginLeft = '74px';
+    } else if (scrollY >= 1600 && scrollY < 2750) {
+      index = 1;
+      width = '1070px';
+      marginLeft = '39px';
+    } else if (scrollY >= 2750 && scrollY < 4000) {
+      index = 2;
+      width = '1000px';
+      marginLeft = '74px';
+    } else if (scrollY >= 4000) {
+      index = 3;
+      width = '1060px';
+      marginLeft = '74px';
+    }
+
     if (index !== currentAnimationIndex) {
       setFadeClass('fade-out');
       setTimeout(() => {
         setCurrentAnimationIndex(index);
         setAnimationStyles({
-          width: index === 0 ? '1000px' : '1100px',
-          marginLeft: index === 0 ? '80px' : '40px',
+          width: width,
+          marginLeft: marginLeft,
         });
         setFadeClass('fade-in');
       }, 300);
@@ -64,9 +86,9 @@ export const MainFeature = () => {
 
   return (
     <article className="flex flex-col bg-sub2Black">
-      <div className="flex">
+      <div className="flex justify-between">
         <div>
-          <div className="sticky top-[20%] transform translate-y-[0%]">
+          <div className="sticky top-[17%] transform translate-y-[0%]">
             <div
               style={{ width: animationStyles.width, marginLeft: animationStyles.marginLeft }}
               className={`transition-opacity duration-300 ${fadeClass}`}
@@ -75,7 +97,7 @@ export const MainFeature = () => {
             </div>
           </div>
         </div>
-        <section className="mx-auto w-[383px] h-auto">
+        <section className="mr-[110px] w-[383px] h-auto mt-[400px]">
           {textItems.map((textItem, index) => (
             <TextItem
               key={index}

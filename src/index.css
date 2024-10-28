@@ -29,7 +29,7 @@
     background: transparent; /* 스크롤 트랙 배경을 투명하게 설정 */
   }
 
-  .fade-in {
+  /* .fade-in {
     opacity: 1;
     transition: opacity 0.3s ease-in-out;
   }
@@ -37,6 +37,35 @@
   .fade-out {
     opacity: 0.5;
     transition: opacity 0.3s ease-in-out;
+  } */
+  .fade-in {
+    animation: fadeIn 0.5s forwards;
+  }
+
+  .fade-out {
+    animation: fadeOut 0.5s forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px); /* 아래에서 올라오는 효과 */
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-20px); /* 위로 사라지는 효과 */
+    }
   }
 }
 
