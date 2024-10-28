@@ -41,24 +41,24 @@ export const Cards = () => {
   const getBgColor = (i: number) => bgColors[i % bgColors.length];
 
   return (
-    <div className="relative h-screen flex items-center justify-center mt-[201px] mb-[91px]">
+    <div className="relative h-screen flex items-center justify-center mt-[201px] mb-[50px]">
       <div
-        className="w-[764px] h-[512px] absolute top-0 rounded-[36px]"
+        className="w-[688px] h-[460px] absolute top-0 rounded-[36px]"
         style={{ backgroundColor: getBgColor(index) }}
       >
         <img
           src={loupe}
           alt="loupe"
-          className="w-[282px] h-[281px] absolute z-20 top-[-128px] left-[-325px]"
+          className="w-[270px] h-[269px] absolute z-20 top-[-118px] left-[-303px]"
         />
         <img
           src={bulb}
           alt="bulb"
-          className="w-[422px] h-[422.45px] absolute z-20 left-[641px] top-[442px]"
+          className="w-[421.7px] h-[421.3px] absolute z-20 left-[552.6px] top-[382px]"
         />
       </div>
       <motion.div
-        className="w-[804px] h-[512px] absolute top-[42px] rounded-[36px]"
+        className="w-[724px] h-[460px] absolute top-[38px] rounded-[36px]"
         style={{ backgroundColor: getBgColor(index + 1), scale }} // 드래그에 따른 scale 적용
         drag="y" // 드래그 방향 설정
         dragConstraints={{ top: 0, bottom: 0 }} // 드래그 제한
@@ -80,10 +80,10 @@ export const Cards = () => {
             }}
             dragConstraints={{ top: 0, bottom: 0 }}
             onDragEnd={handleDragEnd}
-            className="absolute flex flex-col justify-between top-[84px] w-[844px] h-[512px] bg-mainBlack text-white rounded-[36px] px-[90px] shadow-lg"
+            className="absolute flex flex-col justify-between top-[76px] w-[760px] h-[460px] bg-mainBlack text-white rounded-[36px] px-[80px] shadow-lg"
           >
-            <h2 className="text-[31px] font-[700] leading-[170%] mt-[62px]">{card.question}</h2>
-            <p className="text-[19px] font-[500] leading-[240%] mb-[60px]">{card.answer}</p>
+            <h2 className="text-[28px] font-[700] leading-[170%] mt-[56px]">{card.question}</h2>
+            <p className="text-[17px] font-[500] leading-[240%] mb-[56px]">{card.answer}</p>
           </motion.div>
         );
       })}

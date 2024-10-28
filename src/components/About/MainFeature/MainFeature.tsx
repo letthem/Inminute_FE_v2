@@ -1,5 +1,11 @@
+import { useEffect, useState } from 'react';
+import Lottie from 'lottie-react';
 import { TextItem } from '@/components/About/MainFeature/TextItem/TextItem';
-import demo1 from '@/assets/svgs/About/demo1.svg';
+import mainFeature0 from '@/assets/lotties/mainFeature0.json';
+import mainFeature1 from '@/assets/lotties/mainFeature1.json';
+import mainFeature2 from '@/assets/lotties/mainFeature2.json';
+import mainFeature3 from '@/assets/lotties/mainFeature3.json';
+import mainFeature4 from '@/assets/lotties/mainFeature4.json';
 
 const textItems = [
   {
@@ -24,20 +30,79 @@ const textItems = [
   },
 ];
 
+const animations = [mainFeature0, mainFeature1, mainFeature2, mainFeature3, mainFeature4];
+
 export const MainFeature = () => {
+  const [currentAnimationIndex, setCurrentAnimationIndex] = useState(0);
+  const [animationStyles, setAnimationStyles] = useState({
+    width: '1000px',
+    marginLeft: '74px',
+  });
+  const [fadeClass, setFadeClass] = useState('fade-in');
+
+  const handleScroll = () => {
+    const scrollY = window.scrollY; // 현재 스크롤 위치
+
+    let index = 0;
+    let width = '1000px';
+    let marginLeft = '74px';
+
+    if (scrollY < 500) {
+      index = 0;
+      width = '1000px';
+      marginLeft = '74px';
+    } else if (scrollY >= 500 && scrollY < 1600) {
+      index = 1;
+      width = '1000px';
+      marginLeft = '74px';
+    } else if (scrollY >= 1600 && scrollY < 2750) {
+      index = 2;
+      width = '1070px';
+      marginLeft = '39px';
+    } else if (scrollY >= 2750 && scrollY < 4000) {
+      index = 3;
+      width = '1000px';
+      marginLeft = '74px';
+    } else if (scrollY >= 4000) {
+      index = 4;
+      width = '1060px';
+      marginLeft = '74px';
+    }
+
+    if (index !== currentAnimationIndex) {
+      setFadeClass('fade-out');
+      setTimeout(() => {
+        setCurrentAnimationIndex(index);
+        setAnimationStyles({
+          width: width,
+          marginLeft: marginLeft,
+        });
+        setFadeClass('fade-in');
+      }, 300);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [currentAnimationIndex]);
+
   return (
     <article className="flex flex-col bg-sub2Black">
-      <div className="flex">
+      <div className="flex justify-between">
         <div>
-          <div className="sticky top-[23%] transform translate-y-[0%]">
-            <img
-              src={demo1}
-              alt="demo animation"
-              className="max-w-[850px] max-h-[451px] ml-[149px]"
-            />
+          <div className="sticky top-[17%] transform translate-y-[0%]">
+            <div
+              style={{ width: animationStyles.width, marginLeft: animationStyles.marginLeft }}
+              className={`transition-opacity duration-300 ${fadeClass}`}
+            >
+              <Lottie animationData={animations[currentAnimationIndex]} />
+            </div>
           </div>
         </div>
-        <section className="ml-[188.5px] h-auto">
+        <section className="mr-[110px] w-[383px] h-auto mt-[400px]">
           {textItems.map((textItem, index) => (
             <TextItem
               key={index}
