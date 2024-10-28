@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import zoom from '@/assets/webps/Note/zoom.webp';
 import webex from '@/assets/webps/Note/webex.webp';
 import googleMeet from '@/assets/webps/Note/googleMeet.webp';
@@ -8,6 +9,30 @@ interface PlatformModalProps {
 }
 
 export const PlatformModal: React.FC<PlatformModalProps> = ({ onClose }) => {
+  const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null); // 선택된 플랫폼
+
+  const platforms = [
+    { src: zoom, alt: 'zoom', label: 'zoom', link: 'https://zoom.us/signin#/login' },
+    {
+      src: webex,
+      alt: 'webex',
+      label: 'webex',
+      link: 'https://signin.webex.com/signin?surl=https%3A%2F%2Fsignin.webex.com%2Fcollabs%2Fauth%3F',
+    },
+    {
+      src: googleMeet,
+      alt: 'google meet',
+      label: 'google meet',
+      link: 'https://meet.google.com/landing',
+    },
+    {
+      src: microsoftTeams,
+      alt: 'microsoft teams',
+      label: 'microsoft teams',
+      link: 'https://teams.microsoft.com/v2/',
+    },
+  ];
+
   // 모달 배경을 클릭하면 닫힘
   const handleBackgroundClick = () => {
     onClose();
@@ -18,12 +43,21 @@ export const PlatformModal: React.FC<PlatformModalProps> = ({ onClose }) => {
     e.stopPropagation();
   };
 
-  const platforms = [
-    { src: zoom, alt: 'zoom', label: 'zoom' },
-    { src: webex, alt: 'webex', label: 'webex' },
-    { src: googleMeet, alt: 'google meet', label: 'google meet' },
-    { src: microsoftTeams, alt: 'microsoft teams', label: 'microsoft teams' },
-  ];
+  // 플랫폼 선택 함수
+  const handlePlatformSelect = (platform: string) => {
+    setSelectedPlatform(platform); // 선택된 플랫폼 상태 업데이트
+  };
+
+  // 확인 버튼 클릭 함수
+  const handleConfirm = () => {
+    if (selectedPlatform) {
+      const platform = platforms.find((p) => p.label === selectedPlatform);
+      if (platform) {
+        window.open(platform.link, '_blank'); // 선택한 플랫폼의 링크를 새 창으로 열기
+        onClose();
+      }
+    }
+  };
 
   return (
     <div
@@ -48,7 +82,13 @@ export const PlatformModal: React.FC<PlatformModalProps> = ({ onClose }) => {
               key={index}
               className="w-[140px] h-[150px] rounded-[20px] flex flex-col justify-center items-center cursor-pointer
               hover:bg-gray02"
-              style={{ boxShadow: '0 0 0 1px #ECECEC inset' }}
+              onClick={() => handlePlatformSelect(platform.label)} // 플랫폼 선택
+              style={{
+                boxShadow:
+                  selectedPlatform === platform.label
+                    ? '0 0 0 1px #2B2B2B inset'
+                    : '0 0 0 1px #ECECEC inset',
+              }}
             >
               <img className="w-[72px] h-[72px] mx-auto" src={platform.src} alt={platform.alt} />
               <span className="mt-4 text-[12px] font-[600] leading-[22px] text-mainBlack">
@@ -57,7 +97,10 @@ export const PlatformModal: React.FC<PlatformModalProps> = ({ onClose }) => {
             </li>
           ))}
         </ul>
-        <div className="mt-[38px] mx-auto w-[59px] h-[46px] bg-gray03 rounded-[4px] flex justify-center items-center">
+        <div
+          onClick={handleConfirm}
+          className={`mt-[38px] mx-auto w-[59px] h-[46px] ${selectedPlatform ? 'bg-mainBlack cursor-pointer' : 'bg-gray03 cursor-default'} rounded-[4px] flex justify-center items-center`}
+        >
           <span className="text-white text-[14px] font-[500] leading-[22px]">확인</span>
         </div>
       </div>
