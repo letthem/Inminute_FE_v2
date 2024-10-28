@@ -11,7 +11,10 @@ interface NewNoteModalProps {
 }
 
 export const NewNoteModal: React.FC<NewNoteModalProps> = ({ onClose }) => {
-  const [selectedFolderOption, setSelectedFolderOption] = useState('없음');
+  const [selectedFolder, setSelectedFolder] = useState<{ id: number | null; name: string }>({
+    id: null,
+    name: '없음',
+  }); // 수정된 상태
   const [noteTitle, setNoteTitle] = useState(''); // 회의 제목 상태
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태 관리
   const [folders, setFolders] = useState<Folder[]>([]);
@@ -27,8 +30,9 @@ export const NewNoteModal: React.FC<NewNoteModalProps> = ({ onClose }) => {
   };
 
   // 드롭다운 옵션 선택 처리 함수
-  const handleOptionSelect = (option: string) => {
-    setSelectedFolderOption(option); // 옵션 선택 후 상태 업데이트
+  const handleOptionSelect = (option: { id: number | null; name: string }) => {
+    console.log('Selected Folder:', option); // 선택된 폴더 로그 출력
+    setSelectedFolder(option);
     setIsDropdownOpen(false); // 드롭다운 닫기
   };
 
@@ -42,19 +46,11 @@ export const NewNoteModal: React.FC<NewNoteModalProps> = ({ onClose }) => {
 
   // 새 노트 만들기
   const handleSubmit = async () => {
-    if (!noteTitle.trim()) return; // 제목이 없을 경우 무시
+    if (!noteTitle.trim() || selectedFolder.id === null) return; // 제목이 없거나 폴더가 선택되지 않았을 경우 무시
 
-    try {
-      const folderId =
-        selectedFolderOption === '없음'
-          ? null
-          : folders.find((folder) => folder.name === selectedFolderOption)?.id || null;
-      const data = await addNote(noteTitle.trim(), folderId); // addNote API 호출
-      const noteUUID = data.result.uuid; // 서버 응답에서 UUID 가져오기
-      window.location.href = `/note/${noteUUID}`; // 해당 노트 페이지로 리다이렉트
-    } catch (error) {
-      console.error('노트 생성 중 에러 발생:', error);
-    }
+    const data = await addNote(noteTitle.trim(), selectedFolder.id); // addNote API 호출
+    const noteUUID = data.result.uuid; // 서버 응답에서 UUID 가져오기
+    window.location.href = `/note/${noteUUID}`; // 해당 노트 페이지로 리다이렉트
   };
 
   const fetchFolders = async () => {
@@ -64,7 +60,7 @@ export const NewNoteModal: React.FC<NewNoteModalProps> = ({ onClose }) => {
 
   useEffect(() => {
     fetchFolders();
-  }, []);
+  }, [selectedFolder]);
 
   return (
     <div
@@ -100,8 +96,11 @@ export const NewNoteModal: React.FC<NewNoteModalProps> = ({ onClose }) => {
           </p>
         </div>
         <FolderDropDown
-          options={['없음', ...folders.map((folder) => folder.name)]}
-          selectedOption={selectedFolderOption}
+          options={[
+            { id: null, name: '없음' },
+            ...folders.map((folder) => ({ id: folder.id, name: folder.name })),
+          ]}
+          selectedOption={selectedFolder} // 올바른 선택된 옵션 전달
           onOptionSelect={handleOptionSelect}
           isOpen={isDropdownOpen}
           setIsOpen={setIsDropdownOpen}
