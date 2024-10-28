@@ -19,3 +19,13 @@ export const getNoteAll = async () => {
     throw error;
   }
 };
+
+export const getNoteAllByFolder = async (folderId: number) => {
+  try {
+    const response = await instance.get(`/notes${folderId ? `?folderId=${folderId}` : ''}`);
+    return response.data;
+  } catch (error) {
+    console.error('폴더별 노트 로드 중 오류 발생:', error);
+    throw error;
+  }
+};

@@ -1,4 +1,5 @@
 export interface CardData {
+  id: number;
   uuid: string;
   date: string;
   title: string;

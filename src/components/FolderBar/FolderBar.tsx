@@ -8,19 +8,20 @@ import { addFolder } from '@/apis/Folder/addFolder';
 import { getFolder } from '@/apis/Folder/getFolder';
 import { Folder, Note } from '@/components/FolderBar/dto';
 
-interface FolderBarProps {
-  onFolderSelect?: (folder: string) => void;
-}
 
-export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
+export const FolderBar: React.FC = () => {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [unassignedNotes, setUnassignedNotes] = useState<Note[]>([]);
   const [newFolderName, setNewFolderName] = useState('');
   const [isAddingFolder, setIsAddingFolder] = useState(false);
   const [expandedFolders, setExpandedFolders] = useState<boolean[]>(folders.map(() => false));
   const [hoveredFolderName, setHoveredFolderName] = useState<number | null>(null); // 폴더 이름 호버 상태 관리
-  const [selectedFolderName, setSelectedFolderName] = useState<number | null>(null); // 클릭 상태 관리
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [activeFolderIndex, setActiveFolderIndex] = useState<number | null>(null); // 활성화된 폴더 인덱스 상태
+
+  const handleFolderClick = (index: number) => {
+    setActiveFolderIndex((prevIndex) => (prevIndex === index ? null : index)); // 클릭한 폴더 인덱스 활성화
+  };
 
   const fetchData = async () => {
     const data = await getFolder(); // 폴더와 노트 데이터 가져오기
@@ -129,16 +130,15 @@ export const FolderBar: React.FC<FolderBarProps> = ({ onFolderSelect }) => {
               folderItem={folderItem}
               expanded={expandedFolders[index]}
               hoveredFolderName={hoveredFolderName}
-              selectedFolderName={selectedFolderName}
               toggleFolder={toggleFolder}
               setHoveredFolderName={setHoveredFolderName}
-              setSelectedFolderName={setSelectedFolderName}
-              onFolderSelect={onFolderSelect}
               onRenameFolder={handleRenameFolder}
               onDeleteFolder={handleDeleteFolder}
               onDragStart={handleDragStart}
               onDrop={handleDrop}
               onDragOver={handleDragOver}
+              isActive={activeFolderIndex === index} // 현재 활성화된 폴더 인덱스와 비교
+              setActiveFolder={() => handleFolderClick(index)} // 클릭 핸들러 전달
             />
           ))}
           <UnassignedNotes notes={unassignedNotes} />

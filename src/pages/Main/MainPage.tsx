@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { getNoteAll } from '@/apis/Note/getNote';
+import { getNoteAll, getNoteAllByFolder } from '@/apis/Note/getNote';
 import { CardData, NoteResponse } from '@/pages/Main/dto';
 import { MainTopBar } from '@/components/Main/MainTopBar/MainTopBar';
 import { NavBar } from '@/components/NavBar/NavBar';
 import { CardList } from '@/components/Main/CardList/CardList';
 import noteMint from '@/assets/webps/Main/noteMint.webp';
 import searchMint from '@/assets/webps/Main/searchMint.webp';
+import { useLocation } from 'react-router-dom';
 
 const transformNoteData = (note: NoteResponse) => {
   const date = new Date(note.createdAt);
@@ -21,14 +22,27 @@ const transformNoteData = (note: NoteResponse) => {
   };
 };
 
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
+
 export const MainPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOption, setSortOption] = useState('최신순');
-  const [selectedFolder] = useState<string | null>(null);
   const [cardData, setCardData] = useState<CardData[]>([]); // 카드 데이터 상태 추가
+  const query = useQuery();
+  const folderId = query.get('folderId');
 
   const fetchNotes = async () => {
-    const data = await getNoteAll();
+    let data;
+    if (folderId) {
+      // 폴더 ID가 있을 경우 해당 폴더의 노트를 가져옵니다.
+      data = await getNoteAllByFolder(Number(folderId));
+    } else {
+      // 폴더 ID가 없을 경우 모든 노트를 가져옵니다.
+      data = await getNoteAll();
+    }
+
     const notes = data.result.notes;
     const transformedNotes = notes.map(transformNoteData); // 각 노트를 변환
     setCardData(transformedNotes); // 상태에 변환된 데이터 설정
@@ -38,15 +52,8 @@ export const MainPage = () => {
     return new Date(dateString);
   };
 
-  // 폴더 선택, 검색어, SortDropDown에 맞는 카드 필터링
+  // 검색어, SortDropDown에 맞는 카드 필터링
   const filteredCards = cardData
-    .filter((card) => {
-      // 선택된 폴더가 있으면 해당 폴더의 카드만, 없으면 모든 카드
-      if (selectedFolder) {
-        return card.folder === selectedFolder;
-      }
-      return true;
-    })
     .filter((card) => card.title.toLowerCase().includes(searchQuery.toLowerCase()))
     .sort((a, b) => {
       if (sortOption === '최신순') {
@@ -61,7 +68,7 @@ export const MainPage = () => {
 
   useEffect(() => {
     fetchNotes(); // 컴포넌트 마운트 시 데이터 가져오기
-  }, []);
+  }, [folderId]);
 
   return (
     <>

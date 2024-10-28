@@ -8,22 +8,22 @@ import up from '@/assets/webps/FolderBar/upGray.webp';
 import kebabWhite from '@/assets/webps/FolderBar/kebabWhite.webp';
 import dragGray from '@/assets/webps/FolderBar/dragGray.webp';
 import { Folder } from '@/components/FolderBar/dto';
+import { useNavigate } from 'react-router-dom';
 
 interface FolderItemProps {
   index: number;
   folderItem: Folder;
   expanded: boolean;
   hoveredFolderName: number | null;
-  selectedFolderName: number | null;
   toggleFolder: (index: number) => void;
   setHoveredFolderName: (index: number | null) => void;
-  setSelectedFolderName: (index: number) => void;
-  onFolderSelect?: (folder: string) => void;
   onRenameFolder: (index: number, newName: string) => void;
   onDeleteFolder: (index: number) => void;
   onDragStart: (index: number) => void;
   onDrop: (index: number) => void;
   onDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
+  isActive: boolean;
+  setActiveFolder: (index: number | null) => void;
 }
 
 export const FolderItem: React.FC<FolderItemProps> = ({
@@ -31,24 +31,25 @@ export const FolderItem: React.FC<FolderItemProps> = ({
   folderItem,
   expanded,
   hoveredFolderName,
-  selectedFolderName,
   toggleFolder,
   setHoveredFolderName,
-  setSelectedFolderName,
-  onFolderSelect,
   onRenameFolder,
   onDeleteFolder,
   onDragStart,
   onDrop,
   onDragOver,
+  isActive,
+  setActiveFolder,
 }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false); // 메뉴 표시 여부 상태 관리
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 }); // 메뉴 위치 상태 관리
   const [isEditing, setIsEditing] = useState(false); // 이름 변경 모드 상태 관리
   const [folderName, setFolderName] = useState(folderItem.name); // 현재 폴더 이름 상태 관리
+  // const [isActive, setIsActive] = useState(false); // 클릭 상태 관리
   const menuRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null); // 인풋 필드에 접근하기 위한 ref
   const folderRef = useRef<HTMLDivElement | null>(null);
+  const nav = useNavigate();
 
   // 드래그 영역
   const handleDragStart = (e: React.DragEvent) => {
@@ -145,7 +146,7 @@ export const FolderItem: React.FC<FolderItemProps> = ({
           )}
           <img
             className={`w-5 h-5 ${isEditing ? 'mx-2' : 'group-hover:ml-[6px] ml-[22px] mr-2'}`}
-            src={hoveredFolderName === index || selectedFolderName === index ? folderMint : folder}
+            src={hoveredFolderName === index || isActive ? folderMint : folder}
             alt="folder"
           />
           {isEditing ? (
@@ -163,15 +164,11 @@ export const FolderItem: React.FC<FolderItemProps> = ({
               onMouseEnter={() => setHoveredFolderName(index)}
               onMouseLeave={() => setHoveredFolderName(null)}
               className={`mr-[10px] font-bold text-[14px] cursor-pointer active:scale-95 ${
-                hoveredFolderName === index || selectedFolderName === index
-                  ? 'text-main04'
-                  : 'text-white'
+                hoveredFolderName === index || isActive ? 'text-main04' : 'text-white'
               }`}
               onClick={() => {
-                setSelectedFolderName(index);
-                if (onFolderSelect) {
-                  onFolderSelect(folderItem.name);
-                }
+                setActiveFolder(isActive ? null : index); // 클릭 시 활성화 상태 토글
+                nav(isActive ? '/home' : `/home/?folderId=${folderItem.id}`); // 경로 설정
               }}
             >
               {folderItem.name}
