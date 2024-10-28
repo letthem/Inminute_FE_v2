@@ -1,6 +1,7 @@
 import { CardItem } from '@/components/Main/CardList/CardItem/CardItem';
 
 interface CardData {
+  uuid: string;
   date: string;
   title: string;
   summary: string;
@@ -21,6 +22,7 @@ export const CardList: React.FC<CardListProps> = ({ cards }) => {
             <CardItem
               key={index}
               date={card.date}
+              uuid={card.uuid}
               title={card.title}
               summary={card.summary}
               folder={card.folder}

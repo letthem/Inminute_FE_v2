@@ -19,7 +19,11 @@ export const NewFolderInput: React.FC<NewFolderInputProps> = ({
       className="font-[350] text-[14px] placeholder-gray07 text-white bg-transparent focus:outline-none"
       placeholder="새 폴더"
       value={newFolderName}
-      onChange={(e) => setNewFolderName(e.target.value)}
+      onChange={(e) => {
+        if (e.target.value.length <= 9) {
+          setNewFolderName(e.target.value);
+        }
+      }}
       onKeyDown={handleKeyDown}
     />
   </div>

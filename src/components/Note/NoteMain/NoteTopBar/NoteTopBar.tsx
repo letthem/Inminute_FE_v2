@@ -1,9 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import leftBlack from '@/assets/webps/Note/leftBlack.webp';
 import kebab from '@/assets/webps/Note/kebab.webp';
+import { NoteDetail } from '@/pages/Note/dto';
 
-export const NoteTopBar = () => {
+interface NoteTopBarProps {
+  noteData: NoteDetail | null;
+}
+
+export const NoteTopBar: React.FC<NoteTopBarProps> = () => {
   const nav = useNavigate();
+
   return (
     <section className="flex justify-between mt-10">
       <img

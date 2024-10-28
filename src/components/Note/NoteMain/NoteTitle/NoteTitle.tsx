@@ -3,8 +3,13 @@ import timeBlack from '@/assets/webps/Note/timeBlack.webp';
 import link from '@/assets/svgs/Note/link.svg';
 import mic from '@/assets/svgs/Note/mic.svg';
 import { useEffect, useState } from 'react';
+import { NoteDetail } from '@/pages/Note/dto';
 
-export const NoteTitle = () => {
+interface NoteTitleProps {
+  noteData: NoteDetail | null;
+}
+
+export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData }) => {
   const [isCopied, setIsCopied] = useState(false);
 
   // 링크 복사 함수
@@ -26,12 +31,17 @@ export const NoteTitle = () => {
     }
   }, [isCopied]);
 
+  if (!noteData) {
+    return <p>노트 정보를 불러오는 중입니다...</p>;
+  }
+
+  const date = new Date(noteData.createdAt);
+  const formattedDate = `${date.getFullYear().toString().slice(-2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
+
   return (
     <section className="flex flex-col">
       <div className="flex justify-between items-center mt-[30px]">
-        <p className="text-[26px] font-bold ml-12 mr-[120px] leading-[30px]">
-          브랜드 아이덴티티 전략 회의
-        </p>
+        <p className="text-[26px] font-bold ml-12 mr-[120px] leading-[30px]">{noteData.name}</p>
         <div className="flex text-white text-[10.5px] leading-[18px]">
           <div
             onClick={handleCopyLink}
@@ -53,7 +63,7 @@ export const NoteTitle = () => {
       <div className="flex ml-[49px] mt-[13px] items-center mb-2">
         <div className="flex items-center">
           <img src={calendarBlack} alt="calendarBlack" className="w-[14px] h-[14px]" />
-          <span className="h-4 ml-[6px] text-[10px] font-medium leading-4">24.05.07</span>
+          <span className="h-4 ml-[6px] text-[10px] font-medium leading-4">{formattedDate}</span>
         </div>
         <div className="ml-5 flex items-center">
           <img src={timeBlack} alt="timeBlack" className="w-[14px] h-[14px]" />
