@@ -14,6 +14,8 @@ export const NavBar = () => {
   const currentPath = location.pathname;
 
   const isAbout = currentPath === '/';
+  const isHome = currentPath.startsWith('/home');
+
   const navItems = [
     { path: '/home', label: '회의록', width: '57px' },
     { path: '/calendar', label: '캘린더', width: '57px' },
@@ -63,22 +65,33 @@ export const NavBar = () => {
           ${isAbout && 'relative bg-sub2Black'} `}
         >
           <ul className={`flex ml-9 mt-12 mb-4 ${isAbout && 'ml-[26px]'}`}>
-            {navItems.map((item) => (
-              <li
-                key={item.path}
-                className={`${isAbout && 'ml-[30px] text-gray06 hover:text-white'} ${isAbout && currentPath === item.path && 'text-white'} ml-8 flex flex-col cursor-pointer font-bold text-[20px] transition-all duration-300 transform ${
-                  currentPath === item.path ? 'text-mainBlack' : 'text-gray03 hover:text-mainBlack'
-                } hover:scale-[102%] active:scale-100`}
-                onClick={() => handleNavigation(item.path)}
-              >
-                <span>{item.label}</span>
-                {currentPath === item.path && (
-                  <div
-                    className={`mt-2 h-[2px] w-[${item.width}] bg-mainBlack ${isAbout && 'bg-white'} transition-all duration-300`}
-                  />
-                )}
-              </li>
-            ))}
+            {navItems.map((item) => {
+              const isActive = currentPath === item.path || (isHome && item.path === '/home');
+
+              const textColor =
+                isAbout && item.path === '/'
+                  ? 'text-white'
+                  : isActive
+                    ? 'text-mainBlack'
+                    : 'text-gray03 hover:text-mainBlack';
+
+              return (
+                <li
+                  key={item.path}
+                  className={`${isAbout && 'ml-[30px] text-gray06 hover:text-white'} 
+                  ${textColor}
+                  ml-8 flex flex-col cursor-pointer font-bold text-[20px] transition-all duration-300 transform`}
+                  onClick={() => handleNavigation(item.path)}
+                >
+                  <span>{item.label}</span>
+                  {isActive && (
+                    <div
+                      className={`mt-2 h-[2px] w-[${item.width}] bg-mainBlack ${isAbout && 'bg-white'} transition-all duration-300`}
+                    />
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
       </header>
