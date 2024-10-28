@@ -41,14 +41,22 @@ const platforms = [
 
 export const SubFeature = () => {
   const [currentPlatformIndex, setCurrentPlatformIndex] = useState(0);
-
+  const [fadeClass, setFadeClass] = useState('fade-in');
+  const [textFadeClass, setTextFadeClass] = useState('text-fade-in');
   const changePlatform = () => {
-    setCurrentPlatformIndex((prevIndex) => (prevIndex + 1) % platforms.length);
+    setFadeClass('fade-out'); // 페이드 아웃 시작
+    setTextFadeClass('text-fade-out'); // 텍스트 페이드 아웃 시작
+
+    setTimeout(() => {
+      setCurrentPlatformIndex((prevIndex) => (prevIndex + 1) % platforms.length);
+      setFadeClass('fade-in'); // 페이드 인 시작
+      setTextFadeClass('text-fade-in'); // 텍스트 페이드 인 시작
+    }, 300); // 페이드 아웃 시간이 지난 후에 실행
   };
 
+  // 플랫폼 변경
   useEffect(() => {
     const interval = setInterval(changePlatform, 3000); // 3초마다 변경
-
     return () => clearInterval(interval); // 컴포넌트 언마운트 시 클리어
   }, []);
 
@@ -116,15 +124,17 @@ export const SubFeature = () => {
               data-aos-delay="200"
               className="w-[400px] h-[440px] bg-white rounded-[20px] shadow-subFeature z-10"
             >
-              <img
-                src={platforms[currentPlatformIndex].logo}
-                alt={`${platforms[currentPlatformIndex].name} logo`}
-                className={`${platforms[currentPlatformIndex].className}`}
-              />
+              <div className={`transition-opacity duration-300 ${fadeClass}`}>
+                <img
+                  src={platforms[currentPlatformIndex].logo}
+                  alt={`${platforms[currentPlatformIndex].name} logo`}
+                  className={`${platforms[currentPlatformIndex].className}`}
+                />
+              </div>
               <div className="ml-[42px]">
                 <p className="text-mainBlack font-[800] leading-[170%] text-[32px]">
                   with{' '}
-                  <span className={`${platforms[currentPlatformIndex].color}`}>
+                  <span className={`${platforms[currentPlatformIndex].color} ${textFadeClass}`}>
                     {platforms[currentPlatformIndex].name}
                   </span>
                 </p>
