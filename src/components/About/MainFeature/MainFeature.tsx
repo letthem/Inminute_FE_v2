@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Lottie from 'lottie-react';
 import { TextItem } from '@/components/About/MainFeature/TextItem/TextItem';
+import mainFeature0 from '@/assets/lotties/mainFeature0.json';
 import mainFeature1 from '@/assets/lotties/mainFeature1.json';
 import mainFeature2 from '@/assets/lotties/mainFeature2.json';
 import mainFeature3 from '@/assets/lotties/mainFeature3.json';
@@ -29,13 +30,13 @@ const textItems = [
   },
 ];
 
-const animations = [mainFeature1, mainFeature2, mainFeature3, mainFeature4];
+const animations = [mainFeature0, mainFeature1, mainFeature2, mainFeature3, mainFeature4];
 
 export const MainFeature = () => {
   const [currentAnimationIndex, setCurrentAnimationIndex] = useState(0);
   const [animationStyles, setAnimationStyles] = useState({
     width: '1000px',
-    marginLeft: '20px',
+    marginLeft: '74px',
   });
   const [fadeClass, setFadeClass] = useState('fade-in');
 
@@ -44,22 +45,26 @@ export const MainFeature = () => {
 
     let index = 0;
     let width = '1000px';
-    let marginLeft = '40px';
+    let marginLeft = '74px';
 
-    if (scrollY < 1600) {
+    if (scrollY < 500) {
       index = 0;
       width = '1000px';
       marginLeft = '74px';
-    } else if (scrollY >= 1600 && scrollY < 2750) {
+    } else if (scrollY >= 500 && scrollY < 1600) {
       index = 1;
+      width = '1000px';
+      marginLeft = '74px';
+    } else if (scrollY >= 1600 && scrollY < 2750) {
+      index = 2;
       width = '1070px';
       marginLeft = '39px';
     } else if (scrollY >= 2750 && scrollY < 4000) {
-      index = 2;
+      index = 3;
       width = '1000px';
       marginLeft = '74px';
     } else if (scrollY >= 4000) {
-      index = 3;
+      index = 4;
       width = '1060px';
       marginLeft = '74px';
     }
