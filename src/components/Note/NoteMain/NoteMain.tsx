@@ -9,6 +9,7 @@ import { NoteDetail } from '@/pages/Note/dto';
 
 interface NoteMainProps {
   noteData: NoteDetail | null;
+  uuid: string;
 }
 
 export const NoteMain: React.FC<NoteMainProps> = ({ noteData }) => {

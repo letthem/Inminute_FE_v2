@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMemberStatus, useNickNameStatus } from '@/apis/Member/hooks';
 import { getNoteDetail } from '@/apis/Note/getNote';
+import { SocketProvider } from '@/context/SocketContext';
 import { NoteMain } from '@/components/Note/NoteMain/NoteMain';
 import { NoteAside } from '@/components/Note/NoteAside/NoteAside';
 import { LoginModal } from '@/components/Login/LoginModal/LoginModal';
@@ -56,14 +57,14 @@ export const NotePage = () => {
   }, [isMember, isNickName, uuid, nav]);
 
   return (
-    <>
+    <SocketProvider uuid={uuid!}>
       <section className="flex w-[calc(100vw-280px)] h-full">
-        <NoteMain noteData={noteData} />
-        {uuid && <NoteAside noteData={noteData} />}
+        <NoteMain noteData={noteData} uuid={uuid!}/>
+        <NoteAside noteData={noteData} uuid={uuid!}/>
       </section>
 
       {isLoginModalOpen && <LoginModal onClose={() => setIsLoginModalOpen(false)} />}
       {isJoinModalOpen && <JoinModal onClose={() => setIsJoinModalOpen(false)} />}
-    </>
+    </SocketProvider>
   );
 };
