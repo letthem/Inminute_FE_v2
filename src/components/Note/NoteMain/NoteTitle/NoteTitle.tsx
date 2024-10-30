@@ -18,6 +18,7 @@ interface NoteTitleProps {
 export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
   const [isPlatformModalOpen, setIsPlatformModalOpen] = useState(false);
   const [isStart, setIsStart] = useState(false); // 회의 시작 상태
+  const [isRecording, setIsRecording] = useState(false); // 녹음 상태
   const { stompClient } = useSocket(); // 소켓 클라이언트 가져오기
 
   useEffect(() => {
@@ -72,10 +73,21 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
     }
   };
 
+  // 녹음 시작 및 종료 핸들러
+  const toggleRecording = () => {
+    setIsRecording((prev) => !prev); // 녹음 상태 전환
+    // 여기에 녹음 시작/종료 로직 추가
+    if (!isRecording) {
+      // 녹음 시작 로직
+    } else {
+      // 녹음 종료 로직
+    }
+  };
+
   return (
     <>
-      <section className="flex flex-col relative">
-        {isStart && <MicButton />}
+      <section className="relative">
+        {isStart && <MicButton isRecording={isRecording} onToggleRecording={toggleRecording} />}
         <div className="flex justify-between items-center mt-[30px]">
           <p className="text-[26px] font-bold ml-12 mr-[120px] leading-[30px]">{noteData.name}</p>
           <div className="flex text-white text-[10.5px] leading-[18px]">
