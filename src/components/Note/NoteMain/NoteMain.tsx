@@ -12,7 +12,7 @@ interface NoteMainProps {
   uuid: string;
 }
 
-export const NoteMain: React.FC<NoteMainProps> = ({ noteData }) => {
+export const NoteMain: React.FC<NoteMainProps> = ({ noteData, uuid }) => {
   const [showContent] = useState(false);
 
   // 회의가 끝난 이후 handleShowContent 추후 호출 예정
@@ -23,7 +23,7 @@ export const NoteMain: React.FC<NoteMainProps> = ({ noteData }) => {
   return (
     <main className="flex flex-1 flex-col">
       <NoteTopBar noteData={noteData} />
-      <NoteTitle noteData={noteData} />
+      <NoteTitle noteData={noteData} uuid={uuid} />
       <div className="overflow-y-auto scrollbar-hide">
         {showContent && (
           <>

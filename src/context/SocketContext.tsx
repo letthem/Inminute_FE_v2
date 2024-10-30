@@ -29,8 +29,10 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children, uuid }
       webSocketFactory: () => socket,
       onConnect: () => {
         console.log('SockJS WebSocket 연결 성공');
+        setStompClient(client); // 연결 후 클라이언트 상태 설정
+
+        // uuid에 따라 구독
         client.subscribe(`/topic/public/${uuid}`, (message) => {
-          // uuid에 따라 구독
           const chatMessage = JSON.parse(message.body);
           setMessages((prev) => [...prev, chatMessage]);
         });
@@ -40,18 +42,17 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children, uuid }
       },
     });
 
-    client.activate();
-    setStompClient(client);
-
+    client.activate(); // 클라이언트 활성화
     return () => {
-      client.deactivate(); // 컴포넌트 언마운트 시 소켓 종료
+      client.deactivate(); // 언마운트 시 클라이언트 비활성화
     };
-  }, [uuid]); // uuid가 변경될 때 소켓 연결 설정
+  }, [uuid]); // uuid 변경 시 새로운 소켓 연결
 
   return (
     <SocketContext.Provider value={{ stompClient, messages }}>{children}</SocketContext.Provider>
   );
 };
+
 
 export const useSocket = () => {
   return useContext(SocketContext);
