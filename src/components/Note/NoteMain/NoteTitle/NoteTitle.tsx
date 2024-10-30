@@ -25,8 +25,10 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
 
     const handleMessageReceived = (message: Message) => {
       const chatMessage = JSON.parse(message.body);
-      if (chatMessage.content === 'meeting started') {
+      if (chatMessage.isStart === true) {
         setIsStart(true); // 회의 시작 상태 업데이트
+      } else if (chatMessage.isStart === false) {
+        setIsStart(false); // 회의 종료 상태 업데이트
       }
     };
 
@@ -44,14 +46,20 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
 
   const date = new Date(noteData.createdAt);
   const formattedDate = `${date.getFullYear().toString().slice(-2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
+  const formattedTime = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
   const currentUrl = window.location.href;
 
   // 회의 시작 또는 종료 핸들러
   const handleMeetingToggle = () => {
     if (isStart) {
       // 회의 종료 요청
-      setIsStart(false); // 회의 종료
-      // TODO: 회의 종료 소켓 요청을 보낼 수 있음
+      const stopMeeting = {
+        content: '안녕 내 사랑', // 요청 본문
+      };
+      stompClient?.publish({
+        destination: `/app/chat.stop/${uuid}`, // 종료 요청 보내기
+        body: JSON.stringify(stopMeeting),
+      });
     } else {
       // 회의 시작 요청
       const startMeeting = {
@@ -82,10 +90,14 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
             </div>
             <div
               onClick={handleMeetingToggle} // 회의 시작/종료 핸들러 추가
-              className={`flex items-center px-[12px] h-[30px] mr-[27px] bg-mainBlack rounded-[3.2px] cursor-pointer`}
+              className={`flex items-center ${isStart ? 'w-[66px]' : 'w-[88px]'} h-[30px] mr-[27px] bg-mainBlack rounded-[3.2px] cursor-pointer`}
             >
-              {!isStart && <img className="w-[15px] h-[15px] mr-[6.3px]" src={mic} alt="mic" />}
-              <span className="font-[500] w-[43px]">{isStart ? '회의 종료' : '회의 시작'}</span>
+              {!isStart && (
+                <img className="w-[15px] h-[15px] ml-[12.3px] mr-[6.3px]" src={mic} alt="mic" />
+              )}
+              <span className={`font-[500] w-[43px] ${isStart ? 'ml-[12px]' : ''}`}>
+                {isStart ? '회의 종료' : '회의 시작'}
+              </span>
             </div>
           </div>
         </div>
@@ -97,7 +109,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
           </div>
           <div className="ml-5 flex items-center">
             <img src={timeBlack} alt="timeBlack" className="w-[14px] h-[14px]" />
-            <span className="h-4 ml-[6px] text-[10px] font-medium leading-4">1:19:05</span>
+            <span className="h-4 ml-[6px] text-[10px] font-medium leading-4">{formattedTime}</span>
           </div>
         </div>
       </section>
