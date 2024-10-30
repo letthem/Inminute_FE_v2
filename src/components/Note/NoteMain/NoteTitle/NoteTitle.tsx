@@ -9,6 +9,7 @@ import CopyLink from '@/components/Note/NoteMain/NoteTitle/CopyLink/CopyLink';
 import { useSocket } from '@/context/SocketContext';
 import { Message } from '@stomp/stompjs';
 import { MicButton } from '@/components/Note/NoteMain/NoteTitle/MicButton/MicButton';
+import { useNickName } from '@/apis/Member/hooks';
 
 interface NoteTitleProps {
   noteData: NoteDetail | null;
@@ -16,6 +17,7 @@ interface NoteTitleProps {
 }
 
 export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
+  const { data: nickname, isLoading, error } = useNickName(); // 닉네임 가져오기
   const [isPlatformModalOpen, setIsPlatformModalOpen] = useState(false);
   const [isStart, setIsStart] = useState(false); // 회의 시작 상태
   const [isRecording, setIsRecording] = useState(false); // 녹음 상태
@@ -116,6 +118,35 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
         try {
           const base64String = await blobToBase64(blob);
           console.log('Base64 String:', base64String); // Base64 문자열 확인용 로그
+
+          if (isLoading) {
+            console.log('Loading nickname...');
+            return;
+          }
+
+          if (error) {
+            console.error('Error fetching nickname:', error);
+            return;
+          }
+
+          if (nickname) {
+            if (stompClient && stompClient.connected) {
+              // WebSocket을 통해 Base64 인코딩된 오디오 전송
+              const audioMessage = {
+                nickname: nickname,
+                audioCode: base64String,
+              };
+
+              stompClient.publish({
+                destination: `/app/chat.sendAudio/${uuid}`,
+                body: JSON.stringify(audioMessage),
+              });
+            } else {
+              console.error('STOMP 클라이언트가 연결되지 않았습니다.');
+            }
+          } else {
+            console.error('닉네임을 찾을 수 없습니다.');
+          }
         } catch (error) {
           console.error('Error converting Blob to Base64:', error);
         }

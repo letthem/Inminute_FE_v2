@@ -14,3 +14,10 @@ export const useNickNameStatus = () => {
     return data?.result.nickname !== null; // 닉네임이 있을 경우 true 반환, 없을 경우 false 반환
   });
 };
+
+export const useNickName = () => {
+  return useQuery('nickName', async () => {
+    const data = await getMemberInfo();
+    return data?.result.nickname; // 닉네임 반환
+  });
+};
