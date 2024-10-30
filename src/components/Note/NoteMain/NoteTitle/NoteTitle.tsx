@@ -78,23 +78,22 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
   const toggleRecording = async () => {
     if (!isRecording) {
       // 녹음 시작
-      setRecordedChunks([]);
+      const chunks: Blob[] = []; // 로컬 변수로 데이터 조각 관리
+      setRecordedChunks([]); // 상태 초기화
+
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const recorder = new MediaRecorder(stream);
 
       recorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
-          setRecordedChunks((prev) => [...prev, event.data]);
+          chunks.push(event.data); // 로컬 변수에 데이터 추가
+          console.log('Data chunk available:', event.data);
+          setRecordedChunks((prev) => [...prev, event.data]); // 상태에도 데이터 추가 (UI 업데이트용)
         }
       };
 
       recorder.onstop = async () => {
-        if (recordedChunks.length === 0) {
-          console.error('No audio data available to create a blob.');
-          return;
-        }
-
-        const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+        const blob = new Blob(chunks, { type: 'audio/webm' });
         console.log('Recorded blob:', blob); // 녹음된 데이터 확인용 로그
       };
 
@@ -104,7 +103,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
       // 녹음 종료
       mediaRecorder?.stop();
     }
-
+    console.log(recordedChunks);
     setIsRecording((prev) => !prev); // 녹음 상태 전환
   };
 
