@@ -7,8 +7,8 @@ import { NoteDetail } from '@/pages/Note/dto';
 import { PlatformModal } from '@/components/Note/NoteMain/NoteTitle/PlatformModal/PlatformModal';
 import CopyLink from '@/components/Note/NoteMain/NoteTitle/CopyLink/CopyLink';
 import { useSocket } from '@/context/SocketContext';
-import micWhite from '@/assets/webps/Note/micWhite.webp';
 import { Message } from '@stomp/stompjs';
+import { MicButton } from '@/components/Note/NoteMain/NoteTitle/MicButton/MicButton';
 
 interface NoteTitleProps {
   noteData: NoteDetail | null;
@@ -67,13 +67,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
   return (
     <>
       <section className="flex flex-col relative">
-        {isStart && (
-          <div className="absolute w-[100px] h-[84px] bg-main02 rounded-[50px] flex justify-center items-center top-[-39px] left-1/2 transform -translate-x-1/2">
-            <div className="w-[76px] h-[64px] rounded-[50px] bg-main06 flex justify-center items-center">
-              <img className="w-[32px] h-[32px]" src={micWhite} alt="mic white" />
-            </div>
-          </div>
-        )}
+        {isStart && <MicButton />}
         <div className="flex justify-between items-center mt-[30px]">
           <p className="text-[26px] font-bold ml-12 mr-[120px] leading-[30px]">{noteData.name}</p>
           <div className="flex text-white text-[10.5px] leading-[18px]">
