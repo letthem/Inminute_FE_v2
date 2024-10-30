@@ -95,6 +95,30 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
       recorder.onstop = async () => {
         const blob = new Blob(chunks, { type: 'audio/webm' });
         console.log('Recorded blob:', blob); // 녹음된 데이터 확인용 로그
+
+        // Blob을 Base64 문자열로 변환
+        const blobToBase64 = (blob: Blob): Promise<string> => {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              if (reader.result) {
+                const base64data = (reader.result as string).split(',')[1]; // Base64 문자열 추출
+                resolve(base64data);
+              } else {
+                reject('FileReader result is null');
+              }
+            };
+            reader.onerror = (error) => reject(error);
+            reader.readAsDataURL(blob); // Blob을 DataURL로 읽음 (Base64로 인코딩)
+          });
+        };
+
+        try {
+          const base64String = await blobToBase64(blob);
+          console.log('Base64 String:', base64String); // Base64 문자열 확인용 로그
+        } catch (error) {
+          console.error('Error converting Blob to Base64:', error);
+        }
       };
 
       recorder.start(1000); // 1초마다 데이터 수집
