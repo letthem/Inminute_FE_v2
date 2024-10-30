@@ -19,6 +19,8 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
   const [isPlatformModalOpen, setIsPlatformModalOpen] = useState(false);
   const [isStart, setIsStart] = useState(false); // 회의 시작 상태
   const [isRecording, setIsRecording] = useState(false); // 녹음 상태
+  const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]); // 녹음된 데이터
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null); // MediaRecorder 인스턴스
   const { stompClient } = useSocket(); // 소켓 클라이언트 가져오기
 
   useEffect(() => {
@@ -73,15 +75,37 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
     }
   };
 
-  // 녹음 시작 및 종료 핸들러
-  const toggleRecording = () => {
-    setIsRecording((prev) => !prev); // 녹음 상태 전환
-    // 여기에 녹음 시작/종료 로직 추가
+  const toggleRecording = async () => {
     if (!isRecording) {
-      // 녹음 시작 로직
+      // 녹음 시작
+      setRecordedChunks([]);
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(stream);
+
+      recorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          setRecordedChunks((prev) => [...prev, event.data]);
+        }
+      };
+
+      recorder.onstop = async () => {
+        if (recordedChunks.length === 0) {
+          console.error('No audio data available to create a blob.');
+          return;
+        }
+
+        const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+        console.log('Recorded blob:', blob); // 녹음된 데이터 확인용 로그
+      };
+
+      recorder.start(1000); // 1초마다 데이터 수집
+      setMediaRecorder(recorder);
     } else {
-      // 녹음 종료 로직
+      // 녹음 종료
+      mediaRecorder?.stop();
     }
+
+    setIsRecording((prev) => !prev); // 녹음 상태 전환
   };
 
   return (
