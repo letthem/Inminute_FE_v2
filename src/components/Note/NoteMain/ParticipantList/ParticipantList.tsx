@@ -1,8 +1,10 @@
 import userMint from '@/assets/svgs/Note/userMint.svg';
 
-const participants = ['심수연', '박상욱', '노태일', '유재인', '곽민우'];
+interface ParticipantListProps {
+  participants: string[];
+}
 
-export const ParticipantList = () => {
+export const ParticipantList: React.FC<ParticipantListProps> = ({ participants }) => {
   return (
     <section className="mt-3 ml-12 mr-[120px]">
       <div className="inline-flex gap-y-[12px] flex-wrap whitespace-nowrap bg-gray02 rounded-[26px] px-[10px] py-[5px]">
