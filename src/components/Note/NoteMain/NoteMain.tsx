@@ -5,6 +5,7 @@ import { OneLineSummary } from '@/components/Note/NoteMain/OneLineSummary/OneLin
 import { useEffect, useState } from 'react';
 import { NoteDetail } from '@/pages/Note/dto';
 import { useSocket } from '@/context/SocketContext';
+import { getNoteDetail } from '@/apis/Note/getNote';
 
 interface NoteMainProps {
   noteData: NoteDetail | null;
@@ -15,6 +16,20 @@ export const NoteMain: React.FC<NoteMainProps> = ({ noteData, uuid }) => {
   const [participants, setParticipants] = useState<string[]>([]); // participants 상태 선언
   const { messages } = useSocket();
 
+  // 초기 로딩 시 nicknameList 데이터를 불러오기
+  useEffect(() => {
+    const loadParticipants = async () => {
+      try {
+        const noteDetail = await getNoteDetail(uuid); // uuid로 노트 상세 정보 가져오기
+        setParticipants(noteDetail.result.nicknameList); // nicknameList를 participants에 설정
+      } catch (error) {
+        console.error('Failed to load participants from note detail:', error);
+      }
+    };
+    loadParticipants();
+  }, [uuid]);
+
+  // 소켓에서 JOIN 메시지 수신 처리
   useEffect(() => {
     if (messages.length > 0) {
       const latestMessage = messages[messages.length - 1];
