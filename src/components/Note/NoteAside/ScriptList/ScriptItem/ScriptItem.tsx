@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, ReactNode } from 'react';
 import userMint from '@/assets/svgs/Note/userMint.svg';
 import kebab from '@/assets/svgs/Note/kebab.svg';
 
 interface ScriptItemProps {
   name: string;
-  script: string;
+  script: ReactNode;
 }
 
 export const ScriptItem: React.FC<ScriptItemProps> = ({ name, script }) => {
@@ -29,7 +29,9 @@ export const ScriptItem: React.FC<ScriptItemProps> = ({ name, script }) => {
           />
         )}
       </div>
-      <p className="font-pretendard font-[350] text-[13px] leading-[24px] mt-3">{script}</p>
+      <div className="mt-3">
+        <span className="font-pretendard font-[350] text-[13px] leading-[24px]">{script}</span>
+      </div>
     </div>
   );
 };

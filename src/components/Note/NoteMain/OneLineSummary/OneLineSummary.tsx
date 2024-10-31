@@ -5,8 +5,8 @@ interface OneLineSummaryProps {
 }
 
 export const OneLineSummary: React.FC<OneLineSummaryProps> = ({ noteData }) => {
-  if (!noteData) {
-    return <p></p>;
+  if (!noteData?.summary) {
+    return <></>;
   }
   return (
     <section className="mt-5 ml-12">

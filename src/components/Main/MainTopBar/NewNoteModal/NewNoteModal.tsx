@@ -46,7 +46,7 @@ export const NewNoteModal: React.FC<NewNoteModalProps> = ({ onClose }) => {
 
   // 새 노트 만들기
   const handleSubmit = async () => {
-    if (!noteTitle.trim() || selectedFolder.id === null) return; // 제목이 없거나 폴더가 선택되지 않았을 경우 무시
+    if (!noteTitle.trim()) return; // 제목이 없을 경우 무시
 
     const data = await addNote(noteTitle.trim(), selectedFolder.id); // addNote API 호출
     const noteUUID = data.result.uuid; // 서버 응답에서 UUID 가져오기

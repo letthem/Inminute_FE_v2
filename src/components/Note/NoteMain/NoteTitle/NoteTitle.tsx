@@ -1,38 +1,49 @@
+import React, { useEffect, useState } from 'react';
 import calendarBlack from '@/assets/webps/Note/calendarBlack.webp';
 import timeBlack from '@/assets/webps/Note/timeBlack.webp';
-import link from '@/assets/svgs/Note/link.svg';
 import mic from '@/assets/svgs/Note/mic.svg';
 import headphones from '@/assets/svgs/Note/headphones.svg';
-import { useEffect, useState } from 'react';
 import { NoteDetail } from '@/pages/Note/dto';
 import { PlatformModal } from '@/components/Note/NoteMain/NoteTitle/PlatformModal/PlatformModal';
+import CopyLink from '@/components/Note/NoteMain/NoteTitle/CopyLink/CopyLink';
+import { useSocket } from '@/context/SocketContext';
+import { Message } from '@stomp/stompjs';
+import { MicButton } from '@/components/Note/NoteMain/NoteTitle/MicButton/MicButton';
+import { useNickName } from '@/apis/Member/hooks';
 
 interface NoteTitleProps {
   noteData: NoteDetail | null;
+  uuid: string; // uuid 추가
 }
 
-export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData }) => {
-  const [isCopied, setIsCopied] = useState(false);
+export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
+  const { data: nickname } = useNickName(); // 닉네임 가져오기
   const [isPlatformModalOpen, setIsPlatformModalOpen] = useState(false);
+  const [isStart, setIsStart] = useState(false); // 회의 시작 상태
+  const [isRecording, setIsRecording] = useState(false); // 녹음 상태
+  // const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]); // 녹음된 데이터
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null); // MediaRecorder 인스턴스
+  const { stompClient } = useSocket(); // 소켓 클라이언트 가져오기
 
-  // 링크 복사 함수
-  const handleCopyLink = async () => {
-    try {
-      const currentUrl = window.location.href;
-      await navigator.clipboard.writeText(currentUrl); // ClipBoard API 사용 - 현재 페이지 URL 복사
-      setIsCopied(true); // 복사 성공 상태 업데이트
-    } catch (error) {
-      console.error('링크 복사 실패:', error);
-    }
-  };
-
-  // isCopied 상태 변경 감지
   useEffect(() => {
-    if (isCopied) {
-      alert('링크가 복사되었습니다!');
-      setTimeout(() => setIsCopied(false), 2000); // 2초 후 상태 초기화
-    }
-  }, [isCopied]);
+    if (!stompClient) return; // stompClient가 null일 경우 early return
+
+    const handleMessageReceived = (message: Message) => {
+      const chatMessage = JSON.parse(message.body);
+      if (chatMessage.isStart === true) {
+        setIsStart(true); // 회의 시작 상태 업데이트
+      } else if (chatMessage.isStart === false) {
+        setIsStart(false); // 회의 종료 상태 업데이트
+      }
+    };
+
+    // STOMP 클라이언트가 활성화된 후 구독
+    const subscription = stompClient.subscribe(`/topic/public/${uuid}`, handleMessageReceived); // UUID에 따라 구독
+
+    return () => {
+      subscription.unsubscribe(); // 컴포넌트 언마운트 시 구독 해제
+    };
+  }, [stompClient, uuid]); // stompClient와 uuid에 의존성 추가
 
   if (!noteData) {
     return <p>노트 정보를 불러오는 중입니다...</p>;
@@ -40,20 +51,86 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData }) => {
 
   const date = new Date(noteData.createdAt);
   const formattedDate = `${date.getFullYear().toString().slice(-2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
+  const formattedTime = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
+  const currentUrl = window.location.href;
+
+  // 회의 시작 또는 종료 핸들러
+  const handleMeetingToggle = () => {
+    if (isStart) {
+      // 회의 종료 요청
+      const stopMeeting = {
+        content: '안녕 내 사랑', // 요청 본문
+      };
+      stompClient?.publish({
+        destination: `/app/chat.stop/${uuid}`, // 종료 요청 보내기
+        body: JSON.stringify(stopMeeting),
+      });
+    } else {
+      // 회의 시작 요청
+      const startMeeting = {
+        content: 'show me the mic',
+      };
+      stompClient?.publish({
+        destination: `/app/chat.start/${uuid}`,
+        body: JSON.stringify(startMeeting),
+      });
+    }
+  };
+
+  const toggleRecording = async () => {
+    if (!isRecording) {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(stream);
+
+      recorder.ondataavailable = (event) => {
+        if (stompClient && stompClient.connected && event.data.size > 0) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            if (reader.result) {
+              const base64data = (reader.result as string).split(',')[1];
+
+              stompClient.publish({
+                destination: `/app/chat.sendAudioByChunk/${uuid}`,
+                body: JSON.stringify({
+                  nickname: nickname,
+                  chunkCode: base64data,
+                }),
+              });
+            }
+          };
+          reader.readAsDataURL(event.data);
+        }
+      };
+
+      recorder.onstop = () => {
+        // 녹음 종료 시 마지막 청크 전송
+        if (stompClient && stompClient.connected) {
+          stompClient.publish({
+            destination: `/app/chat.sendAudioByChunk/${uuid}`,
+            body: JSON.stringify({
+              nickname: nickname,
+              chunkCode: 'END',
+            }),
+          });
+        }
+      };
+
+      recorder.start(1000); // 1초마다 데이터 청크 생성
+      setMediaRecorder(recorder);
+    } else {
+      mediaRecorder?.stop();
+    }
+    setIsRecording((prev) => !prev);
+  };
 
   return (
     <>
-      <section className="flex flex-col">
+      <section className="relative">
+        {isStart && <MicButton isRecording={isRecording} onToggleRecording={toggleRecording} />}
         <div className="flex justify-between items-center mt-[30px]">
-          <p className="text-[26px] font-bold ml-12 mr-[120px] leading-[30px]">{noteData.name}</p>
+          <p className="text-[26px] font-bold ml-12 mr-4 leading-[30px] break-keep">{noteData.name}</p>
           <div className="flex text-white text-[10.5px] leading-[18px]">
-            <div
-              onClick={handleCopyLink}
-              className="flex items-center w-[88px] h-[30px] mr-3 bg-mainBlack rounded-[3.2px] cursor-pointer"
-            >
-              <img className="w-[15px] h-[15px] ml-3 mr-[6px]" src={link} alt="link" />
-              <span className="font-[500]">링크 복사</span>
-            </div>
+            <CopyLink url={currentUrl} />
             <div
               onClick={() => {
                 setIsPlatformModalOpen(true);
@@ -62,9 +139,16 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData }) => {
             >
               <img src={headphones} alt="headphones" />
             </div>
-            <div className="flex items-center w-[88px] h-[30px] mr-[27px] bg-mainBlack rounded-[3.2px] cursor-pointer">
-              <img className="w-[15px] h-[15px] ml-[12.3px] mr-[6.3px]" src={mic} alt="mic" />
-              <span className="font-[500]">회의 시작</span>
+            <div
+              onClick={handleMeetingToggle} // 회의 시작/종료 핸들러 추가
+              className={`flex items-center ${isStart ? 'w-[66px]' : 'w-[88px]'} h-[30px] mr-[27px] bg-mainBlack rounded-[3.2px] cursor-pointer`}
+            >
+              {!isStart && (
+                <img className="w-[15px] h-[15px] ml-[12.3px] mr-[6.3px]" src={mic} alt="mic" />
+              )}
+              <span className={`font-[500] w-[43px] ${isStart ? 'ml-[12px]' : ''}`}>
+                {isStart ? '회의 종료' : '회의 시작'}
+              </span>
             </div>
           </div>
         </div>
@@ -76,7 +160,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData }) => {
           </div>
           <div className="ml-5 flex items-center">
             <img src={timeBlack} alt="timeBlack" className="w-[14px] h-[14px]" />
-            <span className="h-4 ml-[6px] text-[10px] font-medium leading-4">1:19:05</span>
+            <span className="h-4 ml-[6px] text-[10px] font-medium leading-4">{formattedTime}</span>
           </div>
         </div>
       </section>
