@@ -17,11 +17,11 @@ interface NoteTitleProps {
 }
 
 export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
-  const { data: nickname, isLoading, error } = useNickName(); // 닉네임 가져오기
+  const { data: nickname } = useNickName(); // 닉네임 가져오기
   const [isPlatformModalOpen, setIsPlatformModalOpen] = useState(false);
   const [isStart, setIsStart] = useState(false); // 회의 시작 상태
   const [isRecording, setIsRecording] = useState(false); // 녹음 상태
-  const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]); // 녹음된 데이터
+  // const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]); // 녹음된 데이터
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null); // MediaRecorder 인스턴스
   const { stompClient } = useSocket(); // 소켓 클라이언트 가져오기
 
@@ -79,87 +79,48 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
 
   const toggleRecording = async () => {
     if (!isRecording) {
-      // 녹음 시작
-      const chunks: Blob[] = []; // 로컬 변수로 데이터 조각 관리
-      setRecordedChunks([]); // 상태 초기화
-
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const recorder = new MediaRecorder(stream);
 
       recorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          chunks.push(event.data); // 로컬 변수에 데이터 추가
-          console.log('Data chunk available:', event.data);
-          setRecordedChunks((prev) => [...prev, event.data]); // 상태에도 데이터 추가 (UI 업데이트용)
-        }
-      };
-
-      recorder.onstop = async () => {
-        const blob = new Blob(chunks, { type: 'audio/webm' });
-        console.log('Recorded blob:', blob); // 녹음된 데이터 확인용 로그
-
-        // Blob을 Base64 문자열로 변환
-        const blobToBase64 = (blob: Blob): Promise<string> => {
-          return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-              if (reader.result) {
-                const base64data = (reader.result as string).split(',')[1]; // Base64 문자열 추출
-                resolve(base64data);
-              } else {
-                reject('FileReader result is null');
-              }
-            };
-            reader.onerror = (error) => reject(error);
-            reader.readAsDataURL(blob); // Blob을 DataURL로 읽음 (Base64로 인코딩)
-          });
-        };
-
-        try {
-          const base64String = await blobToBase64(blob);
-          console.log('Base64 String:', base64String); // Base64 문자열 확인용 로그
-
-          if (isLoading) {
-            console.log('Loading nickname...');
-            return;
-          }
-
-          if (error) {
-            console.error('Error fetching nickname:', error);
-            return;
-          }
-
-          if (nickname) {
-            if (stompClient && stompClient.connected) {
-              // WebSocket을 통해 Base64 인코딩된 오디오 전송
-              const audioMessage = {
-                nickname: nickname,
-                audioCode: base64String,
-              };
+        if (stompClient && stompClient.connected && event.data.size > 0) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            if (reader.result) {
+              const base64data = (reader.result as string).split(',')[1];
 
               stompClient.publish({
-                destination: `/app/chat.sendAudio/${uuid}`,
-                body: JSON.stringify(audioMessage),
+                destination: `/app/chat.sendAudioByChunk/${uuid}`,
+                body: JSON.stringify({
+                  nickname: nickname,
+                  chunkCode: base64data,
+                }),
               });
-            } else {
-              console.error('STOMP 클라이언트가 연결되지 않았습니다.');
             }
-          } else {
-            console.error('닉네임을 찾을 수 없습니다.');
-          }
-        } catch (error) {
-          console.error('Error converting Blob to Base64:', error);
+          };
+          reader.readAsDataURL(event.data);
         }
       };
 
-      recorder.start(1000); // 1초마다 데이터 수집
+      recorder.onstop = () => {
+        // 녹음 종료 시 마지막 청크 전송
+        if (stompClient && stompClient.connected) {
+          stompClient.publish({
+            destination: `/app/chat.sendAudioByChunk/${uuid}`,
+            body: JSON.stringify({
+              nickname: nickname,
+              chunkCode: 'END',
+            }),
+          });
+        }
+      };
+
+      recorder.start(1000); // 1초마다 데이터 청크 생성
       setMediaRecorder(recorder);
     } else {
-      // 녹음 종료
       mediaRecorder?.stop();
     }
-    console.log(recordedChunks);
-    setIsRecording((prev) => !prev); // 녹음 상태 전환
+    setIsRecording((prev) => !prev);
   };
 
   return (
