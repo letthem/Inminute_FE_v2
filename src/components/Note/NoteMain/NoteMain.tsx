@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { NoteDetail } from '@/pages/Note/dto';
 import { useSocket } from '@/context/SocketContext';
 import { getNoteDetail } from '@/apis/Note/getNote';
+// import { SummaryBySpeakerList } from '@/components/Note/NoteMain/SummaryBySpeakerList/SummaryBySpeakerList';
+// import { ToDoList } from '@/components/Note/NoteMain/ToDoList/ToDoList';
 
 interface NoteMainProps {
   noteData: NoteDetail | null;
@@ -52,6 +54,8 @@ export const NoteMain: React.FC<NoteMainProps> = ({ noteData, uuid }) => {
       <div className="overflow-y-auto scrollbar-hide">
         <ParticipantList participants={participants} />
         <OneLineSummary noteData={noteData} />
+        {/* <SummaryBySpeakerList/> */}
+        {/* <ToDoList/> */}
       </div>
     </main>
   );

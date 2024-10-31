@@ -128,7 +128,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
       <section className="relative">
         {isStart && <MicButton isRecording={isRecording} onToggleRecording={toggleRecording} />}
         <div className="flex justify-between items-center mt-[30px]">
-          <p className="text-[26px] font-bold ml-12 mr-[120px] leading-[30px]">{noteData.name}</p>
+          <p className="text-[26px] font-bold ml-12 mr-4 leading-[30px] break-keep">{noteData.name}</p>
           <div className="flex text-white text-[10.5px] leading-[18px]">
             <CopyLink url={currentUrl} />
             <div
