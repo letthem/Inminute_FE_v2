@@ -40,7 +40,17 @@ export default {
         pretendard: ['"Pretendard Variable"', 'sans-serif'],
       },
       boxShadow: {
-        subFeature: '0px 155px 43px 0px rgba(0, 0, 0, 0.00), 0px 99px 40px 0px rgba(0, 0, 0, 0.00), 0px 56px 34px 0px rgba(0, 0, 0, 0.01), 0px 25px 25px 0px rgba(0, 0, 0, 0.02), 0px 6px 14px 0px rgba(0, 0, 0, 0.02)',
+        subFeature:
+          '0px 155px 43px 0px rgba(0, 0, 0, 0.00), 0px 99px 40px 0px rgba(0, 0, 0, 0.00), 0px 56px 34px 0px rgba(0, 0, 0, 0.01), 0px 25px 25px 0px rgba(0, 0, 0, 0.02), 0px 6px 14px 0px rgba(0, 0, 0, 0.02)',
+      },
+      animation: {
+        'dot-fade': 'dotFade 1s infinite ease-in-out',
+      },
+      keyframes: {
+        dotFade: {
+          '0%, 100%': { opacity: 0 },
+          '50%': { opacity: 1 },
+        },
       },
     },
   },

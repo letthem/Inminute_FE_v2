@@ -2,9 +2,15 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 
+interface ChatMessage {
+  type: string;
+  nickname: string;
+  content: string;
+}
+
 interface SocketContextType {
   stompClient: Client | null;
-  messages: string[];
+  messages: ChatMessage[]; // ChatMessage 타입 배열로 수정
 }
 
 const SocketContext = createContext<SocketContextType>({
@@ -19,7 +25,7 @@ interface SocketProviderProps {
 
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children, uuid }) => {
   const [stompClient, setStompClient] = useState<Client | null>(null);
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]); // ChatMessage 타입 배열로 수정
 
   const baseUrl = import.meta.env.VITE_API_URL;
 
@@ -34,7 +40,11 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children, uuid }
         // uuid에 따라 구독
         client.subscribe(`/topic/public/${uuid}`, (message) => {
           const chatMessage = JSON.parse(message.body);
-          setMessages((prev) => [...prev, chatMessage]);
+
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            { type: chatMessage.type, nickname: chatMessage.nickname, content: chatMessage.content },
+          ]);
         });
       },
       onDisconnect: () => {
@@ -43,6 +53,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children, uuid }
     });
 
     client.activate(); // 클라이언트 활성화
+
     return () => {
       client.deactivate(); // 언마운트 시 클라이언트 비활성화
     };
@@ -52,7 +63,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children, uuid }
     <SocketContext.Provider value={{ stompClient, messages }}>{children}</SocketContext.Provider>
   );
 };
-
 
 export const useSocket = () => {
   return useContext(SocketContext);
