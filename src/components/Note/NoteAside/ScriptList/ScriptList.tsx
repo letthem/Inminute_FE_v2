@@ -1,6 +1,6 @@
 import { useSocket } from '@/context/SocketContext';
 import { ScriptItem } from '@/components/Note/NoteAside/ScriptList/ScriptItem/ScriptItem';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Loading } from '@/components/Common/Loading/Loading';
 
 interface ChatMessage {
@@ -19,6 +19,7 @@ export const ScriptList: React.FC<ScriptListProps> = ({ uuid }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [displayMessages, setDisplayMessages] = useState<ChatMessage[]>([]);
   const [currentSpeakers, setCurrentSpeakers] = useState<string[]>([]); // 여러 사용자 관리
+  const bottomRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (messages.length > 0) {
@@ -72,6 +73,11 @@ export const ScriptList: React.FC<ScriptListProps> = ({ uuid }) => {
     setDisplayMessages((prevMessages) => prevMessages.filter((_, i) => i !== index));
   };
 
+  // 새 메시지가 추가될 때 가장 아래로 스크롤
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [displayMessages]);
+
   return (
     <>
       {displayMessages.map((message, index) => (
@@ -88,6 +94,7 @@ export const ScriptList: React.FC<ScriptListProps> = ({ uuid }) => {
         currentSpeakers.map((speaker, index) => (
           <ScriptItem key={`loading-${index}`} name={speaker} script={<Loading />} />
         ))}
+      <div ref={bottomRef} />
     </>
   );
 };
