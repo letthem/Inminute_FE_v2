@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NoteItem } from '@/components/FolderBar/FolderItem/NoteItem/NoteItem';
-import { Menu } from '@/components/FolderBar/Menu/Menu';
+import { Menu } from '@/components/Common/Menu/Menu';
 import folder from '@/assets/webps/FolderBar/folder.webp';
 import folderMint from '@/assets/webps/FolderBar/folderMint.webp';
 import down from '@/assets/webps/FolderBar/downGray.webp';
@@ -198,6 +198,8 @@ export const FolderItem: React.FC<FolderItemProps> = ({
               style={{ position: 'absolute', top: menuPosition.top, left: menuPosition.left }}
             >
               <Menu
+                editLabel='이름 변경'
+                deleteLabel='삭제하기'
                 onEdit={handleRename}
                 onDelete={() => {
                   onDeleteFolder(index); // 폴더 삭제 로직 호출
