@@ -10,8 +10,12 @@ interface ChatMessage {
   content: string;
 }
 
-export const ScriptList = () => {
-  const { messages } = useSocket();
+interface ScriptListProps {
+  uuid: string;
+}
+
+export const ScriptList: React.FC<ScriptListProps> = ({ uuid }) => {
+  const { stompClient, messages } = useSocket();
   const [isLoading, setIsLoading] = useState(false);
   const [displayMessages, setDisplayMessages] = useState<ChatMessage[]>([]);
   const [currentSpeakers, setCurrentSpeakers] = useState<string[]>([]); // 여러 사용자 관리
@@ -43,10 +47,41 @@ export const ScriptList = () => {
     }
   }, [messages]);
 
+  const handleUpdateScript = (index: number, newContent: string) => {
+    const updatedMessages = [...displayMessages];
+    const messageToUpdate = updatedMessages[index];
+
+    if (stompClient && stompClient.connected) {
+      stompClient.publish({
+        destination: `/app/chat.update/${uuid}`,
+        body: JSON.stringify({
+          chatId: messageToUpdate.id,
+          nickname: messageToUpdate.nickname,
+          content: newContent,
+        }),
+      });
+
+      // 로컬 상태 업데이트
+      updatedMessages[index].content = newContent;
+      setDisplayMessages(updatedMessages);
+    }
+  };
+
+  const handleDeleteScript = (index: number) => {
+    // 로컬 상태에서만 메시지 삭제
+    setDisplayMessages((prevMessages) => prevMessages.filter((_, i) => i !== index));
+  };
+
   return (
     <>
       {displayMessages.map((message, index) => (
-        <ScriptItem key={index} name={message.nickname} script={message.content} />
+        <ScriptItem
+          key={index}
+          name={message.nickname}
+          script={message.content}
+          onUpdateScript={(newContent) => handleUpdateScript(index, newContent)}
+          onDeleteScript={() => handleDeleteScript(index)}
+        />
       ))}
       {/* 여러 사용자의 로딩 UI 표시 */}
       {isLoading &&

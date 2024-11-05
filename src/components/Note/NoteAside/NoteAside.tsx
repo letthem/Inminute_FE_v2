@@ -8,7 +8,7 @@ interface NoteAsideProps {
   uuid: string;
 }
 
-export const NoteAside: React.FC<NoteAsideProps> = () => {
+export const NoteAside: React.FC<NoteAsideProps> = ({ uuid }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [hasScrollbar, setHasScrollbar] = useState(false);
   const asideRef = useRef<HTMLDivElement>(null);
@@ -65,7 +65,7 @@ export const NoteAside: React.FC<NoteAsideProps> = () => {
           ref={contentRef}
           className={`ml-[18px] mb-[94px] ${hasScrollbar && isHovered ? 'mr-[3px]' : 'scrollbar-hide mr-[21px]'}`}
         >
-          <ScriptList />
+          <ScriptList uuid={uuid} />
         </div>
       </section>
     </aside>

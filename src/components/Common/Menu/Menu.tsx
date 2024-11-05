@@ -27,7 +27,7 @@ interface MenuProps {
 const MenuItem: React.FC<MenuItemProps> = ({ label, icon, onClick, imgGap, padding }) => (
   <div
     style={{ padding, gap: imgGap }}
-    className="flex items-center hover:bg-gray02 rounded-[4px]"
+    className="flex items-center hover:bg-gray02 rounded-[4px] cursor-pointer"
     onClick={onClick}
   >
     <img src={icon} alt={label} className="w-[14px] h-[14px]" />
