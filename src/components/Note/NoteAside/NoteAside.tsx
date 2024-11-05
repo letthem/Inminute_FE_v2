@@ -72,13 +72,6 @@ export const NoteAside: React.FC<NoteAsideProps> = ({ noteData }) => {
           <ScriptList />
         </div>
       </section>
-
-      {/* {!showScript && (
-        <section className="flex flex-col">
-          <div>socket test용 채팅 구현</div>
-          <ChatRoom uuid={uuid as string} />
-        </section>
-      )} */}
     </aside>
   );
 };
