@@ -8,7 +8,7 @@ interface NoteAsideProps {
   uuid: string;
 }
 
-export const NoteAside: React.FC<NoteAsideProps> = ({ noteData }) => {
+export const NoteAside: React.FC<NoteAsideProps> = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [hasScrollbar, setHasScrollbar] = useState(false);
   const asideRef = useRef<HTMLDivElement>(null);
@@ -41,10 +41,6 @@ export const NoteAside: React.FC<NoteAsideProps> = ({ noteData }) => {
   const handleMouseLeave = () => {
     setIsHovered(false);
   };
-
-  if (!noteData) {
-    return <div>노트 데이터가 없습니다.</div>;
-  }
 
   return (
     <aside className="w-[375px] flex flex-col border-l border-gray03 overflow-hidden">

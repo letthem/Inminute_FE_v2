@@ -10,6 +10,7 @@ import { useSocket } from '@/context/SocketContext';
 import { Message } from '@stomp/stompjs';
 import { MicButton } from '@/components/Note/NoteMain/NoteTitle/MicButton/MicButton';
 import { useNickName } from '@/apis/Member/hooks';
+import { Loading } from '@/components/Common/Loading/Loading';
 
 interface NoteTitleProps {
   noteData: NoteDetail | null;
@@ -46,7 +47,11 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
   }, [stompClient, uuid]); // stompClient와 uuid에 의존성 추가
 
   if (!noteData) {
-    return <p>노트 정보를 불러오는 중입니다...</p>;
+    return (
+      <div className="ml-[60px]">
+        <Loading />
+      </div>
+    );
   }
 
   const date = new Date(noteData.createdAt);
@@ -128,7 +133,9 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
       <section className="relative">
         {isStart && <MicButton isRecording={isRecording} onToggleRecording={toggleRecording} />}
         <div className="flex justify-between items-center mt-[30px]">
-          <p className="text-[26px] font-bold ml-12 mr-4 leading-[30px] break-keep">{noteData.name}</p>
+          <p className="text-[26px] font-bold ml-12 mr-4 leading-[30px] break-keep">
+            {noteData.name}
+          </p>
           <div className="flex text-white text-[10.5px] leading-[18px]">
             <CopyLink url={currentUrl} />
             <div

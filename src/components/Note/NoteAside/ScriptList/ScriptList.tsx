@@ -1,7 +1,7 @@
 import { useSocket } from '@/context/SocketContext';
 import { ScriptItem } from '@/components/Note/NoteAside/ScriptList/ScriptItem/ScriptItem';
 import { useEffect, useState } from 'react';
-import { ScriptLoading } from '@/components/Note/NoteAside/ScriptList/ScriptItem/ScriptLoading/ScriptLoading';
+import { Loading } from '@/components/Common/Loading/Loading';
 
 interface ChatMessage {
   id?: number;
@@ -51,7 +51,7 @@ export const ScriptList = () => {
       {/* 여러 사용자의 로딩 UI 표시 */}
       {isLoading &&
         currentSpeakers.map((speaker, index) => (
-          <ScriptItem key={`loading-${index}`} name={speaker} script={<ScriptLoading />} />
+          <ScriptItem key={`loading-${index}`} name={speaker} script={<Loading />} />
         ))}
     </>
   );
