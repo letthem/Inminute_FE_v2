@@ -22,7 +22,6 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
   const [isPlatformModalOpen, setIsPlatformModalOpen] = useState(false);
   const [isStart, setIsStart] = useState(false); // 회의 시작 상태
   const [isRecording, setIsRecording] = useState(false); // 녹음 상태
-  // const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]); // 녹음된 데이터
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null); // MediaRecorder 인스턴스
   const { stompClient } = useSocket(); // 소켓 클라이언트 가져오기
 
@@ -133,9 +132,9 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
       <section className="relative">
         {isStart && <MicButton isRecording={isRecording} onToggleRecording={toggleRecording} />}
         <div className="flex justify-between items-center mt-[30px]">
-          <p className="text-[26px] font-bold ml-12 mr-4 leading-[30px] break-keep">
+          <h1 className="text-[26px] font-bold ml-12 mr-4 leading-[30px] break-keep">
             {noteData.name}
-          </p>
+          </h1>
           <div className="flex text-white text-[10.5px] leading-[18px]">
             <CopyLink url={currentUrl} />
             <div

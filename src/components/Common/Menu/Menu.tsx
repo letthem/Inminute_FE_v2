@@ -8,12 +8,16 @@ interface MenuItemProps {
   onClick: () => void;
   imgGap: string;
   padding: string;
+  font: string;
+  lineHeight: string;
 }
 
 interface MenuProps {
   menuGap?: string;
   imgGap?: string;
   padding?: string;
+  font?: string;
+  lineHeight?: string;
   top?: string;
   left?: string;
   width?: string;
@@ -24,14 +28,16 @@ interface MenuProps {
   onDelete: () => void;
 }
 
-const MenuItem: React.FC<MenuItemProps> = ({ label, icon, onClick, imgGap, padding }) => (
+const MenuItem: React.FC<MenuItemProps> = ({ label, icon, onClick, imgGap, padding, font, lineHeight }) => (
   <div
     style={{ padding, gap: imgGap }}
     className="flex items-center hover:bg-gray02 rounded-[4px] cursor-pointer"
     onClick={onClick}
   >
     <img src={icon} alt={label} className="w-[14px] h-[14px]" />
-    <p className="text-[9px] font-[500] leading-normal">{label}</p>
+    <p style={{ fontSize: font, lineHeight: lineHeight}} className="font-[500]">
+      {label}
+    </p>
   </div>
 );
 
@@ -39,6 +45,8 @@ export const Menu: React.FC<MenuProps> = ({
   menuGap = '2px',
   imgGap = '6px',
   padding = '6px',
+  font = '9px',
+  lineHeight = '10px',
   top = '7px',
   left = '-8px',
   width = '92px',
@@ -66,6 +74,8 @@ export const Menu: React.FC<MenuProps> = ({
         onClick={onEdit}
         imgGap={imgGap}
         padding={padding}
+        font={font}
+        lineHeight={lineHeight}
       />
       <MenuItem
         label={deleteLabel}
@@ -73,6 +83,8 @@ export const Menu: React.FC<MenuProps> = ({
         onClick={onDelete}
         imgGap={imgGap}
         padding={padding}
+        font={font}
+        lineHeight={lineHeight}
       />
     </div>
   );
