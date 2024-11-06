@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NoteItem } from '@/components/FolderBar/FolderItem/NoteItem/NoteItem';
-import { Menu } from '@/components/FolderBar/Menu/Menu';
+import { Menu } from '@/components/Common/Menu/Menu';
 import folder from '@/assets/webps/FolderBar/folder.webp';
 import folderMint from '@/assets/webps/FolderBar/folderMint.webp';
 import down from '@/assets/webps/FolderBar/downGray.webp';
@@ -45,7 +45,6 @@ export const FolderItem: React.FC<FolderItemProps> = ({
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 }); // 메뉴 위치 상태 관리
   const [isEditing, setIsEditing] = useState(false); // 이름 변경 모드 상태 관리
   const [folderName, setFolderName] = useState(folderItem.name); // 현재 폴더 이름 상태 관리
-  // const [isActive, setIsActive] = useState(false); // 클릭 상태 관리
   const menuRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null); // 인풋 필드에 접근하기 위한 ref
   const folderRef = useRef<HTMLDivElement | null>(null);
@@ -69,6 +68,11 @@ export const FolderItem: React.FC<FolderItemProps> = ({
       left: buttonRect.left + window.scrollX, // 케밥 버튼의 왼쪽에 맞춰 메뉴 위치
     });
     setIsMenuVisible((prev) => !prev); // 메뉴 토글
+  };
+
+  // 메뉴 또는 폴더 밖으로 마우스가 나갈 때 메뉴 닫기
+  const handleMouseLeave = () => {
+    setIsMenuVisible(false);
   };
 
   // 메뉴 바깥 클릭 시 메뉴 닫기
@@ -130,6 +134,7 @@ export const FolderItem: React.FC<FolderItemProps> = ({
     <div>
       <div
         ref={folderRef}
+        onMouseLeave={handleMouseLeave}
         onDrop={() => onDrop(index)} // 드랍 시 호출
         onDragOver={onDragOver} // 드래그 오버 이벤트
         className={`${isEditing ? 'bg-mainBlack ml-6 mr-6' : 'ml-[10px] mr-6'} group mb-1 flex hover:bg-mainBlack py-2 rounded-[10px] justify-between cursor-pointer items-center`}
@@ -195,9 +200,12 @@ export const FolderItem: React.FC<FolderItemProps> = ({
           {isMenuVisible && (
             <div
               ref={menuRef}
+              onMouseLeave={handleMouseLeave}
               style={{ position: 'absolute', top: menuPosition.top, left: menuPosition.left }}
             >
               <Menu
+                editLabel="이름 변경"
+                deleteLabel="삭제하기"
                 onEdit={handleRename}
                 onDelete={() => {
                   onDeleteFolder(index); // 폴더 삭제 로직 호출

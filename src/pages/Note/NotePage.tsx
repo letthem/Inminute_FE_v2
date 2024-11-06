@@ -59,7 +59,7 @@ export const NotePage = () => {
   return (
     <SocketProvider uuid={uuid!}>
       <section className="flex w-[calc(100vw-280px)] h-full">
-        <NoteMain noteData={noteData} uuid={uuid!}/>
+        <NoteMain initialNoteData={noteData} uuid={uuid!}/>
         <NoteAside noteData={noteData} uuid={uuid!}/>
       </section>
 

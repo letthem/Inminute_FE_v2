@@ -29,3 +29,15 @@ export const getNoteAllByFolder = async (folderId: number) => {
     throw error;
   }
 };
+
+export const getNoteMainContents = async (uuid: string) => {
+  try {
+    const response = await instance.post(`/notes/${uuid}/stop`, {
+      uuid,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('회의 종료 후 AI 생성 회의 노트 로드 중 오류 발생:', error);
+    throw error;
+  }
+};

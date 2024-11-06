@@ -10,20 +10,22 @@ import { useSocket } from '@/context/SocketContext';
 import { Message } from '@stomp/stompjs';
 import { MicButton } from '@/components/Note/NoteMain/NoteTitle/MicButton/MicButton';
 import { useNickName } from '@/apis/Member/hooks';
+import { Loading } from '@/components/Common/Loading/Loading';
+import { getNoteMainContents } from '@/apis/Note/getNote';
 
 interface NoteTitleProps {
   noteData: NoteDetail | null;
-  uuid: string; // uuid 추가
+  uuid: string;
+  onSummaryUpdate: (summary: string) => void; // summary 업데이트 핸들러
 }
 
-export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
+export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid, onSummaryUpdate }) => {
+  const { stompClient } = useSocket(); // 소켓 클라이언트 가져오기
   const { data: nickname } = useNickName(); // 닉네임 가져오기
   const [isPlatformModalOpen, setIsPlatformModalOpen] = useState(false);
   const [isStart, setIsStart] = useState(false); // 회의 시작 상태
   const [isRecording, setIsRecording] = useState(false); // 녹음 상태
-  // const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]); // 녹음된 데이터
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null); // MediaRecorder 인스턴스
-  const { stompClient } = useSocket(); // 소켓 클라이언트 가져오기
 
   useEffect(() => {
     if (!stompClient) return; // stompClient가 null일 경우 early return
@@ -46,7 +48,11 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
   }, [stompClient, uuid]); // stompClient와 uuid에 의존성 추가
 
   if (!noteData) {
-    return <p>노트 정보를 불러오는 중입니다...</p>;
+    return (
+      <div className="ml-[60px]">
+        <Loading />
+      </div>
+    );
   }
 
   const date = new Date(noteData.createdAt);
@@ -55,7 +61,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
   const currentUrl = window.location.href;
 
   // 회의 시작 또는 종료 핸들러
-  const handleMeetingToggle = () => {
+  const handleMeetingToggle = async () => {
     if (isStart) {
       // 회의 종료 요청
       const stopMeeting = {
@@ -65,6 +71,9 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
         destination: `/app/chat.stop/${uuid}`, // 종료 요청 보내기
         body: JSON.stringify(stopMeeting),
       });
+
+      const response = await getNoteMainContents(uuid);
+      onSummaryUpdate(response.result.summary); // summary 전달
     } else {
       // 회의 시작 요청
       const startMeeting = {
@@ -128,7 +137,9 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
       <section className="relative">
         {isStart && <MicButton isRecording={isRecording} onToggleRecording={toggleRecording} />}
         <div className="flex justify-between items-center mt-[30px]">
-          <p className="text-[26px] font-bold ml-12 mr-4 leading-[30px] break-keep">{noteData.name}</p>
+          <h1 className="text-[26px] font-bold ml-12 mr-4 leading-[30px] break-keep">
+            {noteData.name}
+          </h1>
           <div className="flex text-white text-[10.5px] leading-[18px]">
             <CopyLink url={currentUrl} />
             <div

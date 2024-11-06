@@ -8,7 +8,7 @@ interface NoteAsideProps {
   uuid: string;
 }
 
-export const NoteAside: React.FC<NoteAsideProps> = ({ noteData }) => {
+export const NoteAside: React.FC<NoteAsideProps> = ({ uuid }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [hasScrollbar, setHasScrollbar] = useState(false);
   const asideRef = useRef<HTMLDivElement>(null);
@@ -42,10 +42,6 @@ export const NoteAside: React.FC<NoteAsideProps> = ({ noteData }) => {
     setIsHovered(false);
   };
 
-  if (!noteData) {
-    return <div>노트 데이터가 없습니다.</div>;
-  }
-
   return (
     <aside className="w-[375px] flex flex-col border-l border-gray03 overflow-hidden">
       <div className="h-12" />
@@ -69,16 +65,9 @@ export const NoteAside: React.FC<NoteAsideProps> = ({ noteData }) => {
           ref={contentRef}
           className={`ml-[18px] mb-[94px] ${hasScrollbar && isHovered ? 'mr-[3px]' : 'scrollbar-hide mr-[21px]'}`}
         >
-          <ScriptList />
+          <ScriptList uuid={uuid} />
         </div>
       </section>
-
-      {/* {!showScript && (
-        <section className="flex flex-col">
-          <div>socket test용 채팅 구현</div>
-          <ChatRoom uuid={uuid as string} />
-        </section>
-      )} */}
     </aside>
   );
 };
