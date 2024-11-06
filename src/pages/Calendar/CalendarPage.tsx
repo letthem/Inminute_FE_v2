@@ -28,6 +28,7 @@ export const CalendarPage = () => {
   const specialDate = new Date(2024, 10, 15);
 
   const toggleModal = (date: Date, event: React.MouseEvent<HTMLDivElement>) => {
+    if (!isSameMonth(date, currentMonth)) return; // 이번 달이 아닌 날짜 클릭 시 함수 종료
     setSelectedDate(new Date(date));
     const rect = (event.target as HTMLDivElement).getBoundingClientRect();
     setSelectedDatePosition({
@@ -114,6 +115,9 @@ export const CalendarPage = () => {
               className={`ml-4 mt-[12px] ${!isSameMonth(day, monthStart) ? 'text-transparent' : 'text-mainBlack'} 
                         ${isSameDay(day, new Date()) ? 'font-[900]' : 'font-[500]'}`}
               key={day.toString()}
+              style={{
+                width: `${formattedDate.length === 1 ? '11px' : '19px'}`,
+              }}
             >
               {formattedDate}
             </span>
