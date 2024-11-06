@@ -3,6 +3,7 @@ import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 
 interface ChatMessage {
+  id: number;
   type: string;
   nickname: string;
   content: string;
@@ -41,10 +42,25 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children, uuid }
         client.subscribe(`/topic/public/${uuid}`, (message) => {
           const chatMessage = JSON.parse(message.body);
 
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            { type: chatMessage.type, nickname: chatMessage.nickname, content: chatMessage.content },
-          ]);
+          setMessages((prevMessages) => {
+            if (chatMessage.type === 'EDIT') {
+              // 수정된 메시지 반영
+              return prevMessages.map((msg) =>
+                msg.id === chatMessage.id ? { ...msg, content: chatMessage.content } : msg
+              );
+            }
+
+            // 기본 메시지 추가
+            return [
+              ...prevMessages,
+              {
+                id: chatMessage.id,
+                type: chatMessage.type,
+                nickname: chatMessage.nickname,
+                content: chatMessage.content,
+              },
+            ];
+          });
         });
       },
       onDisconnect: () => {

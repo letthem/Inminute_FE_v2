@@ -10,25 +10,27 @@ import { getNoteDetail } from '@/apis/Note/getNote';
 // import { ToDoList } from '@/components/Note/NoteMain/ToDoList/ToDoList';
 
 interface NoteMainProps {
-  noteData: NoteDetail | null;
+  initialNoteData: NoteDetail | null;
   uuid: string;
 }
 
-export const NoteMain: React.FC<NoteMainProps> = ({ noteData, uuid }) => {
+export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid }) => {
+  const [noteData, setNoteData] = useState<NoteDetail | null>(initialNoteData);
   const [participants, setParticipants] = useState<string[]>([]); // participants 상태 선언
   const { messages } = useSocket();
 
   // 초기 로딩 시 nicknameList 데이터를 불러오기
   useEffect(() => {
-    const loadParticipants = async () => {
+    const loadNoteData = async () => {
       try {
         const noteDetail = await getNoteDetail(uuid); // uuid로 노트 상세 정보 가져오기
+        setNoteData(noteDetail.result); // noteData 상태 업데이트
         setParticipants(noteDetail.result.nicknameList); // nicknameList를 participants에 설정
       } catch (error) {
         console.error('Failed to load participants from note detail:', error);
       }
     };
-    loadParticipants();
+    loadNoteData();
   }, [uuid]);
 
   // 소켓에서 JOIN 메시지 수신 처리
@@ -47,10 +49,18 @@ export const NoteMain: React.FC<NoteMainProps> = ({ noteData, uuid }) => {
     }
   }, [messages]);
 
+   // NoteTitle에서 summary를 업데이트
+   const handleSummaryUpdate = (summary: string) => {
+    setNoteData((prevNoteData) => ({
+      ...prevNoteData!,
+      summary,
+    }));
+  };
+
   return (
     <main className="flex flex-1 flex-col">
       <NoteTopBar noteData={noteData} />
-      <NoteTitle noteData={noteData} uuid={uuid} />
+      <NoteTitle noteData={noteData} uuid={uuid} onSummaryUpdate={handleSummaryUpdate}/>
       <div className="overflow-y-auto scrollbar-hide">
         <ParticipantList participants={participants} />
         <OneLineSummary noteData={noteData} />
