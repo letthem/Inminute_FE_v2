@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Loading } from '@/components/Common/Loading/Loading';
 
 interface ChatMessage {
-  id?: number;
+  id: number;
   type: string;
   nickname: string;
   content: string;
@@ -21,36 +21,42 @@ export const ScriptList: React.FC<ScriptListProps> = ({ uuid }) => {
   const [currentSpeakers, setCurrentSpeakers] = useState<string[]>([]); // 여러 사용자 관리
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
+  // 메시지가 수신될 때만 업데이트 로직 실행
   useEffect(() => {
-    if (messages.length > 0) {
-      const latestMessage = messages[messages.length - 1];
+    const latestMessage = messages[messages.length - 1];
 
-      if (latestMessage.type === 'CONVERTING') {
-        setIsLoading(true);
-        setCurrentSpeakers(
-          (prevSpeakers) =>
-            prevSpeakers.includes(latestMessage.nickname)
-              ? prevSpeakers
-              : [...prevSpeakers, latestMessage.nickname] // 중복 방지
-        );
-      } else if (latestMessage.type === 'CHAT') {
-        setIsLoading(false);
-        setDisplayMessages((prev) => [
-          ...prev,
-          { type: 'CHAT', nickname: latestMessage.nickname, content: latestMessage.content },
-        ]);
+    // 메시지가 `CHAT` 또는 `EDIT`일 경우에만 `displayMessages` 업데이트
+    if (latestMessage?.type === 'CHAT' || latestMessage?.type === 'EDIT') {
+      setDisplayMessages((prevMessages) => {
+        if (latestMessage.type === 'EDIT') {
+          // 기존 메시지 수정 반영
+          return prevMessages.map((msg) =>
+            msg.id === latestMessage.id ? { ...msg, content: latestMessage.content } : msg
+          );
+        } else {
+          // 새로운 `CHAT` 메시지 추가
+          return [...prevMessages, latestMessage];
+        }
+      });
+    }
 
-        // `CHAT` 메시지 수신 시 해당 사용자를 currentSpeakers에서 제거
-        setCurrentSpeakers((prevSpeakers) =>
-          prevSpeakers.filter((speaker) => speaker !== latestMessage.nickname)
-        );
+    // `CONVERTING` 메시지 처리
+    if (latestMessage?.type === 'CONVERTING') {
+      setIsLoading(true);
+      if (!currentSpeakers.includes(latestMessage.nickname)) {
+        setCurrentSpeakers((prevSpeakers) => [...prevSpeakers, latestMessage.nickname]);
       }
+    } else {
+      // `CONVERTING` 메시지가 아니면 로딩 상태 해제 및 발화자 제거
+      setIsLoading(false);
+      setCurrentSpeakers((prevSpeakers) =>
+        prevSpeakers.filter((speaker) => speaker !== latestMessage.nickname)
+      );
     }
   }, [messages]);
 
   const handleUpdateScript = (index: number, newContent: string) => {
-    const updatedMessages = [...displayMessages];
-    const messageToUpdate = updatedMessages[index];
+    const messageToUpdate = displayMessages[index];
 
     if (stompClient && stompClient.connected) {
       stompClient.publish({
@@ -61,15 +67,10 @@ export const ScriptList: React.FC<ScriptListProps> = ({ uuid }) => {
           content: newContent,
         }),
       });
-
-      // 로컬 상태 업데이트
-      updatedMessages[index].content = newContent;
-      setDisplayMessages(updatedMessages);
     }
   };
 
   const handleDeleteScript = (index: number) => {
-    // 로컬 상태에서만 메시지 삭제
     setDisplayMessages((prevMessages) => prevMessages.filter((_, i) => i !== index));
   };
 
@@ -82,7 +83,7 @@ export const ScriptList: React.FC<ScriptListProps> = ({ uuid }) => {
     <>
       {displayMessages.map((message, index) => (
         <ScriptItem
-          key={index}
+          key={message.id}
           name={message.nickname}
           script={message.content}
           onUpdateScript={(newContent) => handleUpdateScript(index, newContent)}
