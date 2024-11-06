@@ -12,12 +12,33 @@ import {
   isSameDay,
   subDays,
 } from 'date-fns';
+import { ko } from 'date-fns/locale';
 import { NavBar } from '@/components/NavBar/NavBar';
 import leftBlack from '@/assets/webps/Calendar/leftBlack.webp';
 import rightBlack from '@/assets/webps/Calendar/rightBlack.webp';
 
 export const CalendarPage = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null); // 모달에 보여줄 선택된 날짜
+  const [selectedDatePosition, setSelectedDatePosition] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
+  const specialDate = new Date(2024, 10, 15);
+
+  const toggleModal = (date: Date, event: React.MouseEvent<HTMLDivElement>) => {
+    setSelectedDate(new Date(date));
+    const rect = (event.target as HTMLDivElement).getBoundingClientRect();
+    setSelectedDatePosition({
+      top: rect.top + window.scrollY + 20,
+      left: rect.left + window.scrollX + 50,
+    });
+  };
+
+  const closeModal = () => {
+    setSelectedDate(null);
+    setSelectedDatePosition(null);
+  };
 
   // < yyyy.MM >
   const renderHeader = () => {
@@ -77,6 +98,7 @@ export const CalendarPage = () => {
         const isLastRow = day > subDays(endDate, 7); // 마지막 주를 감지하기 위한 조건
         const dateWidth = formattedDate.length === 1 ? '11px' : '19px';
 
+        const clickedDate = new Date(day);
         days.push(
           <div
             className={`w-[14.3%] h-[130px] border-[0.3px] border-gray03 flex flex-col bg-white
@@ -85,6 +107,7 @@ export const CalendarPage = () => {
               ${isLastRow && i === 0 ? 'rounded-bl-[10px]' : ''} 
               ${isLastRow && i === 6 ? 'rounded-br-[10px]' : ''} 
               hover:bg-gray01 cursor-pointer`}
+            onClick={(e) => toggleModal(clickedDate, e)}
           >
             <span
               className={`ml-4 mt-[12px] ${!isSameMonth(day, monthStart) ? 'text-transparent' : 'text-mainBlack'} 
@@ -95,6 +118,13 @@ export const CalendarPage = () => {
             </span>
             {isSameDay(day, new Date()) && (
               <div className="h-[1.4px] bg-black ml-4 mt-[-1px]" style={{ width: dateWidth }} />
+            )}
+
+            {isSameDay(day, specialDate) && (
+              <div className="flex flex-col items-start p-1">
+                <p className="text-xs text-gray-500">~~</p>
+                <p className="text-xs text-gray-500">~~~</p>
+              </div>
             )}
           </div>
         );
@@ -109,7 +139,7 @@ export const CalendarPage = () => {
       rowIndex++;
     }
 
-    return <div className="mb-11 w-full">{rows}</div>;
+    return <div className="mb-[120px] w-full">{rows}</div>;
   };
 
   return (
@@ -120,6 +150,26 @@ export const CalendarPage = () => {
         {renderDays()}
         {renderCells()}
       </div>
+      {selectedDate && (
+        <div
+          style={{
+            position: 'absolute',
+            top: selectedDatePosition?.top || 0,
+            left: selectedDatePosition?.left || 0,
+            boxShadow: '0px 0px 6px 0px rgba(96, 96, 96, 0.16)',
+          }}
+          className="bg-white rounded-[10px] w-[276px] h-[192px] z-10"
+        >
+          <h2 className="text-[18px] font-[600] ml-[26px] mt-6">
+            {format(selectedDate, 'MM')}월 {format(selectedDate, 'dd')}일 (
+            {format(selectedDate, 'E', { locale: ko })})
+          </h2>
+          <p>~~</p>
+          <button onClick={closeModal} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+            X
+          </button>
+        </div>
+      )}
     </section>
   );
 };
