@@ -1,6 +1,6 @@
+import { useEffect, useRef, useState } from 'react';
 import { useSocket } from '@/context/SocketContext';
 import { ScriptItem } from '@/components/Note/NoteAside/ScriptList/ScriptItem/ScriptItem';
-import { useEffect, useRef, useState } from 'react';
 import { Loading } from '@/components/Common/Loading/Loading';
 
 interface ChatMessage {
@@ -21,25 +21,9 @@ export const ScriptList: React.FC<ScriptListProps> = ({ uuid }) => {
   const [currentSpeakers, setCurrentSpeakers] = useState<string[]>([]); // 여러 사용자 관리
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
-  // 메시지가 수신될 때만 업데이트 로직 실행
   useEffect(() => {
+    // 로딩 상태 업데이트: CONVERTING 메시지 처리
     const latestMessage = messages[messages.length - 1];
-
-    // 메시지가 `CHAT` 또는 `EDIT`일 경우에만 `displayMessages` 업데이트
-    if (latestMessage?.type === 'CHAT' || latestMessage?.type === 'EDIT') {
-      setDisplayMessages((prevMessages) => {
-        if (latestMessage.type === 'EDIT') {
-          // 기존 메시지 수정 반영
-          return prevMessages.map((msg) =>
-            msg.id === latestMessage.id ? { ...msg, content: latestMessage.content } : msg
-          );
-        } else {
-          // 새로운 `CHAT` 메시지 추가
-          return [...prevMessages, latestMessage];
-        }
-      });
-    }
-
     // `CONVERTING` 메시지 처리
     if (latestMessage?.type === 'CONVERTING') {
       setIsLoading(true);
@@ -73,6 +57,21 @@ export const ScriptList: React.FC<ScriptListProps> = ({ uuid }) => {
   const handleDeleteScript = (index: number) => {
     setDisplayMessages((prevMessages) => prevMessages.filter((_, i) => i !== index));
   };
+
+  useEffect(() => {
+    // messages에 변화가 생길 때마다 displayMessages 동기화
+    setDisplayMessages((prevMessages) =>
+      messages
+        .filter((msg) => msg.type === 'CHAT' || msg.type === 'EDIT')
+        .map((msg) => {
+          // EDIT 메시지를 수신했을 때 해당 ID의 메시지 업데이트
+          const existingMessage = prevMessages.find((prevMsg) => prevMsg.id === msg.id);
+          return existingMessage && msg.type === 'EDIT'
+            ? { ...existingMessage, content: msg.content }
+            : msg;
+        })
+    );
+  }, [messages]);
 
   // 새 메시지가 추가될 때 가장 아래로 스크롤
   useEffect(() => {
