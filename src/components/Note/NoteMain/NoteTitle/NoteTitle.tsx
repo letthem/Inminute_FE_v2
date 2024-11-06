@@ -11,19 +11,21 @@ import { Message } from '@stomp/stompjs';
 import { MicButton } from '@/components/Note/NoteMain/NoteTitle/MicButton/MicButton';
 import { useNickName } from '@/apis/Member/hooks';
 import { Loading } from '@/components/Common/Loading/Loading';
+import { getNoteMainContents } from '@/apis/Note/getNote';
 
 interface NoteTitleProps {
   noteData: NoteDetail | null;
-  uuid: string; // uuid 추가
+  uuid: string;
+  onSummaryUpdate: (summary: string) => void; // summary 업데이트 핸들러
 }
 
-export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
+export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid, onSummaryUpdate }) => {
+  const { stompClient } = useSocket(); // 소켓 클라이언트 가져오기
   const { data: nickname } = useNickName(); // 닉네임 가져오기
   const [isPlatformModalOpen, setIsPlatformModalOpen] = useState(false);
   const [isStart, setIsStart] = useState(false); // 회의 시작 상태
   const [isRecording, setIsRecording] = useState(false); // 녹음 상태
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null); // MediaRecorder 인스턴스
-  const { stompClient } = useSocket(); // 소켓 클라이언트 가져오기
 
   useEffect(() => {
     if (!stompClient) return; // stompClient가 null일 경우 early return
@@ -59,7 +61,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
   const currentUrl = window.location.href;
 
   // 회의 시작 또는 종료 핸들러
-  const handleMeetingToggle = () => {
+  const handleMeetingToggle = async () => {
     if (isStart) {
       // 회의 종료 요청
       const stopMeeting = {
@@ -69,6 +71,9 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid }) => {
         destination: `/app/chat.stop/${uuid}`, // 종료 요청 보내기
         body: JSON.stringify(stopMeeting),
       });
+
+      const response = await getNoteMainContents(uuid);
+      onSummaryUpdate(response.result.summary); // summary 전달
     } else {
       // 회의 시작 요청
       const startMeeting = {

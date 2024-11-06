@@ -49,10 +49,18 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid }) => 
     }
   }, [messages]);
 
+   // NoteTitle에서 summary를 업데이트
+   const handleSummaryUpdate = (summary: string) => {
+    setNoteData((prevNoteData) => ({
+      ...prevNoteData!,
+      summary,
+    }));
+  };
+
   return (
     <main className="flex flex-1 flex-col">
       <NoteTopBar noteData={noteData} />
-      <NoteTitle noteData={noteData} uuid={uuid} />
+      <NoteTitle noteData={noteData} uuid={uuid} onSummaryUpdate={handleSummaryUpdate}/>
       <div className="overflow-y-auto scrollbar-hide">
         <ParticipantList participants={participants} />
         <OneLineSummary noteData={noteData} />
