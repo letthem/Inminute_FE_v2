@@ -8,6 +8,7 @@ interface AddScheduleModalProps {
 export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) => {
   const [noteTitle, setNoteTitle] = useState(''); // 회의 제목 상태
   const [isTitleFocused, setIsTitleFocused] = useState(false); // 제목 필드 포커스 상태
+  const [isTimeBoxFocused, setIsTimeBoxFocused] = useState(false);
   const [meridiem, setMeridiem] = useState<'AM' | 'PM'>('AM');
   const [hours, setHours] = useState('');
   const [minutes, setMinutes] = useState('');
@@ -30,8 +31,19 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
     }
   };
 
+  // 회의 제목 focus & blur
   const handleFocus = () => setIsTitleFocused(true);
   const handleBlur = () => setIsTitleFocused(false);
+
+  // 시간 box focus & blur
+  const handleTimeBoxClick = () => {
+    setIsTimeBoxFocused(true);
+  };
+  const handleBlurTimeBox = (e: React.FocusEvent<HTMLDivElement>) => {
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setIsTimeBoxFocused(false);
+    }
+  };
 
   const handleMeridiemClick = (value: 'AM' | 'PM') => {
     setMeridiem(value);
@@ -120,6 +132,7 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
             placeholder={isTitleFocused && !noteTitle ? ' 띄어쓰기 제외 11자' : ''}
           />
           <p className="absolute top-[10px] left-4 font-[500] text-[11px] text-gray05">회의 제목</p>
+          <div className="absolute bottom-[21px] right-[21px] w-5 h-5 bg-[#FFA800] rounded-full cursor-pointer" />
         </div>
 
         <div className="mt-5 flex gap-4">
@@ -132,11 +145,15 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
             <span className="text-gray05 text-[11px] font-[500]">날짜</span>
             <img src={calendarBlack} alt="calendar black" className="w-4 h-4" />
           </div>
+
           <div
             className="w-[196px] h-[53px] rounded-[10px] flex justify-between px-4 items-center text-[13px]"
-            style={{ boxShadow: '0 0 0 1px #D9D9D9 inset' }}
-            onFocus={(e) => (e.target.style.boxShadow = '0 0 0 1px #2B2B2B inset')}
-            onBlur={(e) => (e.target.style.boxShadow = '0 0 0 1px #D9D9D9 inset')}
+            style={{
+              boxShadow: isTimeBoxFocused ? '0 0 0 1px #2B2B2B inset' : '0 0 0 1px #D9D9D9 inset',
+            }}
+            onMouseDown={handleTimeBoxClick}
+            onBlur={handleBlurTimeBox}
+            tabIndex={0}
           >
             <div className="flex gap-3 font-[700]">
               <span
