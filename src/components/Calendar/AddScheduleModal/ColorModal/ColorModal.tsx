@@ -16,6 +16,9 @@ export const ColorModal: React.FC<ColorModalProps> = ({ onClose, onSelectColor }
       <div
         className="w-[184px] h-[44px] bg-mainBlack rounded-[10px] flex items-center justify-between gap-4 px-5 py-[14px]"
         onClick={(e) => e.stopPropagation()}
+        style={{
+          filter: 'drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.25))',
+        }}
       >
         {colors.map((color) => (
           <div

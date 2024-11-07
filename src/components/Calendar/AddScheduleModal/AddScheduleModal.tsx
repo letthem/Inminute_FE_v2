@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { format } from 'date-fns';
+import { ColorModal } from '@/components/Calendar/AddScheduleModal/ColorModal/ColorModal';
+import { DateModal } from '@/components/Calendar/AddScheduleModal/DateModal/DateModal';
 import xGray from '@/assets/svgs/Main/xGray.svg';
 import calendarBlack from '@/assets/webps/Calendar/calendarBlack.webp';
-import { ColorModal } from '@/components/Calendar/AddScheduleModal/ColorModal/ColorModal';
 
 interface AddScheduleModalProps {
   onClose: () => void;
@@ -15,7 +17,18 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
   const [minutes, setMinutes] = useState('');
   const [isColorModalOpen, setIsColorModalOpen] = useState(false); // color 모달 상태 관리
   const [selectedColor, setSelectedColor] = useState('#FFA800'); // 기본 색상 설정
+  const [selectedDates, setSelectedDates] = useState<Date[]>([]); // 다중 선택 날짜 상태
+  const [isDateModalOpen, setIsDateModalOpen] = useState(false);
 
+  // date modal
+  const toggleDateModal = () => {
+    setIsDateModalOpen(!isDateModalOpen);
+  };
+
+  const handleDatesSelect = (dates: Date[]) => {
+    setSelectedDates(dates);
+  };
+  // color modal
   const toggleColorModal = () => {
     setIsColorModalOpen(!isColorModalOpen);
   };
@@ -37,7 +50,6 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
       setIsColorModalOpen(false); // ColorModal 닫기
     }
   };
-
 
   // input change 핸들러
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,16 +177,33 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
           </div>
         </div>
 
-        {/* 회의 날짜 */}
         <div className="mt-5 flex gap-4">
+          {/* 회의 날짜 */}
           <div
-            className="w-[196px] h-[53px] rounded-[10px] pl-4 pr-[17px] flex justify-between items-center"
+            className="relative w-[196px] h-[53px] rounded-[10px] pl-4 pr-[17px] flex items-center justify-between cursor-pointer"
             style={{ boxShadow: '0 0 0 1px #D9D9D9 inset' }}
             onFocus={(e) => (e.target.style.boxShadow = '0 0 0 1px #2B2B2B inset')}
             onBlur={(e) => (e.target.style.boxShadow = '0 0 0 1px #D9D9D9 inset')}
+            onClick={toggleDateModal}
           >
-            <span className="text-gray05 text-[11px] font-[500]">날짜</span>
+            <div className="flex">
+              <span className="text-gray05 text-[11px] font-[500] mr-[21px]">날짜</span>
+              <span className="text-mainBlack text-[13px] font-[700]">
+                {selectedDates.length === 1
+                  ? format(selectedDates[0], 'yyyy - MM - dd')
+                  : selectedDates.length > 1
+                    ? '중복 선택'
+                    : ''}
+              </span>
+            </div>
             <img src={calendarBlack} alt="calendar black" className="w-4 h-4" />
+            {isDateModalOpen && (
+              <DateModal
+                selectedDates={selectedDates} // 배열로 전달
+                onSelectDates={handleDatesSelect} // 다중 선택 핸들러로 변경
+                onClose={() => setIsDateModalOpen(false)}
+              />
+            )}
           </div>
 
           {/* 회의 시간 */}

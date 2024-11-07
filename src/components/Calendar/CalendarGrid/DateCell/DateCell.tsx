@@ -52,15 +52,15 @@ export const DateCell: React.FC<DateCellProps> = ({
         {formattedDate}
       </span>
       {isSpecial && (
-        <div className="flex flex-col mt-[5px] ml-[10px] mr-1 gap-[6px]">
+        <div className="flex flex-col mt-[5px] s1200:mx-3 mx-2 gap-[6px]">
           <div className="flex w-full h-6 bg-[#EAFBEC] rounded-[4px] overflow-hidden items-center">
-            <p className="ml-[8.3px] text-[12px] font-[500] leading-[22px] text-[#489D06]">
+            <p className="ml-[8px] text-[12px] font-[500] leading-[22px] text-[#489D06]">
               TF팀 회의
             </p>
           </div>
           <div className="flex w-full h-6 bg-[#FCF3FD] rounded-[4px] overflow-hidden items-center">
-            <div className="w-1 h-full bg-[#FF94A4]" />
-            <p className="ml-[8.3px] text-[12px] font-[500] leading-[22px] text-[#E7546A]">
+            <div className="w-[5px] h-full bg-[#FF94A4]" />
+            <p className="ml-[7px] text-[12px] font-[500] leading-[22px] text-[#E7546A]">
               해커톤 정기회의
             </p>
           </div>

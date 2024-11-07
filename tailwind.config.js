@@ -9,7 +9,9 @@ export default {
       dt: '1025px',
       tab: '768px',
       ph: '329px',
+      s1000: '1000px',
       s10: '1064px',
+      s1200: '1200px',
       s13: '1390px',
     },
     extend: {
