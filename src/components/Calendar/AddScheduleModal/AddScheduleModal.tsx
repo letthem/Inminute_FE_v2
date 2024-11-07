@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import xGray from '@/assets/svgs/Main/xGray.svg';
+import calendarBlack from '@/assets/webps/Calendar/calendarBlack.webp';
 
 interface AddScheduleModalProps {
   onClose: () => void;
 }
 export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) => {
   const [noteTitle, setNoteTitle] = useState(''); // 회의 제목 상태
+  const [meridiem, setMeridiem] = useState<'AM' | 'PM'>('AM');
+  const [hours, setHours] = useState('');
+  const [minutes, setMinutes] = useState('');
 
   // 모달 배경 or xBtn 클릭하면 닫힘
   const handleBackgroundClick = () => {
@@ -22,6 +26,50 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
     const trimmedValue = e.target.value.replace(/\s/g, ''); // 띄어쓰기 제외
     if (trimmedValue.length <= 11) {
       setNoteTitle(e.target.value); // 띄어쓰기 제외 11자 이내에서만 제출 가능
+    }
+  };
+
+  const handleMeridiemClick = (value: 'AM' | 'PM') => {
+    setMeridiem(value);
+  };
+
+  const handleHoursChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+
+    // 빈 문자열 처리: placeholder 보이기
+    if (value === '') {
+      setHours('');
+      return;
+    }
+
+    // '0' 또는 '00'을 그대로 입력할 수 있게 하고, 나머지 숫자만 앞의 0 제거
+    if (value !== '0' && value !== '00') {
+      value = value.replace(/^0+/, ''); // 앞의 0 제거
+    }
+
+    // 숫자만 허용하며, 0부터 12까지의 범위로 제한
+    if (/^(0?[0-9]|1[0-2])$/.test(value)) {
+      setHours(value.length === 1 ? `0${value}` : value); // 한 자리일 때 앞에 0 추가
+    }
+  };
+
+  const handleMinutesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+
+    // 빈 문자열 처리: placeholder 보이기
+    if (value === '') {
+      setMinutes('');
+      return;
+    }
+
+    // '0' 또는 '00'을 그대로 입력할 수 있게 하고, 나머지 숫자만 앞의 0 제거
+    if (value !== '0' && value !== '00') {
+      value = value.replace(/^0+/, ''); // 앞의 0 제거
+    }
+
+    // 숫자만 허용하며, 0부터 59까지의 범위로 제한
+    if (/^([0-5]?[0-9])$/.test(value)) {
+      setMinutes(value.length === 1 ? `0${value}` : value); // 한 자리일 때 앞에 0 추가
     }
   };
 
@@ -53,32 +101,64 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
         {/* 회의 제목 */}
         <div className="relative mt-[57px]">
           <input
-            className="w-[408px] h-[76px] rounded-[10px] pt-[20px] px-4 text-[15px] font-[500] text-mainBlack focus:outline-none"
+            className="w-[408px] h-[76px] rounded-[10px] pt-[20px] px-4 text-[15px] font-[500] text-mainBlack focus:outline-none placeholder:text-gray03 placeholder:text-[13px]"
             style={{ boxShadow: '0 0 0 1px #D9D9D9 inset' }}
             onFocus={(e) => (e.target.style.boxShadow = '0 0 0 1px #2B2B2B inset')}
             onBlur={(e) => (e.target.style.boxShadow = '0 0 0 1px #D9D9D9 inset')}
             onChange={handleInputChange} // input 변경 핸들러 추가
             value={noteTitle}
+            placeholder=" 띄어쓰기 제외 11자"
           />
           <p className="absolute top-[10px] left-4 font-[500] text-[11px] text-gray05">회의 제목</p>
         </div>
 
         <div className="mt-5 flex gap-4">
           <div
-            className="w-[196px] h-[53px]"
+            className="w-[196px] h-[53px] rounded-[10px] pl-4 pr-[17px] flex justify-between items-center"
             style={{ boxShadow: '0 0 0 1px #D9D9D9 inset' }}
             onFocus={(e) => (e.target.style.boxShadow = '0 0 0 1px #2B2B2B inset')}
             onBlur={(e) => (e.target.style.boxShadow = '0 0 0 1px #D9D9D9 inset')}
           >
-            날짜
+            <span className="text-gray05 text-[11px] font-[500]">날짜</span>
+            <img src={calendarBlack} alt="calendar black" className="w-4 h-4" />
           </div>
           <div
-            className="w-[196px] h-[53px]"
+            className="w-[196px] h-[53px] rounded-[10px] flex justify-between px-4 items-center text-[13px]"
             style={{ boxShadow: '0 0 0 1px #D9D9D9 inset' }}
             onFocus={(e) => (e.target.style.boxShadow = '0 0 0 1px #2B2B2B inset')}
             onBlur={(e) => (e.target.style.boxShadow = '0 0 0 1px #D9D9D9 inset')}
           >
-            AM
+            <div className="flex gap-3 font-[700]">
+              <span
+                className={`cursor-pointer ${meridiem === 'AM' ? 'text-mainBlack' : 'text-gray02'}`}
+                onClick={() => handleMeridiemClick('AM')}
+              >
+                AM
+              </span>
+              <span
+                className={`cursor-pointer ${meridiem === 'PM' ? 'text-mainBlack' : 'text-gray02'}`}
+                onClick={() => handleMeridiemClick('PM')}
+              >
+                PM
+              </span>
+            </div>
+            <div className="flex gap-3 text-mainBlack">
+              <input
+                type="text"
+                className="w-5 placeholder:text-gray02 font-[700] focus:outline-none"
+                placeholder="00"
+                value={hours}
+                onChange={handleHoursChange}
+              />
+              <span className="font-[500]">:</span>
+              <input
+                type="text"
+                className="w-5 placeholder:text-gray02 font-[700] focus:outline-none"
+                placeholder="00"
+                value={minutes}
+                onChange={handleMinutesChange}
+              />
+            </div>
           </div>
         </div>
         <div

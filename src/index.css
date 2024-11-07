@@ -98,3 +98,22 @@ body {
 html::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera에서 스크롤바 숨기기 */
 }
+
+
+input[type="text"] {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+input[type="text"]:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+input[type="text"]:active {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
