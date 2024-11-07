@@ -135,6 +135,10 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
     // todo: api 호출 로직 추가
   };
 
+  // 모든 필드가 입력되었는지 확인하여 확인 버튼 활성화 여부 결정
+  const isSubmitEnabled =
+    noteTitle.trim() && selectedDates.length > 0 && hours.length > 0 && minutes.length > 0;
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-mainBlack bg-opacity-60"
@@ -269,7 +273,7 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
         <div
           onClick={handleSubmit}
           className={`${
-            noteTitle.trim() ? 'bg-mainBlack cursor-pointer' : 'bg-gray03 cursor-default'
+            isSubmitEnabled ? 'bg-mainBlack cursor-pointer' : 'bg-gray03 cursor-default'
           } w-[59px] h-[46px] rounded-[4px] mt-[60px] flex justify-center items-center`}
         >
           <span className="text-white text-[14px] font-[500]">저장</span>
