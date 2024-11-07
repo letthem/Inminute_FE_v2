@@ -114,6 +114,7 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
           onClick={handleBackgroundClick}
           className="w-[15px] h-[15px] absolute right-[27px] top-[27px] cursor-pointer"
         />
+
         {/* 회의 제목 */}
         <div className="relative mt-[57px]">
           <input
@@ -132,9 +133,12 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
             placeholder={isTitleFocused && !noteTitle ? ' 띄어쓰기 제외 11자' : ''}
           />
           <p className="absolute top-[10px] left-4 font-[500] text-[11px] text-gray05">회의 제목</p>
+
+          {/* 회의 색상 */}
           <div className="absolute bottom-[21px] right-[21px] w-5 h-5 bg-[#FFA800] rounded-full cursor-pointer" />
         </div>
 
+        {/* 회의 날짜 */}
         <div className="mt-5 flex gap-4">
           <div
             className="w-[196px] h-[53px] rounded-[10px] pl-4 pr-[17px] flex justify-between items-center"
@@ -146,6 +150,7 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
             <img src={calendarBlack} alt="calendar black" className="w-4 h-4" />
           </div>
 
+          {/* 회의 시간 */}
           <div
             className="w-[196px] h-[53px] rounded-[10px] flex justify-between px-4 items-center text-[13px]"
             style={{
@@ -188,6 +193,8 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
             </div>
           </div>
         </div>
+
+        {/* 저장 */}
         <div
           onClick={handleSubmit}
           className={`${
