@@ -65,5 +65,5 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
     rowIndex++;
   }
 
-  return <div className="mb-[120px] w-full">{rows}</div>;
+  return <div className="mb-[46px] w-full">{rows}</div>;
 };

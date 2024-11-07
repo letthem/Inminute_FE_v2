@@ -9,16 +9,17 @@ interface AddScheduleModalProps {
   onClose: () => void;
 }
 export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) => {
+  const [isTitleFocused, setIsTitleFocused] = useState(false); // 제목 div focus 상태
+  const [isDateBoxFocused, setIsDateBoxFocused] = useState(false); // 날짜 div focus 상태
+  const [isTimeBoxFocused, setIsTimeBoxFocused] = useState(false); // 시간 div focus 상태
+  const [isColorModalOpen, setIsColorModalOpen] = useState(false); // ColorModal 상태
+  const [isDateModalOpen, setIsDateModalOpen] = useState(false); // DateModal 상태
   const [noteTitle, setNoteTitle] = useState(''); // 회의 제목 상태
-  const [isTitleFocused, setIsTitleFocused] = useState(false); // 제목 필드 포커스 상태
-  const [isTimeBoxFocused, setIsTimeBoxFocused] = useState(false);
+  const [selectedColor, setSelectedColor] = useState('#FFA800'); // 기본 색상 설정
+  const [selectedDates, setSelectedDates] = useState<Date[]>([]); // 다중 선택 날짜 상태
   const [meridiem, setMeridiem] = useState<'AM' | 'PM'>('AM');
   const [hours, setHours] = useState('');
   const [minutes, setMinutes] = useState('');
-  const [isColorModalOpen, setIsColorModalOpen] = useState(false); // color 모달 상태 관리
-  const [selectedColor, setSelectedColor] = useState('#FFA800'); // 기본 색상 설정
-  const [selectedDates, setSelectedDates] = useState<Date[]>([]); // 다중 선택 날짜 상태
-  const [isDateModalOpen, setIsDateModalOpen] = useState(false);
 
   // date modal
   const toggleDateModal = () => {
@@ -28,6 +29,7 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
   const handleDatesSelect = (dates: Date[]) => {
     setSelectedDates(dates);
   };
+
   // color modal
   const toggleColorModal = () => {
     setIsColorModalOpen(!isColorModalOpen);
@@ -38,16 +40,40 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
     setIsColorModalOpen(false); // 색상 선택 후 모달 닫기
   };
 
-  // 모달 배경 or xBtn 클릭하면 닫힘
+  // 전체 모달 배경 or xBtn 클릭하면 닫힘
   const handleBackgroundClick = () => {
     onClose();
   };
 
-  // 모달 내부를 클릭하면 이벤트가 전파되지 않도록 함
+  // 전체 모달 내부를 클릭하면 이벤트가 전파되지 않도록 함
   const handleModalClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // AddScheduleModal 클릭 이벤트 전파 방지
     if (isColorModalOpen) {
       setIsColorModalOpen(false); // ColorModal 닫기
+    }
+  };
+
+  // 회의 제목 focus & blur
+  const handleFocus = () => setIsTitleFocused(true);
+  const handleBlur = () => setIsTitleFocused(false);
+
+  // 날짜 box focus & blur
+  const handleDateBoxClick = () => {
+    setIsDateBoxFocused(true);
+  };
+  const handleDateBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setIsDateBoxFocused(false);
+    }
+  };
+
+  // 시간 box focus & blur
+  const handleTimeBoxClick = () => {
+    setIsTimeBoxFocused(true);
+  };
+  const handleTimeBoxBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setIsTimeBoxFocused(false);
     }
   };
 
@@ -56,20 +82,6 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
     const trimmedValue = e.target.value.replace(/\s/g, ''); // 띄어쓰기 제외
     if (trimmedValue.length <= 11) {
       setNoteTitle(e.target.value); // 띄어쓰기 제외 11자 이내에서만 제출 가능
-    }
-  };
-
-  // 회의 제목 focus & blur
-  const handleFocus = () => setIsTitleFocused(true);
-  const handleBlur = () => setIsTitleFocused(false);
-
-  // 시간 box focus & blur
-  const handleTimeBoxClick = () => {
-    setIsTimeBoxFocused(true);
-  };
-  const handleBlurTimeBox = (e: React.FocusEvent<HTMLDivElement>) => {
-    if (!e.currentTarget.contains(e.relatedTarget)) {
-      setIsTimeBoxFocused(false);
     }
   };
 
@@ -181,9 +193,12 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
           {/* 회의 날짜 */}
           <div
             className="relative w-[196px] h-[53px] rounded-[10px] pl-4 pr-[17px] flex items-center justify-between cursor-pointer"
-            style={{ boxShadow: '0 0 0 1px #D9D9D9 inset' }}
-            onFocus={(e) => (e.target.style.boxShadow = '0 0 0 1px #2B2B2B inset')}
-            onBlur={(e) => (e.target.style.boxShadow = '0 0 0 1px #D9D9D9 inset')}
+            style={{
+              boxShadow: isDateBoxFocused ? '0 0 0 1px #2B2B2B inset' : '0 0 0 1px #D9D9D9 inset',
+            }}
+            onMouseDown={handleDateBoxClick}
+            onBlur={handleDateBlur}
+            tabIndex={0} // div가 focus를 받을 수 있도록 설정
             onClick={toggleDateModal}
           >
             <div className="flex">
@@ -213,7 +228,7 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
               boxShadow: isTimeBoxFocused ? '0 0 0 1px #2B2B2B inset' : '0 0 0 1px #D9D9D9 inset',
             }}
             onMouseDown={handleTimeBoxClick}
-            onBlur={handleBlurTimeBox}
+            onBlur={handleTimeBoxBlur}
             tabIndex={0}
           >
             <div className="flex gap-3 font-[700]">

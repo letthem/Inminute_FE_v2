@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { startOfMonth, endOfMonth, addDays, format, getDay } from 'date-fns';
 import leftBlack from '@/assets/webps/Calendar/leftBlack.webp';
 import rightBlack from '@/assets/webps/Calendar/rightBlack.webp';
@@ -12,6 +12,7 @@ interface DateModalProps {
 export const DateModal: React.FC<DateModalProps> = ({ selectedDates, onSelectDates, onClose }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [tempSelectedDates, setTempSelectedDates] = useState<Date[]>(selectedDates);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const daysInMonth = () => {
     const start = startOfMonth(currentMonth);
@@ -49,8 +50,21 @@ export const DateModal: React.FC<DateModalProps> = ({ selectedDates, onSelectDat
     }
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose]);
+
   return (
     <div
+      ref={modalRef}
       className="absolute top-[39px] left-[17px] z-20 bg-white w-[252px] p-[17px] rounded-[10px] cursor-default"
       onClick={(e) => e.stopPropagation()}
       style={{
