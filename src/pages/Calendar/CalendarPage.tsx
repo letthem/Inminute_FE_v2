@@ -44,6 +44,7 @@ export const CalendarPage = () => {
         <Days />
         {/* 날짜 */}
         <CalendarGrid
+          selectedDate={selectedDate}
           currentMonth={currentMonth}
           specialDate={specialDate}
           onDateClick={toggleModal}

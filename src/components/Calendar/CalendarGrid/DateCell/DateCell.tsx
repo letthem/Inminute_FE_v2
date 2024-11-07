@@ -10,6 +10,7 @@ interface DateCellProps {
   isLastRow: boolean;
   isFirstCol: boolean;
   isLastCol: boolean;
+  isSelected: boolean;
 }
 
 export const DateCell: React.FC<DateCellProps> = ({
@@ -21,25 +22,27 @@ export const DateCell: React.FC<DateCellProps> = ({
   isLastRow,
   isFirstCol,
   isLastCol,
+  isSelected,
 }) => {
   const formattedDate = format(day, 'd');
   const isToday = isSameDay(day, new Date());
   const isSpecial = specialDate && isSameDay(day, specialDate);
   const dateWidth = formattedDate.length === 1 ? '11px' : '19px';
 
-  const roundedClass = `
-  ${isFirstRow && isFirstCol ? 'rounded-tl-[10px]' : ''} 
-  ${isFirstRow && isLastCol ? 'rounded-tr-[10px]' : ''} 
-  ${isLastRow && isFirstCol ? 'rounded-bl-[10px]' : ''} 
-  ${isLastRow && isLastCol ? 'rounded-br-[10px]' : ''}
-`;
-
   return (
     <div
-      className={`w-[14.3%] h-[130px] border-[0.3px] border-gray03 flex flex-col bg-white ${roundedClass} 
-        ${!isSameMonth(day, currentMonth) ? 'text-transparent pointer-events-none' : 'cursor-pointer'} 
-        hover:bg-gray01`}
+      className={`w-[14.3%] h-[130px] border-[0.3px] flex flex-col cursor-pointer
+      ${isFirstRow && isFirstCol ? 'rounded-tl-[10px]' : ''} 
+      ${isFirstRow && isLastCol ? 'rounded-tr-[10px]' : ''} 
+      ${isLastRow && isFirstCol ? 'rounded-bl-[10px]' : ''} 
+      ${isLastRow && isLastCol ? 'rounded-br-[10px]' : ''}
+      ${isSelected ? 'border-gray05 border-[0.5px]' : 'border-gray03'}
+      ${isSameMonth(day, currentMonth) ? 'hover:bg-gray01' : ''}
+    `}
       onClick={(e) => onClick(day, e)}
+      style={{
+        boxShadow: isSelected ? '0 0 0 0.5px inset #A6A6A6' : 'none',
+      }}
     >
       <span
         className={`ml-4 mt-[12px] ${!isSameMonth(day, currentMonth) ? 'text-transparent' : 'text-mainBlack'} 

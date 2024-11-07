@@ -1,17 +1,27 @@
 import React from 'react';
-import { startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, subDays } from 'date-fns';
-import { DateCell } from '@/components/Calendar/DateCell/DateCell';
+import {
+  startOfMonth,
+  endOfMonth,
+  startOfWeek,
+  endOfWeek,
+  addDays,
+  subDays,
+  isSameDay,
+} from 'date-fns';
+import { DateCell } from '@/components/Calendar/CalendarGrid/DateCell/DateCell';
 
 interface CalendarGridProps {
   currentMonth: Date;
   specialDate: Date;
   onDateClick: (date: Date, event: React.MouseEvent<HTMLDivElement>) => void;
+  selectedDate: Date | null;
 }
 
 export const CalendarGrid: React.FC<CalendarGridProps> = ({
   currentMonth,
   specialDate,
   onDateClick,
+  selectedDate,
 }) => {
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
@@ -37,6 +47,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
           currentMonth={currentMonth}
           onClick={onDateClick}
           specialDate={specialDate}
+          isSelected={!!selectedDate && isSameDay(day, selectedDate)} // 선택된 날짜 여부 전달
           isFirstRow={isFirstRow}
           isLastRow={isLastRow}
           isFirstCol={isFirstCol}
