@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import xGray from '@/assets/svgs/Main/xGray.svg';
 import calendarBlack from '@/assets/webps/Calendar/calendarBlack.webp';
+import { ColorModal } from '@/components/Calendar/AddScheduleModal/ColorModal/ColorModal';
 
 interface AddScheduleModalProps {
   onClose: () => void;
@@ -12,6 +13,17 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
   const [meridiem, setMeridiem] = useState<'AM' | 'PM'>('AM');
   const [hours, setHours] = useState('');
   const [minutes, setMinutes] = useState('');
+  const [isColorModalOpen, setIsColorModalOpen] = useState(false); // color 모달 상태 관리
+  const [selectedColor, setSelectedColor] = useState('#FFA800'); // 기본 색상 설정
+
+  const toggleColorModal = () => {
+    setIsColorModalOpen(!isColorModalOpen);
+  };
+
+  const handleColorChange = (color: string) => {
+    setSelectedColor(color);
+    setIsColorModalOpen(false); // 색상 선택 후 모달 닫기
+  };
 
   // 모달 배경 or xBtn 클릭하면 닫힘
   const handleBackgroundClick = () => {
@@ -20,8 +32,12 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
 
   // 모달 내부를 클릭하면 이벤트가 전파되지 않도록 함
   const handleModalClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+    e.stopPropagation(); // AddScheduleModal 클릭 이벤트 전파 방지
+    if (isColorModalOpen) {
+      setIsColorModalOpen(false); // ColorModal 닫기
+    }
   };
+
 
   // input change 핸들러
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -135,7 +151,18 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
           <p className="absolute top-[10px] left-4 font-[500] text-[11px] text-gray05">회의 제목</p>
 
           {/* 회의 색상 */}
-          <div className="absolute bottom-[21px] right-[21px] w-5 h-5 bg-[#FFA800] rounded-full cursor-pointer" />
+          <div
+            onClick={(e) => {
+              e.stopPropagation(); // 모달 내부 클릭은 전파 방지
+              toggleColorModal();
+            }}
+            className="absolute bottom-[21px] right-[21px] w-5 h-5 rounded-full cursor-pointer"
+            style={{ backgroundColor: selectedColor }}
+          >
+            {isColorModalOpen && (
+              <ColorModal onClose={toggleColorModal} onSelectColor={handleColorChange} />
+            )}
+          </div>
         </div>
 
         {/* 회의 날짜 */}
