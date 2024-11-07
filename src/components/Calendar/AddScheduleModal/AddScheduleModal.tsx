@@ -7,6 +7,7 @@ interface AddScheduleModalProps {
 }
 export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) => {
   const [noteTitle, setNoteTitle] = useState(''); // 회의 제목 상태
+  const [isTitleFocused, setIsTitleFocused] = useState(false); // 제목 필드 포커스 상태
   const [meridiem, setMeridiem] = useState<'AM' | 'PM'>('AM');
   const [hours, setHours] = useState('');
   const [minutes, setMinutes] = useState('');
@@ -28,6 +29,9 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
       setNoteTitle(e.target.value); // 띄어쓰기 제외 11자 이내에서만 제출 가능
     }
   };
+
+  const handleFocus = () => setIsTitleFocused(true);
+  const handleBlur = () => setIsTitleFocused(false);
 
   const handleMeridiemClick = (value: 'AM' | 'PM') => {
     setMeridiem(value);
@@ -103,11 +107,17 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
           <input
             className="w-[408px] h-[76px] rounded-[10px] pt-[20px] px-4 text-[15px] font-[500] text-mainBlack focus:outline-none placeholder:text-gray03 placeholder:text-[13px]"
             style={{ boxShadow: '0 0 0 1px #D9D9D9 inset' }}
-            onFocus={(e) => (e.target.style.boxShadow = '0 0 0 1px #2B2B2B inset')}
-            onBlur={(e) => (e.target.style.boxShadow = '0 0 0 1px #D9D9D9 inset')}
+            onFocus={(e) => {
+              handleFocus();
+              e.target.style.boxShadow = '0 0 0 1px #2B2B2B inset';
+            }}
+            onBlur={(e) => {
+              handleBlur();
+              e.target.style.boxShadow = '0 0 0 1px #D9D9D9 inset';
+            }}
             onChange={handleInputChange} // input 변경 핸들러 추가
             value={noteTitle}
-            placeholder=" 띄어쓰기 제외 11자"
+            placeholder={isTitleFocused && !noteTitle ? ' 띄어쓰기 제외 11자' : ''}
           />
           <p className="absolute top-[10px] left-4 font-[500] text-[11px] text-gray05">회의 제목</p>
         </div>

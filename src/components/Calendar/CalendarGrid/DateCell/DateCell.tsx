@@ -51,9 +51,6 @@ export const DateCell: React.FC<DateCellProps> = ({
       >
         {formattedDate}
       </span>
-      {isToday && (
-        <div className="h-[1.4px] bg-black ml-4 mt-[-1px]" style={{ width: dateWidth }} />
-      )}
       {isSpecial && (
         <div className="flex flex-col mt-[5px] ml-[10px] mr-1 gap-[6px]">
           <div className="flex w-full h-6 bg-[#EAFBEC] rounded-[4px] overflow-hidden items-center">
