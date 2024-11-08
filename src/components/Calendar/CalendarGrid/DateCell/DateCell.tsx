@@ -1,5 +1,6 @@
 import React from 'react';
 import { isSameDay, isSameMonth, format } from 'date-fns';
+import { Meeting } from '@/components/Calendar/CalendarGrid/DateCell/Meeting/Meeting';
 
 interface DateCellProps {
   day: Date;
@@ -29,6 +30,22 @@ export const DateCell: React.FC<DateCellProps> = ({
   const isSpecial = specialDate && isSameDay(day, specialDate);
   const dateWidth = formattedDate.length === 1 ? '11px' : '19px';
 
+  const meetings = [
+    {
+      id: 1,
+      title: 'TF팀 회의',
+      backgroundColor: 'bg-[#EAFBEC]',
+      textColor: 'text-[#489D06]',
+    },
+    {
+      id: 2,
+      title: '해커톤 정기회의',
+      backgroundColor: 'bg-[#FCF3FD]',
+      textColor: 'text-[#E7546A]',
+      stripeColor: 'bg-[#FF94A4]',
+    },
+  ];
+
   return (
     <div
       className={`w-[14.3%] h-[130px] bg-white border-[0.3px] flex flex-col cursor-pointer
@@ -51,21 +68,7 @@ export const DateCell: React.FC<DateCellProps> = ({
       >
         {formattedDate}
       </span>
-      {isSpecial && (
-        <div className="flex flex-col mt-[5px] s1200:mx-3 mx-2 gap-[6px]">
-          <div className="flex w-full h-6 bg-[#EAFBEC] rounded-[4px] overflow-hidden items-center">
-            <p className="ml-[8px] text-[12px] font-[500] leading-[22px] text-[#489D06]">
-              TF팀 회의
-            </p>
-          </div>
-          <div className="flex w-full h-6 bg-[#FCF3FD] rounded-[4px] overflow-hidden items-center">
-            <div className="w-[5px] h-full bg-[#FF94A4]" />
-            <p className="ml-[7px] text-[12px] font-[500] leading-[22px] text-[#E7546A]">
-              해커톤 정기회의
-            </p>
-          </div>
-        </div>
-      )}
+      {isSpecial && <Meeting meetings={meetings} />}
     </div>
   );
 };
