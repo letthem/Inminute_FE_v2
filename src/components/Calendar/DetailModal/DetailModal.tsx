@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import xGray from '@/assets/svgs/Calendar/xGray.svg';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
@@ -20,11 +20,15 @@ interface MeetingItem {
 
 export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position, onClose }) => {
   const [isMenuOpen, setIsMenuOpen] = useState<number | null>(null);
+  const [editingId, setEditingId] = useState<number | null>(null);
   const [meetings, setMeetings] = useState<MeetingItem[]>([
     { id: 1, time: '20:00', title: 'TF팀 회의', color: '#FCF2EB', textColor: '#DB7A08' },
     { id: 2, time: '22:00', title: '해커톤 정기회의', color: '#F3E9FF', textColor: '#BE5BFF' },
   ]);
+  const divRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
+  // 바깥 스크롤 막기
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
@@ -32,19 +36,41 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
     };
   }, []);
 
+  useEffect(() => {
+    if (editingId !== null) {
+      inputRef.current?.focus();
+    }
+  }, [editingId]);
+
   // 메뉴 아이콘 클릭 시 DetailMenuModal 열기
   const handleMenuClick = (event: React.MouseEvent<HTMLDivElement>, id: number) => {
     event.stopPropagation();
     setIsMenuOpen((prev) => (prev === id ? null : id)); // 클릭 시 해당 아이템의 메뉴 토글
   };
 
-  const handleClickOutside = (event: React.MouseEvent) => {
+  // 모달 바깥 클릭 시 모달 닫기
+  const handleClickOutsideModal = (event: React.MouseEvent) => {
     event.stopPropagation();
-    onClose();
+    onClose(); // 모달 닫기
   };
 
+  // 수정 div 바깥 클릭 시 수정 취소
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (editingId !== null && divRef.current && !divRef.current.contains(event.target as Node)) {
+        setEditingId(null);
+        setIsMenuOpen(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [editingId]);
+
   const handleEdit = (id: number) => {
-    alert(`수정 기능 실행 - ID: ${id}`);
+    setEditingId(id);
     setIsMenuOpen(null);
   };
 
@@ -61,10 +87,42 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
     setIsMenuOpen(null);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
+    const { value } = e.target;
+    setMeetings((prevMeetings) =>
+      prevMeetings.map((meeting) => (meeting.id === id ? { ...meeting, title: value } : meeting))
+    );
+  };
+
+  const handleInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>, id: number) => {
+    if (e.key === 'Enter') {
+      setEditingId(null);
+      setIsMenuOpen(null);
+    }
+    console.log(id);
+  };
+
+  const getInputBorderColor = (color: string) => {
+    switch (color) {
+      case '#FCF2EB': // 주황색
+        return '#FFD6A6';
+      case '#FCF3FD': // 핑크색
+        return '#FFCBD3';
+      case '#EAFBEC': // 초록색
+        return '#BCEAC1';
+      case '#EDF3FA': // 파랑색
+        return '#C1D0FF';
+      case '#F3E9FF': // 보라색
+        return '#E4CEFF';
+      default:
+        return 'transparent';
+    }
+  };
+
   return (
     <div
       className="fixed inset-0 z-10 flex items-center justify-center"
-      onClick={handleClickOutside}
+      onClick={handleClickOutsideModal}
     >
       <div
         style={{
@@ -96,39 +154,58 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
               {meeting.time}
             </span>
             <div
+              ref={divRef}
               className="w-full h-8 rounded-[4px] px-[10px] py-[5px] flex justify-between items-center"
-              style={{ backgroundColor: meeting.color }}
+              style={{
+                backgroundColor: editingId === meeting.id ? '#FFFFFF' : meeting.color,
+                boxShadow:
+                  editingId === meeting.id
+                    ? `0 0 0 1px ${getInputBorderColor(meeting.color)} inset`
+                    : 'none',
+              }}
             >
-              <span
-                className="text-[13px] leading-[22px] font-[500]"
-                style={{ color: meeting.textColor }}
-              >
-                {meeting.title}
-              </span>
-              <div
-                onClick={(event) => handleMenuClick(event, meeting.id)}
-                className="relative w-[2px] h-[11px] flex flex-col justify-between cursor-pointer"
-              >
-                <div
-                  className="w-[2px] h-[2px] rounded-[2px]"
-                  style={{ backgroundColor: meeting.textColor }}
+              {editingId === meeting.id ? (
+                <input
+                  ref={inputRef}
+                  value={meeting.title}
+                  onChange={(e) => handleInputChange(e, meeting.id)}
+                  onKeyDown={(e) => handleInputKeyPress(e, meeting.id)}
+                  className="w-full bg-transparent border-none outline-none text-[13px] leading-[22px] font-[500] text-gray03"
                 />
+              ) : (
+                <span
+                  className="text-[13px] leading-[22px] font-[500]"
+                  style={{ color: meeting.textColor }}
+                >
+                  {meeting.title}
+                </span>
+              )}
+              {editingId !== meeting.id && (
                 <div
-                  className="w-[2px] h-[2px] rounded-[2px]"
-                  style={{ backgroundColor: meeting.textColor }}
-                />
-                <div
-                  className="w-[2px] h-[2px] rounded-[2px]"
-                  style={{ backgroundColor: meeting.textColor }}
-                />
-                {isMenuOpen === meeting.id && (
-                  <DetailMenuModal
-                    onEdit={() => handleEdit(meeting.id)}
-                    onDelete={() => handleDelete(meeting.id)}
-                    onClose={() => setIsMenuOpen(null)}
+                  onClick={(event) => handleMenuClick(event, meeting.id)}
+                  className="relative w-[2px] h-[11px] flex flex-col justify-between cursor-pointer"
+                >
+                  <div
+                    className="w-[2px] h-[2px] rounded-[2px]"
+                    style={{ backgroundColor: meeting.textColor }}
                   />
-                )}
-              </div>
+                  <div
+                    className="w-[2px] h-[2px] rounded-[2px]"
+                    style={{ backgroundColor: meeting.textColor }}
+                  />
+                  <div
+                    className="w-[2px] h-[2px] rounded-[2px]"
+                    style={{ backgroundColor: meeting.textColor }}
+                  />
+                  {isMenuOpen === meeting.id && (
+                    <DetailMenuModal
+                      onEdit={() => handleEdit(meeting.id)}
+                      onDelete={() => handleDelete(meeting.id)}
+                      onClose={() => setIsMenuOpen(null)}
+                    />
+                  )}
+                </div>
+              )}
             </div>
           </div>
         ))}
