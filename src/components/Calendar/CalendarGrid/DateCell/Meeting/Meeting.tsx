@@ -17,7 +17,7 @@ export const Meeting: React.FC<MeetingProps> = ({ meetings }) => (
         {meeting.stripeColor && (
           <div className={`w-[5px] h-full ${meeting.stripeColor}`} />
         )}
-        <p className={`ml-[${meeting.stripeColor ? '7px' : '8px'}] text-[12px] font-[500] leading-[22px] ${meeting.textColor}`}>
+        <p className={`ml-[${meeting.stripeColor ? '6px' : '8px'}] text-[12px] font-[500] leading-[22px] ${meeting.textColor}`}>
           {meeting.title}
         </p>
       </div>
