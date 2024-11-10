@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import { motion, useMotionValue, useTransform, PanInfo } from 'framer-motion';
-import loupe from '@/assets/webps/About/loupe.webp';
-import bulb from '@/assets/webps/About/bulb.webp';
 
 interface CardData {
   question: string;
@@ -58,16 +56,6 @@ export const Cards = () => {
         className="w-[688px] h-[460px] absolute top-0 rounded-[36px]"
         style={{ backgroundColor: getBgColor(index) }}
       >
-        <img
-          src={loupe}
-          alt="loupe"
-          className="w-[270px] h-[269px] absolute z-20 top-[-118px] left-[-303px]"
-        />
-        <img
-          src={bulb}
-          alt="bulb"
-          className="w-[421.7px] h-[421.3px] absolute z-20 left-[552.6px] top-[382px]"
-        />
       </div>
       <motion.div
         className="w-[724px] h-[460px] absolute top-[38px] rounded-[36px]"
