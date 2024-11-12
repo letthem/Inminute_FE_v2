@@ -7,8 +7,9 @@ import { MainPage } from '@/pages/Main/MainPage';
 import { NotePage } from '@/pages/Note/NotePage';
 import { CalendarPage } from '@/pages/Calendar/CalendarPage';
 import { AboutPage } from '@/pages/About/AboutPage';
-import 'aos/dist/aos.css';
+import { OAuthRedirect } from '@/components/Login/OAuthRedirect/OAuthRedirect';
 import Layout from '@/components/Layout/Layout';
+import 'aos/dist/aos.css';
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,8 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <Routes>
           <Route path="/" element={<AboutPage />} />
+          <Route path="/google/callback" element={<OAuthRedirect />} />
+          <Route path="/kakao/callback" element={<OAuthRedirect />} />
           <Route
             path="/home"
             element={

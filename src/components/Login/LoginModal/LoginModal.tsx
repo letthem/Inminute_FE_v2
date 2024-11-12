@@ -23,7 +23,17 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
 
   // 소셜 로그인 처리
   const handleSocialLogin = (provider: string) => {
-    window.location.href = `${import.meta.env.VITE_API_URL}/oauth2/authorization/${provider}`;
+    if (provider === 'google') {
+      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+      const redirectUri = encodeURIComponent(import.meta.env.VITE_GOOGLE_REDIRECT_URI);
+      const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=email profile`;
+      window.location.href = googleLoginUrl;
+    } else if (provider === 'kakao') {
+      const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
+      const redirectUri = encodeURIComponent(import.meta.env.VITE_KAKAO_REDIRECT_URI);
+      const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
+      window.location.href = kakaoLoginUrl;
+    } else return;
   };
 
   return (
