@@ -36,7 +36,13 @@ export const JoinModal: React.FC<JoinModalProps> = ({ onClose }) => {
       if (response) {
         await queryClient.invalidateQueries('isNickName'); // 캐시 무효화
         queryClient.refetchQueries('isNickName'); // 즉시 다시 데이터 가져오기
-        window.location.href = '/home'; // 완료 후 '/home'로 리다이렉트
+        const redirectUuid = localStorage.getItem('redirectUuid');
+        if (redirectUuid) {
+          window.location.href = `/note/${redirectUuid}`; // 완료 후 회의록 페이지로 리다이렉트
+          localStorage.removeItem('redirectUuid'); // 이동 후 UUID 삭제
+        } else {
+          window.location.href = '/home'; // 완료 후 '/home'로 리다이렉트
+        }
       }
     }
   };
