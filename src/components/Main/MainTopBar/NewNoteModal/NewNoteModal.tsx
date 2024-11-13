@@ -68,7 +68,7 @@ export const NewNoteModal: React.FC<NewNoteModalProps> = ({ onClose }) => {
       onClick={handleBackgroundClick}
     >
       <div
-        className="w-[480px] h-[420px] absolute flex flex-col items-center rounded-[10px] bg-cover"
+        className="ml-[100px] w-[480px] h-[420px] absolute flex flex-col items-center rounded-[10px] bg-cover"
         onClick={handleModalClick}
         style={{
           backgroundImage: `url(${newNoteModalBg})`,
