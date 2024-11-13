@@ -4,11 +4,12 @@ import React, { useState } from 'react';
 interface TitleInputProps {
   value: string;
   onChange: (value: string) => void;
+  selectedColor: string;
+  onColorChange: (color: string) => void;
 }
 
-export const TitleInput: React.FC<TitleInputProps> = ({ value, onChange }) => {
+export const TitleInput: React.FC<TitleInputProps> = ({ value, onChange, selectedColor, onColorChange }) => {
   const [isFocused, setIsFocused] = useState(false);
-  const [selectedColor, setSelectedColor] = useState('#FFA800');
 
   return (
     <div className="relative mt-[57px]">
@@ -24,7 +25,7 @@ export const TitleInput: React.FC<TitleInputProps> = ({ value, onChange }) => {
         placeholder={isFocused && !value ? ' 띄어쓰기 제외 11자' : ''}
       />
       <p className="absolute top-[10px] left-4 font-[500] text-[11px] text-gray05">회의 제목</p>
-      <ColorPicker selectedColor={selectedColor} onColorChange={setSelectedColor} />
+      <ColorPicker selectedColor={selectedColor} onColorChange={onColorChange} />
     </div>
   );
 };

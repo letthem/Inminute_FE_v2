@@ -1,13 +1,12 @@
 import React from 'react';
 
 interface ColorModalProps {
+  colors: { [key: string]: string };
   onClose: () => void;
   onSelectColor: (color: string) => void;
 }
 
-export const ColorModal: React.FC<ColorModalProps> = ({ onClose, onSelectColor }) => {
-  const colors = ['#FFA800', '#FF94A4', '#5CC688', '#7582FF', '#BE5BFF'];
-
+export const ColorModal: React.FC<ColorModalProps> = ({ colors, onClose, onSelectColor }) => {
   return (
     <div
       className="absolute top-[21px] right-[-12px] flex items-center justify-center z-20 cursor-default"
@@ -20,9 +19,9 @@ export const ColorModal: React.FC<ColorModalProps> = ({ onClose, onSelectColor }
           filter: 'drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.25))',
         }}
       >
-        {colors.map((color) => (
+        {Object.entries(colors).map(([name, color]) => (
           <div
-            key={color}
+            key={name}
             className="w-4 h-4 rounded-full cursor-pointer"
             style={{ backgroundColor: color }}
             onClick={() => onSelectColor(color)}

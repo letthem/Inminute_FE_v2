@@ -8,6 +8,13 @@ interface ColorPickerProps {
 
 export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, onColorChange }) => {
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
+  const colors = {
+    orange: '#FFA800',
+    pink: '#FF94A4',
+    green: '#5CC688',
+    blue: '#7582FF',
+    purple: '#BE5BFF',
+  };
   const pickerRef = useRef<HTMLDivElement>(null);
 
   const handleColorSelect = (color: string) => {
@@ -39,8 +46,12 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, onColor
       style={{ backgroundColor: selectedColor }}
       onClick={() => setIsColorModalOpen(!isColorModalOpen)}
     >
-      {isColorModalOpen && (
-        <ColorModal onClose={() => setIsColorModalOpen(false)} onSelectColor={handleColorSelect} />
+     {isColorModalOpen && (
+        <ColorModal
+          colors={colors} // colors 리스트를 ColorModal로 전달
+          onClose={() => setIsColorModalOpen(false)}
+          onSelectColor={handleColorSelect}
+        />
       )}
     </div>
   );
