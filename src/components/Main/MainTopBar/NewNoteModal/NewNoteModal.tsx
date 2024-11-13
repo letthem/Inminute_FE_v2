@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FolderDropDown } from '@/components/Main/MainTopBar/NewNoteModal/FolderDropDown/FolderDropDown';
 import newNoteModalBg from '@/assets/webps/Main/newNoteModalBg.webp';
 import xGray from '@/assets/svgs/Main/xGray.svg';
@@ -53,14 +53,20 @@ export const NewNoteModal: React.FC<NewNoteModalProps> = ({ onClose }) => {
     window.location.href = `/note/${noteUUID}`; // 해당 노트 페이지로 리다이렉트
   };
 
-  const fetchFolders = async () => {
+  // 폴더 리스트를 가져오는 함수
+  const fetchFolders = useCallback(async () => {
     const data = await getFolder();
     setFolders(data.result.folders);
-  };
+  }, []);
 
   useEffect(() => {
     fetchFolders();
-  }, [selectedFolder]);
+  }, [fetchFolders]);
+
+  // 모달이 열릴 때마다 폴더 리스트 업데이트
+  useEffect(() => {
+    setIsDropdownOpen(false); // 드롭다운 초기화
+  }, [folders]); // 폴더 리스트가 변경될 때마다 실행
 
   return (
     <div
