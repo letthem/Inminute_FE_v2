@@ -24,17 +24,19 @@ export const NavBar = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const redirectUuid = localStorage.getItem('redirectUuid');
-    const source = params.get('source');
+    const redirectUuid = params.get('uuid') || localStorage.getItem('redirectUuid');
+    const isFirst = localStorage.getItem('isFirst');
 
     // 비회원이 note/{uuid} 접근 시
     if (!isMember && redirectUuid) {
+      localStorage.setItem('redirectUuid', redirectUuid); // UUID를 LocalStorage에 저장
       setIsLoginModalOpen(true); // 로그인 모달 열기
       nav('/'); // '/'로 리다이렉트
     }
-    // source가 'login'일 경우 JoinModal 띄우기
-    if (isMember && !isNickName && source === 'login') {
+    // source가 'login'일 경우 (= isFirst 가 true : localStorage) JoinModal 띄우기
+    if (isMember && !isNickName && isFirst === 'true') {
       setIsJoinModalOpen(true);
+      localStorage.removeItem('isFirst'); // 모달을 띄운 후 플래그 삭제
     }
   }, [isMember, isNickName, location, nav]);
 
@@ -96,8 +98,8 @@ export const NavBar = () => {
         </div>
       </header>
 
-      {isLoginModalOpen && <LoginModal onClose={() => setIsLoginModalOpen(false)} />}
-      {isJoinModalOpen && <JoinModal onClose={() => setIsJoinModalOpen(false)} />}
+      {isLoginModalOpen && !isMember && <LoginModal onClose={() => setIsLoginModalOpen(false)} />}
+      {isJoinModalOpen && isMember && !isNickName && <JoinModal onClose={() => setIsJoinModalOpen(false)} />}
     </>
   );
 };
