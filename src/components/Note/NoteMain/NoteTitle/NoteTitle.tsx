@@ -17,9 +17,10 @@ interface NoteTitleProps {
   noteData: NoteDetail | null;
   uuid: string;
   onSummaryUpdate: (summary: string) => void; // summary 업데이트 핸들러
+  setIsMeetingEnded: (ended: boolean) => void;  // 회의 종료 상태 업데이트 핸들러
 }
 
-export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid, onSummaryUpdate }) => {
+export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid, onSummaryUpdate, setIsMeetingEnded }) => {
   const { stompClient } = useSocket(); // 소켓 클라이언트 가져오기
   const { data: nickname } = useNickName(); // 닉네임 가져오기
   const [isPlatformModalOpen, setIsPlatformModalOpen] = useState(false);
@@ -71,7 +72,8 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid, onSummaryU
         destination: `/app/chat.stop/${uuid}`, // 종료 요청 보내기
         body: JSON.stringify(stopMeeting),
       });
-
+      setIsMeetingEnded(true);
+      
       const response = await getNoteMainContents(uuid);
       onSummaryUpdate(response.result.summary); // summary 전달
     } else {

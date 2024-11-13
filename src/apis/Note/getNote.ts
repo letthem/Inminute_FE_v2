@@ -32,7 +32,7 @@ export const getNoteAllByFolder = async (folderId: number) => {
 
 export const getNoteMainContents = async (uuid: string) => {
   try {
-    const response = await instance.post(`/notes/${uuid}/stop`, {
+    const response = await instance.patch(`/notes/${uuid}/stop`, {
       uuid,
     });
     return response.data;
