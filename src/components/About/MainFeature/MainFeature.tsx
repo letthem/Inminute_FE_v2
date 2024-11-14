@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { throttle } from 'lodash';
 import Lottie from 'lottie-react';
 import { TextItem } from '@/components/About/MainFeature/TextItem/TextItem';
 import mainFeature0 from '@/assets/lotties/mainFeature0.json';
@@ -94,7 +95,7 @@ export const MainFeature = () => {
     return { width, marginLeft };
   };
 
-  const handleScroll = () => {
+  const handleScroll = throttle(() => {
     const scrollY = window.scrollY;
 
     let index = 0;
@@ -118,16 +119,16 @@ export const MainFeature = () => {
         setFadeClass('fade-in');
       }, 300);
     }
-  };
+  }, 100);
 
   useEffect(() => {
     setAnimationStyles(getResponsiveStyles(currentAnimationIndex));
 
     window.addEventListener('scroll', handleScroll);
-    const handleResize = () => {
+    const handleResize = throttle(() => {
       setAnimationStyles(getResponsiveStyles(currentAnimationIndex));
       setIsSmallScreen(window.innerWidth < 1000);
-    };
+    }, 200); // 200ms 단위로 리사이즈 이벤트 핸들링
     window.addEventListener('resize', handleResize);
 
     return () => {
