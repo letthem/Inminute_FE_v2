@@ -106,10 +106,10 @@ export const SubFeature = () => {
                 <div className="absolute top-[88px] right-0 w-[294px] h-[72px] bg-[#E1FF4D] rounded-t-[30px] rounded-bl-[30px] pt-4 pl-6">
                   <span>어떤 이야기들을 나눴었지?</span>
                 </div>
-                <div className="absolute top-[188px] left-0 w-[309px] h-[72px] bg-[#9DFF4D] rounded-t-[30px] rounded-bl-[30px] pt-4 pl-6">
+                <div className="absolute top-[188px] left-0 w-[309px] h-[72px] bg-[#9DFF4D] rounded-b-[30px] rounded-tr-[30px] pt-4 pl-6">
                   <span>OO에 대해서 알려드릴게요!</span>
                 </div>
-                <div className="absolute bottom-0 left-0 w-[90px] h-[72px] bg-[#9DFF4D] rounded-t-[30px] rounded-bl-[30px] pt-[33px] pl-[30px]">
+                <div className="absolute bottom-0 left-0 w-[90px] h-[72px] bg-[#9DFF4D] rounded-b-[30px] rounded-tr-[30px] pt-[33px] pl-[30px]">
                   <div className="flex gap-[6px]">
                     <div className="rounded-full w-[6px] h-[6px] bg-[#2B2B2B]" />
                     <div className="rounded-full w-[6px] h-[6px] bg-[#2B2B2B]" />

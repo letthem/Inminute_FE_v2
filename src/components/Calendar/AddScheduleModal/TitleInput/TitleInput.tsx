@@ -10,6 +10,14 @@ export const TitleInput: React.FC<TitleInputProps> = ({ value, onChange }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [selectedColor, setSelectedColor] = useState('#FFA800');
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    const trimmedValue = inputValue.replace(/\s/g, '');
+    if (trimmedValue.length <= 11) {
+      onChange(inputValue);
+    }
+  };
+
   return (
     <div className="relative mt-[57px]">
       <input
@@ -19,7 +27,7 @@ export const TitleInput: React.FC<TitleInputProps> = ({ value, onChange }) => {
         }}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        onChange={(e) => onChange(e.target.value.replace(/\s/g, ''))}
+        onChange={handleInputChange}
         value={value}
         placeholder={isFocused && !value ? ' 띄어쓰기 제외 11자' : ''}
       />

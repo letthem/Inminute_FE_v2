@@ -20,7 +20,7 @@ const cardData: CardData[] = [
     answer: `회의 노트를 만들 때 지었던 회의 제목,
     음성 기록을 텍스트로 변환하여 만들어진 회의 스크립트, 
     KOBART 모델을 fine tuning해 만든 AI로 요약한 한 줄 요약과 화자별 요약, 
-    그리고 GPT API로 만들어진 TO DO까지 모두 편집이 가능하답니다 !
+    그리고 GPT API로 만들어진 TO DO까지 모두 편집이 가능하답니다!
     또한 폴더도 이름 변경과 삭제가 가능해요.`,
   },
   {
@@ -30,7 +30,7 @@ const cardData: CardData[] = [
     3. '링크 복사' 를 클릭하여 회의에 함께할 사용자들을 초대합니다.
     4. '헤드셋' 을 클릭해 다양한 회의 플랫폼으로 인미닛과 함께 회의를 진행합니다.
     5. '회의 시작' 을 누르고 '마이크' 를 클릭하며 스크립트가 생성되는 것을 확인합니다.
-    6. '회의 종료' 를 누르면 자동으로 AI가 회의록을 완성해줍니다 !`,
+    6. '회의 종료' 를 누르면 자동으로 AI가 회의록을 완성해줍니다!`,
   },
 ];
 
@@ -51,12 +51,11 @@ export const Cards = () => {
   const getBgColor = (i: number) => bgColors[i % bgColors.length];
 
   return (
-    <div className="relative h-screen flex items-center justify-center mt-[201px] mb-[50px]">
+    <div className="relative h-screen flex items-center justify-center mt-[202px] mb-[50px]">
       <div
         className="w-[688px] h-[460px] absolute top-0 rounded-[36px]"
         style={{ backgroundColor: getBgColor(index) }}
-      >
-      </div>
+      ></div>
       <motion.div
         className="w-[724px] h-[460px] absolute top-[38px] rounded-[36px]"
         style={{ backgroundColor: getBgColor(index + 1), scale }} // 드래그에 따른 scale 적용
@@ -83,7 +82,7 @@ export const Cards = () => {
             className="absolute flex flex-col justify-between top-[76px] w-[760px] h-[460px] bg-mainBlack text-white rounded-[36px] px-[80px] shadow-lg"
           >
             <h2 className="text-[28px] font-[700] leading-[170%] mt-[56px]">{card.question}</h2>
-            <p className="text-[17px] font-[500] leading-[240%] mb-[56px]">
+            <p className="text-[18px] font-pretendard font-[400] leading-[240%] mb-[56px]">
               {card.answer.split('\n').map((line, index) => (
                 <span key={index}>
                   {line}
