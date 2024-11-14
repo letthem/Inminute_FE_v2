@@ -82,7 +82,7 @@ export const Cards = () => {
             className="absolute flex flex-col justify-between top-[76px] w-[760px] h-[460px] bg-mainBlack text-white rounded-[36px] px-[80px] shadow-lg"
           >
             <h2 className="text-[28px] font-[700] leading-[170%] mt-[56px]">{card.question}</h2>
-            <p className="text-[18px] font-pretendard font-[400] leading-[240%] mb-[56px]">
+            <p className="text-[18px] font-pretendard font-[300] leading-[34px] mb-[56px]">
               {card.answer.split('\n').map((line, index) => (
                 <span key={index}>
                   {line}

@@ -39,79 +39,143 @@ export const MainFeature = () => {
     marginLeft: '74px',
   });
   const [fadeClass, setFadeClass] = useState('fade-in');
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1000);
 
-  const handleScroll = () => {
-    const scrollY = window.scrollY; // 현재 스크롤 위치
-
-    let index = 0;
+  const getResponsiveStyles = (index: number) => {
+    const screenWidth = window.innerWidth;
     let width = '1000px';
     let marginLeft = '74px';
 
+    if (screenWidth < 1024) {
+      if (index === 2) {
+        width = '94%';
+        marginLeft = '0';
+      } else if (index === 4) {
+        width = '93%';
+        marginLeft = '3%';
+      } else {
+        width = '90%';
+        marginLeft = '3%';
+      }
+    } else if (screenWidth < 1200) {
+      if (index === 2) {
+        width = '728px';
+        marginLeft = '0px';
+      } else if (index === 4) {
+        width = '721px';
+        marginLeft = '24px';
+      } else {
+        width = '680px';
+        marginLeft = '24px';
+      }
+    } else if (screenWidth < 1440) {
+      if (index === 2) {
+        width = '850px';
+        marginLeft = '12px';
+      } else if (index === 4) {
+        width = '842px';
+        marginLeft = '40px';
+      } else {
+        width = '794px';
+        marginLeft = '40px';
+      }
+    } else {
+      if (index === 2) {
+        width = '1070px';
+        marginLeft = '39px';
+      } else if (index === 4) {
+        width = '1060px';
+        marginLeft = '74px';
+      } else {
+        width = '1000px';
+        marginLeft = '74px';
+      }
+    }
+    return { width, marginLeft };
+  };
+
+  const handleScroll = () => {
+    const scrollY = window.scrollY;
+
+    let index = 0;
     if (scrollY < 500) {
       index = 0;
-      width = '1000px';
-      marginLeft = '74px';
     } else if (scrollY >= 500 && scrollY < 1600) {
       index = 1;
-      width = '1000px';
-      marginLeft = '74px';
     } else if (scrollY >= 1600 && scrollY < 2750) {
       index = 2;
-      width = '1070px';
-      marginLeft = '39px';
     } else if (scrollY >= 2750 && scrollY < 4000) {
       index = 3;
-      width = '1000px';
-      marginLeft = '74px';
     } else if (scrollY >= 4000) {
       index = 4;
-      width = '1060px';
-      marginLeft = '74px';
     }
 
     if (index !== currentAnimationIndex) {
       setFadeClass('fade-out');
       setTimeout(() => {
         setCurrentAnimationIndex(index);
-        setAnimationStyles({
-          width: width,
-          marginLeft: marginLeft,
-        });
+        setAnimationStyles(getResponsiveStyles(index));
         setFadeClass('fade-in');
       }, 300);
     }
   };
 
   useEffect(() => {
+    setAnimationStyles(getResponsiveStyles(currentAnimationIndex));
+
     window.addEventListener('scroll', handleScroll);
+    const handleResize = () => {
+      setAnimationStyles(getResponsiveStyles(currentAnimationIndex));
+      setIsSmallScreen(window.innerWidth < 1000);
+    };
+    window.addEventListener('resize', handleResize);
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
     };
   }, [currentAnimationIndex]);
 
   return (
     <article className="flex flex-col bg-sub2Black">
-      <div className="flex justify-between">
-        <div>
-          <div className="sticky top-[17%] transform translate-y-[0%]">
-            <div
-              style={{ width: animationStyles.width, marginLeft: animationStyles.marginLeft }}
-              className={`transition-opacity duration-300 ${fadeClass}`}
-            >
-              <Lottie animationData={animations[currentAnimationIndex]} />
+      <div className="flex flex-col s1000:flex-row s1000:justify-between">
+        {isSmallScreen ? (
+          animations.slice(1).map((animation, index) => (
+            <div key={index + 1} className="flex flex-col items-center gap-5 my-5">
+              <div className="w-full text-center" style={{ width: animationStyles.width }}>
+                <Lottie animationData={animation} />
+              </div>
+              <TextItem
+                feature={textItems[index].feature}
+                desc1={textItems[index].desc1}
+                desc2={textItems[index].desc2}
+              />
             </div>
-          </div>
-        </div>
-        <section className="mr-[110px] w-[383px] h-auto mt-[400px]">
-          {textItems.map((textItem, index) => (
-            <TextItem
-              key={index}
-              feature={textItem.feature}
-              desc1={textItem.desc1}
-              desc2={textItem.desc2}
-            />
-          ))}
-        </section>
+          ))
+        ) : (
+          <>
+            <div>
+              <div className="s1000:sticky top-[17%] transform translate-y-[0%]">
+                <div
+                  style={{ width: animationStyles.width, marginLeft: animationStyles.marginLeft }}
+                  className={`transition-opacity duration-300 ${fadeClass}`}
+                >
+                  <Lottie animationData={animations[currentAnimationIndex]} />
+                </div>
+              </div>
+            </div>
+            <section className="s16:mr-[110px] mx-auto h-auto mt-[400px]">
+              {textItems.map((textItem, index) => (
+                <TextItem
+                  key={index}
+                  feature={textItem.feature}
+                  desc1={textItem.desc1}
+                  desc2={textItem.desc2}
+                />
+              ))}
+            </section>
+          </>
+        )}
       </div>
       <div className="h-[262px]" />
     </article>
