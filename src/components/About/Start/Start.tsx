@@ -25,15 +25,15 @@ export const Start = () => {
 
   return (
     <article>
-      <section className="bg-bg flex justify-center pb-[277px]">
+      <section className="bg-bg flex justify-center pb-[276px]">
         <div
           onClick={handleStartClick}
-          className="bg-subBlack w-[374px] h-[98px] rounded-[60px] flex justify-center items-center cursor-pointer"
+          className="bg-subBlack w-[316.5px] h-[88px] rounded-[60px] flex justify-center items-center cursor-pointer"
         >
-          <span className="text-white font-[700] leading-[180%] text-[28px] mr-[14px]">
+          <span className="text-white font-[700] leading-[180%] text-[22px] mr-[14px]">
             Inminute 시작하기
           </span>
-          <img src={right} alt="right" className="w-[32px] h-[25px]" />
+          <img src={right} alt="right" className="w-[26px] h-[20px]" />
         </div>
       </section>
 

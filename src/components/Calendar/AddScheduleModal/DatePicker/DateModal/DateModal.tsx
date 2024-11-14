@@ -100,7 +100,7 @@ export const DateModal: React.FC<DateModalProps> = ({ selectedDates, onSelectDat
           day ? (
             <div
               key={index}
-              className={`text-[10px] w-5 h-[22px] cursor-pointer hover:text-gray06 ${
+              className={`text-[10px] w-5 h-[22px] cursor-pointer hover:text-mainBlack ${
                 tempSelectedDates.some(
                   (date) => format(date, 'yyyy-MM-dd') === format(day, 'yyyy-MM-dd')
                 )
