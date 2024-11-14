@@ -51,7 +51,7 @@ export const Cards = () => {
   const getBgColor = (i: number) => bgColors[i % bgColors.length];
 
   return (
-    <div className="relative h-screen flex items-center justify-center mt-[202px] mb-[50px]">
+    <div className="relative h-[760px] flex items-center justify-center mt-[202px] mb-[50px]">
       <div
         className="w-[688px] h-[460px] absolute top-0 rounded-[36px]"
         style={{ backgroundColor: getBgColor(index) }}

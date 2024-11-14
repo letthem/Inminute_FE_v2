@@ -70,7 +70,7 @@ export const SubFeature = () => {
   return (
     <article className="bg-bg leading-[170%] relative">
       <div className="flex justify-center mt-[262px] text-mainBlack text-[52px] font-[800] leading-[170%]">
-        <div className="flex flex-col w-[1292px]">
+        <div className="flex flex-col w-[1292px] z-10">
           <p>인미닛에서는,</p>
           <p>이런 것도 할 수 있어요!</p>
         </div>
