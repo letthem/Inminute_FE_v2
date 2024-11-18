@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   startOfMonth,
   endOfMonth,
@@ -9,20 +9,38 @@ import {
   isSameDay,
 } from 'date-fns';
 import { DateCell } from '@/components/Calendar/CalendarGrid/DateCell/DateCell';
+import { getScheduleByMonth } from '@/apis/Calendar/getSchedule';
 
 interface CalendarGridProps {
   currentMonth: Date;
-  specialDate: Date;
   onDateClick: (date: Date, event: React.MouseEvent<HTMLDivElement>) => void;
   selectedDate: Date | null;
 }
 
+interface Schedule {
+  name: string;
+  color: string;
+  startDateTime: string;
+}
+
 export const CalendarGrid: React.FC<CalendarGridProps> = ({
   currentMonth,
-  specialDate,
   onDateClick,
   selectedDate,
 }) => {
+  const [schedules, setSchedules] = useState<Schedule[]>([]);
+
+  useEffect(() => {
+    const loadSchedules = async () => {
+      const year = currentMonth.getFullYear();
+      const month = currentMonth.getMonth() + 1;
+      const data = await getScheduleByMonth(year, month);
+      setSchedules(data);
+    };
+
+    loadSchedules();
+  }, [currentMonth]);
+
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
   const startDate = startOfWeek(monthStart);
@@ -40,14 +58,18 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
       const isFirstCol = i === 0;
       const isLastCol = i === 6;
 
+      const daySchedules = schedules.filter((schedule) =>
+        isSameDay(new Date(schedule.startDateTime), day)
+      );
+
       days.push(
         <DateCell
           key={day.toString()}
           day={day}
           currentMonth={currentMonth}
           onClick={onDateClick}
-          specialDate={specialDate}
-          isSelected={!!selectedDate && isSameDay(day, selectedDate)} // 선택된 날짜 여부 전달
+          isSelected={!!selectedDate && isSameDay(day, selectedDate)}
+          schedules={daySchedules}
           isFirstRow={isFirstRow}
           isLastRow={isLastRow}
           isFirstCol={isFirstCol}
@@ -57,7 +79,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
       day = addDays(day, 1);
     }
     rows.push(
-      <div className="flex justify-center" key={day.toString()}>
+      <div className="flex justify-center" key={rowIndex}>
         {days}
       </div>
     );

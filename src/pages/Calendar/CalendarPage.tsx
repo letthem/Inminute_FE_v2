@@ -13,7 +13,6 @@ export const CalendarPage = () => {
     top: number;
     right: number;
   } | null>(null);
-  const specialDate = new Date(2024, 10, 15);
 
   const toggleModal = (date: Date, event: React.MouseEvent<HTMLDivElement>) => {
     if (!isSameMonth(date, currentMonth)) return; // 이번 달이 아닌 날짜 클릭 시 함수 종료
@@ -51,7 +50,6 @@ export const CalendarPage = () => {
         <CalendarGrid
           selectedDate={selectedDate}
           currentMonth={currentMonth}
-          specialDate={specialDate}
           onDateClick={toggleModal}
         />
       </div>
