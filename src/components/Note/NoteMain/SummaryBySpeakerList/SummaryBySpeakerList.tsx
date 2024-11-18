@@ -18,7 +18,7 @@ export const SummaryBySpeakerList: React.FC<SummaryBySpeakerProps> = ({ noteData
       </div>
 
       {noteData.summaryByMemberList.map((speaker, index) => (
-        <SummaryBySpeakerItem key={index} name={speaker.username} summary={speaker.summary} />
+        <SummaryBySpeakerItem key={index} name={speaker.nickname} summary={speaker.summary} />
       ))}
     </section>
   );

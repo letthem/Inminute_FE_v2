@@ -1,5 +1,5 @@
 export interface SummaryByMember {
-  username: string;
+  nickname: string;
   summary: string;
 }
 
