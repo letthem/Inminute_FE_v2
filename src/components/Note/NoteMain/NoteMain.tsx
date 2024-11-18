@@ -3,11 +3,11 @@ import { NoteTitle } from '@/components/Note/NoteMain/NoteTitle/NoteTitle';
 import { ParticipantList } from '@/components/Note/NoteMain/ParticipantList/ParticipantList';
 import { OneLineSummary } from '@/components/Note/NoteMain/OneLineSummary/OneLineSummary';
 import { useEffect, useState } from 'react';
-import { NoteDetail } from '@/pages/Note/dto';
+import { NoteDetail, SummaryByMember } from '@/pages/Note/dto';
 import { useSocket } from '@/context/SocketContext';
 import { getNoteDetail } from '@/apis/Note/getNote';
 import { Loading } from '@/components/Common/Loading/Loading';
-// import { SummaryBySpeakerList } from '@/components/Note/NoteMain/SummaryBySpeakerList/SummaryBySpeakerList';
+import { SummaryBySpeakerList } from '@/components/Note/NoteMain/SummaryBySpeakerList/SummaryBySpeakerList';
 // import { ToDoList } from '@/components/Note/NoteMain/ToDoList/ToDoList';
 
 interface NoteMainProps {
@@ -52,11 +52,12 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid }) => 
   }, [messages]);
 
   // NoteTitle에서 summary를 업데이트
-  const handleSummaryUpdate = (summary: string) => {
+  const handleSummaryUpdate = (summary: string, summaryByMemberList: SummaryByMember[]) => {
     setIsMeetingEnded(true);
     setNoteData((prevNoteData) => ({
       ...prevNoteData!,
       summary,
+      summaryByMemberList,
     }));
   };
 
@@ -83,7 +84,7 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid }) => 
         ) : noteData?.summary ? (
           <>
             <OneLineSummary noteData={noteData} />
-            {/* <SummaryBySpeakerList /> */}
+            <SummaryBySpeakerList noteData={noteData} />
             {/* <ToDoList /> */}
           </>
         ) : null}

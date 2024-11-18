@@ -1,8 +1,14 @@
+export interface SummaryByMember {
+  username: string;
+  summary: string;
+}
+
 export interface NoteDetail {
   id: number;
   name: string;
-  summary: string | null;
   createdAt: string;
   script: string | null;
   uuid: string;
+  summary: string | null;
+  summaryByMemberList: SummaryByMember[];
 }
