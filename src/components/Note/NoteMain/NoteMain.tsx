@@ -19,6 +19,7 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid }) => 
   const [noteData, setNoteData] = useState<NoteDetail | null>(initialNoteData);
   const [participants, setParticipants] = useState<string[]>([]); // participants 상태 선언
   const [isMeetingEnded, setIsMeetingEnded] = useState(false); // 회의 종료 상태
+  const [isStart, setIsStart] = useState(false); // 회의 상태
   const { messages } = useSocket();
 
   // 초기 로딩 시 nicknameList 데이터를 불러오기
@@ -69,9 +70,11 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid }) => 
         uuid={uuid}
         onSummaryUpdate={handleSummaryUpdate}
         setIsMeetingEnded={setIsMeetingEnded}
+        setIsStart={setIsStart} 
       />
       <div className="overflow-y-auto scrollbar-hide">
         <ParticipantList participants={participants} />
+        {isStart && <p className="ml-12 text-[16px] font-[500] mt-[18px] text-gray05">회의 중..</p>}
         {isMeetingEnded && !noteData?.summary ? ( // 회의 종료 후 summary가 업데이트될 때까지 Loading 표시
           <div className="flex flex-col gap-5 justify-center items-center h-[50vh]">
             <div style={{ transform: 'scale(2)' }}>
