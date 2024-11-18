@@ -3,7 +3,7 @@ import calendarBlack from '@/assets/webps/Note/calendarBlack.webp';
 import timeBlack from '@/assets/webps/Note/timeBlack.webp';
 import mic from '@/assets/svgs/Note/mic.svg';
 import headphones from '@/assets/svgs/Note/headphones.svg';
-import { NoteDetail } from '@/pages/Note/dto';
+import { NoteDetail, SummaryByMember } from '@/pages/Note/dto';
 import { PlatformModal } from '@/components/Note/NoteMain/NoteTitle/PlatformModal/PlatformModal';
 import CopyLink from '@/components/Note/NoteMain/NoteTitle/CopyLink/CopyLink';
 import { useSocket } from '@/context/SocketContext';
@@ -16,15 +16,22 @@ import { getNoteMainContents } from '@/apis/Note/getNote';
 interface NoteTitleProps {
   noteData: NoteDetail | null;
   uuid: string;
-  onSummaryUpdate: (summary: string) => void; // summary 업데이트 핸들러
-  setIsMeetingEnded: (ended: boolean) => void;  // 회의 종료 상태 업데이트 핸들러
+  onSummaryUpdate: (summary: string, summaryByMemberList: SummaryByMember[]) => void; // summary 업데이트 핸들러
+  setIsMeetingEnded: (ended: boolean) => void; // 회의 종료 상태 업데이트 핸들러
+  setIsStart: (isStart: boolean) => void;
 }
 
-export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid, onSummaryUpdate, setIsMeetingEnded }) => {
+export const NoteTitle: React.FC<NoteTitleProps> = ({
+  noteData,
+  uuid,
+  onSummaryUpdate,
+  setIsMeetingEnded,
+  setIsStart,
+}) => {
   const { stompClient } = useSocket(); // 소켓 클라이언트 가져오기
   const { data: nickname } = useNickName(); // 닉네임 가져오기
   const [isPlatformModalOpen, setIsPlatformModalOpen] = useState(false);
-  const [isStart, setIsStart] = useState(false); // 회의 시작 상태
+  const [isStart, setIsStartLocal] = useState(false); // 회의 시작 상태
   const [isRecording, setIsRecording] = useState(false); // 녹음 상태
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null); // MediaRecorder 인스턴스
 
@@ -34,9 +41,11 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid, onSummaryU
     const handleMessageReceived = (message: Message) => {
       const chatMessage = JSON.parse(message.body);
       if (chatMessage.isStart === true) {
-        setIsStart(true); // 회의 시작 상태 업데이트
+        setIsStartLocal(true); // 회의 시작 상태 업데이트
+        setIsStart(true); // NoteMain에도 회의 시작 상태 전달
       } else if (chatMessage.isStart === false) {
-        setIsStart(false); // 회의 종료 상태 업데이트
+        setIsStartLocal(false); // 회의 종료 상태 업데이트
+        setIsStart(false); // NoteMain에도 회의 종료 상태 전달
       }
     };
 
@@ -73,9 +82,9 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({ noteData, uuid, onSummaryU
         body: JSON.stringify(stopMeeting),
       });
       setIsMeetingEnded(true);
-      
+
       const response = await getNoteMainContents(uuid);
-      onSummaryUpdate(response.result.summary); // summary 전달
+      onSummaryUpdate(response.result.summary, response.result.summaryByMemberList); // 한 줄 요약 및 화자별 요약 전달
     } else {
       // 회의 시작 요청
       const startMeeting = {
