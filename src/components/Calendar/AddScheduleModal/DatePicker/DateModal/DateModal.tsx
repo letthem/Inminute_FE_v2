@@ -65,21 +65,21 @@ export const DateModal: React.FC<DateModalProps> = ({ selectedDates, onSelectDat
   return (
     <div
       ref={modalRef}
-      className="absolute top-[39px] left-[17px] z-20 bg-white w-[252px] p-[17px] rounded-[10px] cursor-default"
+      className="absolute top-[39px] left-[17px] z-20 bg-white w-[272px] py-5 px-[17px] rounded-[10px] cursor-default"
       onClick={(e) => e.stopPropagation()}
       style={{
         filter: 'drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.25))',
       }}
     >
-      <div className="flex justify-center items-center mb-3">
-        <div className="flex items-center gap-[10px]">
+      <div className="flex justify-center items-center mb-[18px]">
+        <div className="flex items-center gap-[12px]">
           <img
             src={leftBlack}
             alt="prev button"
             className="w-3 h-3 cursor-pointer"
             onClick={() => setCurrentMonth((prev) => addDays(prev, -30))}
           />
-          <span className="font-[700] text-mainBlack text-[12px]">
+          <span className="font-[800] text-mainBlack text-[15px]">
             {format(currentMonth, 'yyyy-MM')}
           </span>
           <img
@@ -92,7 +92,7 @@ export const DateModal: React.FC<DateModalProps> = ({ selectedDates, onSelectDat
       </div>
       <div className="grid grid-cols-7 gap-x-[13px] gap-y-[6px] text-center">
         {['일', '월', '화', '수', '목', '금', '토'].map((day) => (
-          <span key={day} className="text-center text-mainBlack text-[9px] font-[500]">
+          <span key={day} className="text-center text-mainBlack text-[11px] font-[500]">
             {day}
           </span>
         ))}
@@ -100,7 +100,7 @@ export const DateModal: React.FC<DateModalProps> = ({ selectedDates, onSelectDat
           day ? (
             <div
               key={index}
-              className={`text-[10px] w-5 h-[22px] cursor-pointer hover:text-mainBlack ${
+              className={`text-[12px] w-5 h-[22px] cursor-pointer hover:text-mainBlack ${
                 tempSelectedDates.some(
                   (date) => format(date, 'yyyy-MM-dd') === format(day, 'yyyy-MM-dd')
                 )
@@ -116,7 +116,7 @@ export const DateModal: React.FC<DateModalProps> = ({ selectedDates, onSelectDat
           )
         )}
       </div>
-      <div className="w-full flex mt-4 justify-center">
+      <div className="w-full flex mt-5 justify-center">
         <div
           className={`w-[42px] h-[30px] rounded-[4px] text-[9px] flex justify-center items-center cursor-pointer text-white ${
             tempSelectedDates.length > 0 ? 'bg-mainBlack' : 'bg-gray03 cursor-default'
