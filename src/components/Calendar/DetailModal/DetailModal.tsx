@@ -6,7 +6,7 @@ import { DetailMenuModal } from '@/components/Calendar/DetailModal/DetailMenuMod
 
 interface DetailModalProps {
   selectedDate: Date;
-  position: { top: number; left: number };
+  position: { top: number; right: number };
   onClose: () => void;
 }
 
@@ -134,7 +134,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
         style={{
           position: 'absolute',
           top: position.top || 0,
-          left: position.left || 0,
+          right: position.right || 0,
           boxShadow: '0px 0px 6px 0px rgba(96, 96, 96, 0.16)',
         }}
         className="bg-white rounded-[10px] w-[276px] pb-[26px] z-10"
