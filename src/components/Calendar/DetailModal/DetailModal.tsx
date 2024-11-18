@@ -22,7 +22,13 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
   const [isMenuOpen, setIsMenuOpen] = useState<number | null>(null);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [meetings, setMeetings] = useState<MeetingItem[]>([
-    { id: 1, time: '20:00', title: 'TF팀 회의', color: '#FCF2EB', textColor: '#DB7A08' },
+    {
+      id: 1,
+      time: '20:00',
+      title: 'TF팀 회의',
+      color: '#FCF2EB',
+      textColor: '#DB7A08',
+    },
     { id: 2, time: '22:00', title: '해커톤 정기회의', color: '#F3E9FF', textColor: '#BE5BFF' },
   ]);
   const divRef = useRef<HTMLDivElement>(null);
@@ -174,7 +180,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
                 />
               ) : (
                 <span
-                  className="text-[13px] leading-[22px] font-[500]"
+                  className="w-[156px] text-[13px] leading-[22px] font-[500] truncate"
                   style={{ color: meeting.textColor }}
                 >
                   {meeting.title}

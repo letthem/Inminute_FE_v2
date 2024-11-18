@@ -9,10 +9,14 @@ export default {
       dt: '1025px',
       tab: '768px',
       ph: '329px',
+      s900: '900px',
       s1000: '1000px',
       s10: '1064px',
       s1200: '1200px',
+      s1300: '1300px',
       s13: '1390px',
+      s14: '1440px',
+      s16: '1630px',
     },
     extend: {
       colors: {
@@ -26,7 +30,7 @@ export default {
         main07: '#16CBB3',
         mainBlack: '#2B2B2B',
         subBlack: '#212121',
-        sub2Black: '#141414',
+        sub2Black: '#131313',
         black01: '#4D4D4D',
         gray01: '#F2F2F2',
         gray02: '#ECECEC',
