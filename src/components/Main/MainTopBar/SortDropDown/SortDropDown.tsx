@@ -47,7 +47,7 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({
         className="h-[22px] mr-6 flex items-center cursor-pointer"
         onClick={handleDropdownToggle}
       >
-        <span className="mr-2 font-medium text-mainBlack text-[13px]">{selectedOption}</span>
+        <span className="break-keep mr-2 font-medium text-mainBlack text-[13px]">{selectedOption}</span>
         <img className="w-5 h-5" src={isDropdownOpen ? up : down} alt="toggle dropdown" />
       </div>
 

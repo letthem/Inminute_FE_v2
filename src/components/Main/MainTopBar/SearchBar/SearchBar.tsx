@@ -81,7 +81,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   return (
     <div
       className={`flex items-center border transition-all duration-300 ${
-        isSearchActive || isSearched ? 'w-[440px]' : 'w-[100px]'
+        isSearchActive || isSearched ? 's1100:w-[440px] s1000:w-[300px] s900:w-[200px] w-[140px]' : 'w-[100px]'
       } h-12 ml-[72px] bg-white rounded-[20px] ${
         isSearchActive && !isSearched ? 'border-mainBlack' : 'border-gray03'
       }`}
@@ -92,7 +92,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       {isSearchActive && (
         <input
           ref={inputRef}
-          className="ml-4 w-[320px] h-[24px] outline-none bg-transparent font-pretendard text-[17px]"
+          className="ml-4 s1100:w-[320px] s1000:w-[180px] s900:w-[80px] w-[20px] h-[24px] outline-none bg-transparent font-pretendard text-[17px]"
           type="text"
           value={searchText}
           // onChange={(e) => setSearchText(e.target.value)}
@@ -104,7 +104,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       )}
       {showSearchButton && (
         <span
-          className={`w-[27px] h-[24px] ml-[19px] mr-[20px] font-medium text-[14px] cursor-pointer ${
+          className={`break-keep w-[27px] h-[24px] ml-[19px] mr-[20px] font-medium text-[14px] cursor-pointer ${
             searchText && !isSearched ? 'text-mainBlack' : 'text-gray03'
           }`}
           onMouseDown={(e) => {
