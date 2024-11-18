@@ -5,6 +5,7 @@ import { DatePicker } from '@/components/Calendar/AddScheduleModal/DatePicker/Da
 import { TimePicker } from '@/components/Calendar/AddScheduleModal/TimePicker/TimePicker';
 import { addSchedule } from '@/apis/Calendar/addSchedule';
 import { format } from 'date-fns';
+import { ColorGroup } from '@/constants/colorPalette';
 
 interface AddScheduleModalProps {
   onClose: () => void;
@@ -12,7 +13,7 @@ interface AddScheduleModalProps {
 
 export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) => {
   const [noteTitle, setNoteTitle] = useState('');
-  const [selectedColor, setSelectedColor] = useState('orange');
+  const [selectedColor, setSelectedColor] = useState<ColorGroup>('orange');
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [meridiem, setMeridiem] = useState<'AM' | 'PM'>('AM');
   const [hours, setHours] = useState('');

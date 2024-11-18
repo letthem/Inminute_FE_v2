@@ -1,14 +1,20 @@
 import { ColorPicker } from '@/components/Calendar/AddScheduleModal/ColorPicker/ColorPicker';
+import { ColorGroup } from '@/constants/colorPalette';
 import React, { useState } from 'react';
 
 interface TitleInputProps {
   value: string;
   onChange: (value: string) => void;
-  selectedColor: string;
-  onColorChange: (color: string) => void;
+  selectedColor: ColorGroup; // 색상 그룹
+  onColorChange: (color: ColorGroup) => void;
 }
 
-export const TitleInput: React.FC<TitleInputProps> = ({ value, onChange, selectedColor, onColorChange }) => {
+export const TitleInput: React.FC<TitleInputProps> = ({
+  value,
+  onChange,
+  selectedColor,
+  onColorChange,
+}) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

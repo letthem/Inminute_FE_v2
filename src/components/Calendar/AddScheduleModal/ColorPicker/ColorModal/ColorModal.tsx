@@ -1,9 +1,10 @@
+import colorPalette, { ColorGroup } from '@/constants/colorPalette';
 import React from 'react';
 
 interface ColorModalProps {
-  colors: { [key: string]: string };
+  colors: typeof colorPalette;
   onClose: () => void;
-  onSelectColor: (color: string) => void;
+  onSelectColor: (color: ColorGroup) => void;
 }
 
 export const ColorModal: React.FC<ColorModalProps> = ({ colors, onClose, onSelectColor }) => {
@@ -19,12 +20,12 @@ export const ColorModal: React.FC<ColorModalProps> = ({ colors, onClose, onSelec
           filter: 'drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.25))',
         }}
       >
-        {Object.entries(colors).map(([name, color]) => (
+        {Object.keys(colors).map((colorName) => (
           <div
-            key={name}
+            key={colorName}
             className="w-4 h-4 rounded-full cursor-pointer"
-            style={{ backgroundColor: color }}
-            onClick={() => onSelectColor(color)}
+            style={{ backgroundColor: colors[colorName as ColorGroup].main }}
+            onClick={() => onSelectColor(colorName as ColorGroup)}
           />
         ))}
       </div>
