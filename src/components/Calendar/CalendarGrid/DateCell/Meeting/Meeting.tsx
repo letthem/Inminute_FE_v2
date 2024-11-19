@@ -1,12 +1,9 @@
+import { Schedule } from '@/components/Calendar/dto';
 import colorPalette from '@/constants/colorPalette';
 import React from 'react';
 
 interface MeetingProps {
-  meetings: {
-    name: string;
-    color: string;
-    startDateTime: string;
-  }[];
+  meetings: Schedule[];
 }
 
 export const Meeting: React.FC<MeetingProps> = ({ meetings }) => {
