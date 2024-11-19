@@ -1,4 +1,3 @@
-// import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useMemberStatus, useNickNameStatus } from '@/apis/Member/hooks';
 
@@ -17,32 +16,6 @@ export const NavBar = () => {
     { path: '/calendar', label: '캘린더', width: '57px' },
     { path: '/', label: 'ABOUT', width: '77px' },
   ];
-
-  // useEffect(() => {
-  //   const params = new URLSearchParams(location.search);
-  //   const redirectUuid = params.get('uuid') || localStorage.getItem('redirectUuid');
-  //   const isFirst = localStorage.getItem('isFirst');
-
-  //   // 비회원이 note/{uuid} 접근 시
-  //   if (!isMember && redirectUuid) {
-  //     localStorage.setItem('redirectUuid', redirectUuid); // UUID를 LocalStorage에 저장
-  //     nav('/login');
-  //   }
-  //   // source가 'login'일 경우 (= isFirst 가 true : localStorage) Join 페이지 띄우기
-  //   if (isMember && !isNickName && isFirst === 'true') {
-  //     nav('/join');
-  //     localStorage.removeItem('isFirst'); // 모달을 띄운 후 플래그 삭제
-  //   }
-  // }, [isMember, isNickName, location, nav]);
-
-  // // 로그인 및 닉네임 설정 완료 시 원래 노트 페이지로 리다이렉트
-  // useEffect(() => {
-  //   const redirectUuid = localStorage.getItem('redirectUuid');
-  //   if (isMember && isNickName && redirectUuid) {
-  //     nav(`/note/${redirectUuid}`);
-  //     localStorage.removeItem('redirectUuid'); // 로드 후 uuid 삭제
-  //   }
-  // }, [isMember, isNickName, nav]);
 
   const handleNavigation = (path: string) => {
     if (!isMember && path !== '/') {
