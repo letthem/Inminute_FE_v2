@@ -10,7 +10,7 @@ import { deleteSchedule } from '@/apis/Calendar/deleteSchedule';
 
 interface DetailModalProps {
   selectedDate: Date;
-  position: { top: number; right: number };
+  position: { top: number | undefined; bottom: number | undefined; right: number };
   onClose: () => void;
 }
 
@@ -139,11 +139,12 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
       <div
         style={{
           position: 'absolute',
-          top: position.top || 0,
+          ...(position.top !== undefined && { top: position.top }),
+          ...(position.bottom !== undefined && { bottom: position.bottom }),
           right: position.right || 0,
           boxShadow: '0px 0px 6px 0px rgba(96, 96, 96, 0.16)',
         }}
-        className="bg-white rounded-[10px] w-[276px] pb-[26px] z-10"
+        className="bg-white rounded-[10px] w-[276px] z-10"
         onClick={(e) => e.stopPropagation()} // DetailModal 클릭 시 모달 닫히지 않도록 처리
       >
         <div className="flex justify-between">
@@ -159,75 +160,82 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
           />
         </div>
 
-        {/* 회의 일정 내용 */}
-        {meetings.length === 0 ? (
-          <div className="flex flex-col ml-6 justify-center">
-            <p className="text-[14px] text-gray05 font-[500]">등록된 회의 일정이 없어요!</p>
-          </div>
-        ) : (
-          meetings.map((meeting) => {
-            const colors = getColors(meeting.color);
-            return (
-              <div key={meeting.id} className="ml-6 mr-[22px] flex mt-[18px]">
-                <span className="min-w-[36px] text-[11px] font-[700] leading-[20px] text-mainBlack mr-[11px] mt-[12px]">
-                  {format(new Date(meeting.startDateTime), 'HH:mm')}
-                </span>
+        <div className="max-h-[176px] overflow-y-auto scrollbar-visible scrollbar-thin-custom mr-1">
+          {/* 회의 일정 내용 */}
+          {meetings.length === 0 ? (
+            <div className="flex flex-col ml-6 justify-center">
+              <p className="text-[14px] text-gray05 font-[500]">등록된 회의 일정이 없어요!</p>
+            </div>
+          ) : (
+            meetings.map((meeting, index) => {
+              const colors = getColors(meeting.color);
+              const isLastMeeting = index === meetings.length - 1; // 마지막 일정인지 확인
+
+              return (
                 <div
-                  ref={divRef}
-                  className="w-full h-8 rounded-[4px] px-[10px] py-[5px] flex justify-between items-center"
-                  style={{
-                    backgroundColor: editingId === meeting.id ? '#FFFFFF' : colors.bg,
-                    boxShadow:
-                      editingId === meeting.id ? `0 0 0 1px ${colors.border} inset` : 'none',
-                  }}
+                  key={meeting.id}
+                  className={`ml-6 mr-[18px] flex mt-[18px]  ${isLastMeeting ? 'mb-[26px]' : ''}`}
                 >
-                  {editingId === meeting.id ? (
-                    <input
-                      ref={inputRef}
-                      value={meeting.name}
-                      onChange={(e) => handleInputChange(e, meeting.id)}
-                      onKeyDown={(e) => handleInputKeyPress(e, meeting.id)}
-                      className="w-full bg-transparent border-none outline-none text-[13px] leading-[22px] font-[500] text-gray03"
-                    />
-                  ) : (
-                    <span
-                      className="w-[156px] text-[13px] leading-[22px] font-[500] truncate"
-                      style={{ color: colors.text }}
-                    >
-                      {meeting.name}
-                    </span>
-                  )}
-                  {editingId !== meeting.id && (
-                    <div
-                      onClick={(event) => handleMenuClick(event, meeting.id)}
-                      className="relative w-[2px] h-[11px] flex flex-col justify-between cursor-pointer"
-                    >
-                      <div
-                        className="w-[2px] h-[2px] rounded-[2px]"
-                        style={{ backgroundColor: colors.text }}
+                  <span className="min-w-[36px] text-[11px] font-[700] leading-[20px] text-mainBlack mr-[11px] mt-[12px]">
+                    {format(new Date(meeting.startDateTime), 'HH:mm')}
+                  </span>
+                  <div
+                    ref={divRef}
+                    className="w-full h-8 rounded-[4px] px-[10px] py-[5px] flex justify-between items-center"
+                    style={{
+                      backgroundColor: editingId === meeting.id ? '#FFFFFF' : colors.bg,
+                      boxShadow:
+                        editingId === meeting.id ? `0 0 0 1px ${colors.border} inset` : 'none',
+                    }}
+                  >
+                    {editingId === meeting.id ? (
+                      <input
+                        ref={inputRef}
+                        value={meeting.name}
+                        onChange={(e) => handleInputChange(e, meeting.id)}
+                        onKeyDown={(e) => handleInputKeyPress(e, meeting.id)}
+                        className="w-full bg-transparent border-none outline-none text-[13px] leading-[22px] font-[500] text-gray03"
                       />
+                    ) : (
+                      <span
+                        className="w-[156px] text-[13px] leading-[22px] font-[500] truncate"
+                        style={{ color: colors.text }}
+                      >
+                        {meeting.name}
+                      </span>
+                    )}
+                    {editingId !== meeting.id && (
                       <div
-                        className="w-[2px] h-[2px] rounded-[2px]"
-                        style={{ backgroundColor: colors.text }}
-                      />
-                      <div
-                        className="w-[2px] h-[2px] rounded-[2px]"
-                        style={{ backgroundColor: colors.text }}
-                      />
-                      {isMenuOpen === meeting.id && (
-                        <DetailMenuModal
-                          onEdit={() => handleEdit(meeting.id)}
-                          onDelete={() => handleDelete(meeting.id)}
-                          onClose={() => setIsMenuOpen(null)}
+                        onClick={(event) => handleMenuClick(event, meeting.id)}
+                        className="relative w-[2px] h-[11px] flex flex-col justify-between cursor-pointer"
+                      >
+                        <div
+                          className="w-[2px] h-[2px] rounded-[2px]"
+                          style={{ backgroundColor: colors.text }}
                         />
-                      )}
-                    </div>
-                  )}
+                        <div
+                          className="w-[2px] h-[2px] rounded-[2px]"
+                          style={{ backgroundColor: colors.text }}
+                        />
+                        <div
+                          className="w-[2px] h-[2px] rounded-[2px]"
+                          style={{ backgroundColor: colors.text }}
+                        />
+                        {isMenuOpen === meeting.id && (
+                          <DetailMenuModal
+                            onEdit={() => handleEdit(meeting.id)}
+                            onDelete={() => handleDelete(meeting.id)}
+                            onClose={() => setIsMenuOpen(null)}
+                          />
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            );
-          })
-        )}
+              );
+            })
+          )}
+        </div>
       </div>
     </div>
   );
