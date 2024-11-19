@@ -86,7 +86,7 @@ export const QnAModal: React.FC<QnAModalProps> = ({ onClose, uuid }) => {
   return (
     <div
       ref={modalRef}
-      className="font-pretendard font-[350] text-[12px] leading-[180%] absolute w-[482px] bottom-[98px] right-6 bg-white h-[702px] rounded-[20px] pl-6 pr-2 pb-6 flex flex-col"
+      className="font-pretendard z-20 font-[350] text-[12px] leading-[180%] absolute w-[482px] bottom-[98px] right-6 bg-white h-[702px] rounded-[20px] pl-6 pr-2 pb-6 flex flex-col"
       style={{ boxShadow: '0px 0px 6px 0px rgba(96, 96, 96, 0.16)' }}
     >
       {/* 메시지 목록 */}
