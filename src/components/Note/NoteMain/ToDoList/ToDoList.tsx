@@ -1,27 +1,16 @@
 import todo from '@/assets/webps/Note/todo.webp';
 import { ToDoItem } from '@/components/Note/NoteMain/ToDoList/ToDoItem/ToDoItem';
 import edit from '@/assets/webps/FolderBar/editBlack.webp';
+import { NoteDetail } from '@/pages/Note/dto';
 
-const todoData = [
-  {
-    name: '심수연',
-    tasks: ['브랜딩 레퍼런스 찾기', '카드뉴스 만들기', '추후 프로젝트 이름 고민해오기'],
-  },
-  {
-    name: '박상욱',
-    tasks: ['브랜딩 레퍼런스 찾기'],
-  },
-  {
-    name: '노태일',
-    tasks: ['브랜딩 레퍼런스 찾기', '카드뉴스 만들기'],
-  },
-  {
-    name: '심수연',
-    tasks: ['브랜딩 레퍼런스 찾기', '카드뉴스 만들기', '추후 프로젝트 이름 고민해오기'],
-  },
-];
+interface ToDoListProps {
+  noteData: NoteDetail | null;
+}
 
-export const ToDoList = () => {
+export const ToDoList: React.FC<ToDoListProps> = ({ noteData }) => {
+  if (!noteData?.toDoResponseList) {
+    return <></>;
+  }
   return (
     <section className="mt-[92px] ml-12">
       <div className="flex items-center">
@@ -30,8 +19,8 @@ export const ToDoList = () => {
         <img src={edit} alt="edit" className="w-[14px] h-[14px] ml-2 cursor-pointer" />
       </div>
       <div className="flex flex-wrap mt-[28px] mb-[46px] mr-[120px]">
-        {todoData.map((todo, index) => (
-          <ToDoItem key={index} name={todo.name} tasks={todo.tasks} />
+        {noteData.toDoResponseList.map((speaker, index) => (
+          <ToDoItem key={index} name={speaker.nickname} tasks={speaker.toDoLists} />
         ))}
       </div>
     </section>

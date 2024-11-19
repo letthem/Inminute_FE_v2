@@ -3,12 +3,14 @@ import { NoteTitle } from '@/components/Note/NoteMain/NoteTitle/NoteTitle';
 import { ParticipantList } from '@/components/Note/NoteMain/ParticipantList/ParticipantList';
 import { OneLineSummary } from '@/components/Note/NoteMain/OneLineSummary/OneLineSummary';
 import { useEffect, useState } from 'react';
-import { NoteDetail, SummaryByMember } from '@/pages/Note/dto';
+import { NoteDetail, SummaryByMember, ToDoByMember } from '@/pages/Note/dto';
 import { useSocket } from '@/context/SocketContext';
 import { getNoteDetail } from '@/apis/Note/getNote';
 import { Loading } from '@/components/Common/Loading/Loading';
 import { SummaryBySpeakerList } from '@/components/Note/NoteMain/SummaryBySpeakerList/SummaryBySpeakerList';
-// import { ToDoList } from '@/components/Note/NoteMain/ToDoList/ToDoList';
+import { ToDoList } from '@/components/Note/NoteMain/ToDoList/ToDoList';
+import chat from '@/assets/webps/Note/chatBlackSharp.webp';
+import { QnAModal } from '@/components/Note/NoteMain/QnAModal/QnAModal';
 
 interface NoteMainProps {
   initialNoteData: NoteDetail | null;
@@ -17,6 +19,7 @@ interface NoteMainProps {
 
 export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid }) => {
   const [noteData, setNoteData] = useState<NoteDetail | null>(initialNoteData);
+  const [isQnAModalOpen, setIsQnAModalOpen] = useState(false); // Q&A 모달 상태
   const [participants, setParticipants] = useState<string[]>([]); // participants 상태 선언
   const [isMeetingEnded, setIsMeetingEnded] = useState(false); // 회의 종료 상태
   const [isStart, setIsStart] = useState(false); // 회의 상태
@@ -53,24 +56,32 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid }) => 
   }, [messages]);
 
   // NoteTitle에서 summary를 업데이트
-  const handleSummaryUpdate = (summary: string, summaryByMemberList: SummaryByMember[]) => {
+  const handleSummaryUpdate = (
+    summary: string,
+    summaryByMemberList: SummaryByMember[],
+    toDoResponseList: ToDoByMember[]
+  ) => {
     setIsMeetingEnded(true);
     setNoteData((prevNoteData) => ({
       ...prevNoteData!,
       summary,
       summaryByMemberList,
+      toDoResponseList,
     }));
   };
 
+  const handleQnAClick = () => setIsQnAModalOpen(true); // Q&A 버튼 클릭 핸들러
+  const handleCloseQnAModal = () => setIsQnAModalOpen(false); // Q&A 모달 닫기 핸들러
+
   return (
-    <main className="flex flex-1 flex-col">
+    <main className="relative flex flex-1 flex-col">
       <NoteTopBar noteData={noteData} />
       <NoteTitle
         noteData={noteData}
         uuid={uuid}
         onSummaryUpdate={handleSummaryUpdate}
         setIsMeetingEnded={setIsMeetingEnded}
-        setIsStart={setIsStart} 
+        setIsStart={setIsStart}
       />
       <div className="overflow-y-auto scrollbar-hide">
         <ParticipantList participants={participants} />
@@ -88,10 +99,23 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid }) => 
           <>
             <OneLineSummary noteData={noteData} />
             <SummaryBySpeakerList noteData={noteData} />
-            {/* <ToDoList /> */}
+            <ToDoList noteData={noteData} />
           </>
         ) : null}
       </div>
+
+      {isMeetingEnded && (
+        <button
+          onClick={handleQnAClick}
+          className={`absolute bottom-7 right-6 w-14 h-14 ${isQnAModalOpen === true ? 'bg-main04' : 'bg-white'} flex justify-center items-center rounded-full transition-all duration-200 ease-in-out`}
+          style={{
+            boxShadow: '0px 0px 6px 0px rgba(96, 96, 96, 0.16)',
+          }}
+        >
+          <img src={chat} alt="chat bot" className="w-[30px] h-[30px] ml-[2px] mb-[2px]" />
+        </button>
+      )}
+      {isQnAModalOpen && <QnAModal onClose={handleCloseQnAModal} uuid={uuid} />}
     </main>
   );
 };
