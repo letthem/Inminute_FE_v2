@@ -39,6 +39,7 @@ export const OAuthRedirect: React.FC = () => {
           localStorage.setItem('isFirst', 'true');
           navigate('/join');
         } else {
+          localStorage.removeItem('isFirst');
           // 기존 유저인 경우 원래 가려고 했던 페이지로 이동
           if (redirectUuid) {
             navigate(`/note/${redirectUuid}`);

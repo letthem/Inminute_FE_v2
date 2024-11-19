@@ -16,18 +16,16 @@ export const JoinPage = () => {
   // 이름 제출 함수
   const handleSubmit = async () => {
     if (inputName.length >= 1 && inputName.length <= 7) {
-      const response = await updateNickname(inputName); // API 호출
-      // response가 undefined가 아닌 경우에만 처리
-      if (response) {
-        await queryClient.invalidateQueries('isNickName'); // 캐시 무효화
-        queryClient.refetchQueries('isNickName'); // 즉시 다시 데이터 가져오기
-        const redirectUuid = localStorage.getItem('redirectUuid');
-        if (redirectUuid) {
-          window.location.href = `/note/${redirectUuid}`; // 완료 후 회의록 페이지로 리다이렉트
-          localStorage.removeItem('redirectUuid'); // 이동 후 UUID 삭제
-        } else {
-          window.location.href = '/home'; // 완료 후 '/home'로 리다이렉트
-        }
+      await updateNickname(inputName); // API 호출
+      await queryClient.invalidateQueries('isNickName'); // 캐시 무효화
+      queryClient.refetchQueries('isNickName'); // 즉시 다시 데이터 가져오기
+
+      const redirectUuid = localStorage.getItem('redirectUuid');
+      if (redirectUuid) {
+        window.location.href = `/note/${redirectUuid}`; // 완료 후 회의록 페이지로 리다이렉트
+        localStorage.removeItem('redirectUuid'); // 이동 후 UUID 삭제
+      } else {
+        window.location.href = '/home'; // 완료 후 '/home'로 리다이렉트
       }
     }
   };
