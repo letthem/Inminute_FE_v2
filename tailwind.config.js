@@ -8,7 +8,7 @@ export default {
     screens: {
       dt: '1025px',
       tab: '768px',
-      ph: '329px',
+      ph: '344px',
       s900: '900px',
       s1000: '1000px',
       s10: '1064px',

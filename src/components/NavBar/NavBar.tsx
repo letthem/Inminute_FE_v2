@@ -1,12 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useMemberStatus, useNickNameStatus } from '@/apis/Member/hooks';
-import { LoginModal } from '@/components/Login/LoginModal/LoginModal';
-import { JoinModal } from '@/components/Login/JoinModal/JoinModal';
 
 export const NavBar = () => {
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const { data: isMember } = useMemberStatus(); // 회원 상태
   const { data: isNickName } = useNickNameStatus(); // 닉네임 상태
   const nav = useNavigate();
@@ -30,12 +26,11 @@ export const NavBar = () => {
     // 비회원이 note/{uuid} 접근 시
     if (!isMember && redirectUuid) {
       localStorage.setItem('redirectUuid', redirectUuid); // UUID를 LocalStorage에 저장
-      setIsLoginModalOpen(true); // 로그인 모달 열기
-      nav('/'); // '/'로 리다이렉트
+      nav('/login');
     }
-    // source가 'login'일 경우 (= isFirst 가 true : localStorage) JoinModal 띄우기
+    // source가 'login'일 경우 (= isFirst 가 true : localStorage) Join 페이지 띄우기
     if (isMember && !isNickName && isFirst === 'true') {
-      setIsJoinModalOpen(true);
+      nav('/join');
       localStorage.removeItem('isFirst'); // 모달을 띄운 후 플래그 삭제
     }
   }, [isMember, isNickName, location, nav]);
@@ -51,9 +46,9 @@ export const NavBar = () => {
 
   const handleNavigation = (path: string) => {
     if (!isMember && path !== '/') {
-      setIsLoginModalOpen(true);
+      nav('/login');
     } else if (!isNickName && path !== '/') {
-      setIsJoinModalOpen(true);
+      nav('/join');
     } else {
       nav(path);
     }
@@ -97,9 +92,6 @@ export const NavBar = () => {
           </ul>
         </div>
       </header>
-
-      {isLoginModalOpen && !isMember && <LoginModal onClose={() => setIsLoginModalOpen(false)} />}
-      {isJoinModalOpen && isMember && !isNickName && <JoinModal onClose={() => setIsJoinModalOpen(false)} />}
     </>
   );
 };

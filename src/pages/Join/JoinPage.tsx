@@ -1,25 +1,10 @@
 import { useQueryClient } from 'react-query';
 import { updateNickname } from '@/apis/Member/updateNickname';
 import React, { useRef, useState } from 'react';
-
-interface JoinModalProps {
-  onClose: () => void;
-}
-
-export const JoinModal: React.FC<JoinModalProps> = ({ onClose }) => {
+export const JoinPage = () => {
   const [inputName, setInputName] = useState(''); // 사용자 이름 입력 상태
   const queryClient = useQueryClient(); // React Query 클라이언트 사용
   const inputRef = useRef<HTMLInputElement | null>(null);
-
-  // 모달 배경을 클릭하면 닫힘
-  const handleBackgroundClick = () => {
-    onClose();
-  };
-
-  // 모달 내부를 클릭하면 이벤트가 전파되지 않도록 함
-  const handleModalClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
 
   // 이름 입력 핸들러 - 7자 이내로 입력 제한
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,14 +33,8 @@ export const JoinModal: React.FC<JoinModalProps> = ({ onClose }) => {
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-mainBlack bg-opacity-60 font-nanum"
-      onClick={handleBackgroundClick}
-    >
-      <div
-        className="bg-white w-[480px] h-[348px] rounded-[20px] relative flex flex-col"
-        onClick={handleModalClick}
-      >
+    <div className="w-full h-screen flex items-center justify-center bg-sub2Black font-nanum">
+      <div className="bg-white w-[480px] h-[348px] rounded-[20px] relative flex flex-col">
         <div className="flex flex-col items-center">
           <p className="text-[#444444] text-[19px] font-[700] leading-[24px] mt-[46px]">
             사용할 이름을 입력해주세요

@@ -6,5 +6,6 @@ export const getMemberInfo = async () => {
     return response.data;
   } catch (error) {
     console.error('회원 정보 가져오는 중 에러 발생: ', error);
+    return { result: { nickname: null } };
   }
 };
