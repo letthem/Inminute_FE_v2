@@ -3,36 +3,54 @@ import xGray from '@/assets/svgs/Calendar/xGray.svg';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { DetailMenuModal } from '@/components/Calendar/DetailModal/DetailMenuModal/DetailMenuModal';
+import colorPalette, { ColorGroup } from '@/constants/colorPalette';
+import { getScheduleByMonth } from '@/apis/Calendar/getSchedule';
+import { Schedule } from '@/components/Calendar/dto';
+import { deleteSchedule } from '@/apis/Calendar/deleteSchedule';
 
 interface DetailModalProps {
   selectedDate: Date;
-  position: { top: number; left: number };
+  position: { top: number; right: number };
   onClose: () => void;
-}
-
-interface MeetingItem {
-  id: number;
-  time: string;
-  title: string;
-  color: string;
-  textColor: string;
 }
 
 export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position, onClose }) => {
   const [isMenuOpen, setIsMenuOpen] = useState<number | null>(null);
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [meetings, setMeetings] = useState<MeetingItem[]>([
-    {
-      id: 1,
-      time: '20:00',
-      title: 'TF팀 회의',
-      color: '#FCF2EB',
-      textColor: '#DB7A08',
-    },
-    { id: 2, time: '22:00', title: '해커톤 정기회의', color: '#F3E9FF', textColor: '#BE5BFF' },
-  ]);
+  const [meetings, setMeetings] = useState<Schedule[]>([]);
   const divRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // 해당 날짜의 일정을 가져오기
+  useEffect(() => {
+    const fetchMeetings = async () => {
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth() + 1;
+
+      try {
+        const schedules = await getScheduleByMonth(year, month);
+        const filteredMeetings = schedules
+          .filter((schedule: Schedule) => {
+            const scheduleDate = new Date(schedule.startDateTime);
+            return (
+              scheduleDate.getFullYear() === selectedDate.getFullYear() &&
+              scheduleDate.getMonth() === selectedDate.getMonth() &&
+              scheduleDate.getDate() === selectedDate.getDate()
+            );
+          })
+          .sort(
+            (a: Schedule, b: Schedule) =>
+              new Date(a.startDateTime).getTime() - new Date(b.startDateTime).getTime()
+          ); // 시간 오름차순 정렬
+
+        setMeetings(filteredMeetings);
+      } catch (error) {
+        console.error('Failed to load meetings:', error);
+      }
+    };
+
+    fetchMeetings();
+  }, [selectedDate]);
 
   // 바깥 스크롤 막기
   useEffect(() => {
@@ -60,6 +78,10 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
     onClose(); // 모달 닫기
   };
 
+  const getColors = (color: ColorGroup) => {
+    return colorPalette[color] || colorPalette.orange; // 안전한 접근 및 기본값 설정
+  };
+
   // 수정 div 바깥 클릭 시 수정 취소
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -80,7 +102,8 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
     setIsMenuOpen(null);
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
+    await deleteSchedule(id);
     setMeetings((prevMeetings) => {
       const updatedMeetings = prevMeetings.filter((meeting) => meeting.id !== id);
 
@@ -108,23 +131,6 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
     console.log(id);
   };
 
-  const getInputBorderColor = (color: string) => {
-    switch (color) {
-      case '#FCF2EB': // 주황색
-        return '#FFD6A6';
-      case '#FCF3FD': // 핑크색
-        return '#FFCBD3';
-      case '#EAFBEC': // 초록색
-        return '#BCEAC1';
-      case '#EDF3FA': // 파랑색
-        return '#C1D0FF';
-      case '#F3E9FF': // 보라색
-        return '#E4CEFF';
-      default:
-        return 'transparent';
-    }
-  };
-
   return (
     <div
       className="fixed inset-0 z-10 flex items-center justify-center"
@@ -134,7 +140,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
         style={{
           position: 'absolute',
           top: position.top || 0,
-          left: position.left || 0,
+          right: position.right || 0,
           boxShadow: '0px 0px 6px 0px rgba(96, 96, 96, 0.16)',
         }}
         className="bg-white rounded-[10px] w-[276px] pb-[26px] z-10"
@@ -154,67 +160,74 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
         </div>
 
         {/* 회의 일정 내용 */}
-        {meetings.map((meeting) => (
-          <div key={meeting.id} className="ml-6 mr-[22px] flex mt-[18px]">
-            <span className="text-[11px] font-[700] leading-[20px] text-mainBlack mr-[11px] mt-[12px]">
-              {meeting.time}
-            </span>
-            <div
-              ref={divRef}
-              className="w-full h-8 rounded-[4px] px-[10px] py-[5px] flex justify-between items-center"
-              style={{
-                backgroundColor: editingId === meeting.id ? '#FFFFFF' : meeting.color,
-                boxShadow:
-                  editingId === meeting.id
-                    ? `0 0 0 1px ${getInputBorderColor(meeting.color)} inset`
-                    : 'none',
-              }}
-            >
-              {editingId === meeting.id ? (
-                <input
-                  ref={inputRef}
-                  value={meeting.title}
-                  onChange={(e) => handleInputChange(e, meeting.id)}
-                  onKeyDown={(e) => handleInputKeyPress(e, meeting.id)}
-                  className="w-full bg-transparent border-none outline-none text-[13px] leading-[22px] font-[500] text-gray03"
-                />
-              ) : (
-                <span
-                  className="w-[156px] text-[13px] leading-[22px] font-[500] truncate"
-                  style={{ color: meeting.textColor }}
-                >
-                  {meeting.title}
+        {meetings.length === 0 ? (
+          <div className="flex flex-col ml-6 justify-center">
+            <p className="text-[14px] text-gray05 font-[500]">등록된 회의 일정이 없어요!</p>
+          </div>
+        ) : (
+          meetings.map((meeting) => {
+            const colors = getColors(meeting.color);
+            return (
+              <div key={meeting.id} className="ml-6 mr-[22px] flex mt-[18px]">
+                <span className="min-w-[36px] text-[11px] font-[700] leading-[20px] text-mainBlack mr-[11px] mt-[12px]">
+                  {format(new Date(meeting.startDateTime), 'HH:mm')}
                 </span>
-              )}
-              {editingId !== meeting.id && (
                 <div
-                  onClick={(event) => handleMenuClick(event, meeting.id)}
-                  className="relative w-[2px] h-[11px] flex flex-col justify-between cursor-pointer"
+                  ref={divRef}
+                  className="w-full h-8 rounded-[4px] px-[10px] py-[5px] flex justify-between items-center"
+                  style={{
+                    backgroundColor: editingId === meeting.id ? '#FFFFFF' : colors.bg,
+                    boxShadow:
+                      editingId === meeting.id ? `0 0 0 1px ${colors.border} inset` : 'none',
+                  }}
                 >
-                  <div
-                    className="w-[2px] h-[2px] rounded-[2px]"
-                    style={{ backgroundColor: meeting.textColor }}
-                  />
-                  <div
-                    className="w-[2px] h-[2px] rounded-[2px]"
-                    style={{ backgroundColor: meeting.textColor }}
-                  />
-                  <div
-                    className="w-[2px] h-[2px] rounded-[2px]"
-                    style={{ backgroundColor: meeting.textColor }}
-                  />
-                  {isMenuOpen === meeting.id && (
-                    <DetailMenuModal
-                      onEdit={() => handleEdit(meeting.id)}
-                      onDelete={() => handleDelete(meeting.id)}
-                      onClose={() => setIsMenuOpen(null)}
+                  {editingId === meeting.id ? (
+                    <input
+                      ref={inputRef}
+                      value={meeting.name}
+                      onChange={(e) => handleInputChange(e, meeting.id)}
+                      onKeyDown={(e) => handleInputKeyPress(e, meeting.id)}
+                      className="w-full bg-transparent border-none outline-none text-[13px] leading-[22px] font-[500] text-gray03"
                     />
+                  ) : (
+                    <span
+                      className="w-[156px] text-[13px] leading-[22px] font-[500] truncate"
+                      style={{ color: colors.text }}
+                    >
+                      {meeting.name}
+                    </span>
+                  )}
+                  {editingId !== meeting.id && (
+                    <div
+                      onClick={(event) => handleMenuClick(event, meeting.id)}
+                      className="relative w-[2px] h-[11px] flex flex-col justify-between cursor-pointer"
+                    >
+                      <div
+                        className="w-[2px] h-[2px] rounded-[2px]"
+                        style={{ backgroundColor: colors.text }}
+                      />
+                      <div
+                        className="w-[2px] h-[2px] rounded-[2px]"
+                        style={{ backgroundColor: colors.text }}
+                      />
+                      <div
+                        className="w-[2px] h-[2px] rounded-[2px]"
+                        style={{ backgroundColor: colors.text }}
+                      />
+                      {isMenuOpen === meeting.id && (
+                        <DetailMenuModal
+                          onEdit={() => handleEdit(meeting.id)}
+                          onDelete={() => handleDelete(meeting.id)}
+                          onClose={() => setIsMenuOpen(null)}
+                        />
+                      )}
+                    </div>
                   )}
                 </div>
-              )}
-            </div>
-          </div>
-        ))}
+              </div>
+            );
+          })
+        )}
       </div>
     </div>
   );

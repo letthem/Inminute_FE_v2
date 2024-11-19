@@ -11,21 +11,20 @@ export const CalendarPage = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null); // 모달에 보여줄 선택된 날짜
   const [selectedDatePosition, setSelectedDatePosition] = useState<{
     top: number;
-    left: number;
+    right: number;
   } | null>(null);
-  const specialDate = new Date(2024, 10, 15);
 
   const toggleModal = (date: Date, event: React.MouseEvent<HTMLDivElement>) => {
     if (!isSameMonth(date, currentMonth)) return; // 이번 달이 아닌 날짜 클릭 시 함수 종료
 
     // 날짜 클릭 위치 가져오기
-    const rect = (event.target as HTMLDivElement).getBoundingClientRect();
+    const rect = (event.currentTarget as HTMLDivElement).getBoundingClientRect();
     const isLastWeek = getWeekOfMonth(date) === getWeeksInMonth(currentMonth);
 
     // 마지막 주 클릭 시 뜨는 모달은 위로 보이게 조정
     setSelectedDatePosition({
-      top: isLastWeek ? rect.top + window.scrollY - 102 : rect.top + window.scrollY + 40,
-      left: rect.left + window.scrollX - 42,
+      top: isLastWeek ? rect.top + window.scrollY - 92 : rect.top + window.scrollY + 40,
+      right: window.innerWidth - rect.right,
     });
     setSelectedDate(new Date(date));
   };
@@ -51,7 +50,6 @@ export const CalendarPage = () => {
         <CalendarGrid
           selectedDate={selectedDate}
           currentMonth={currentMonth}
-          specialDate={specialDate}
           onDateClick={toggleModal}
         />
       </div>

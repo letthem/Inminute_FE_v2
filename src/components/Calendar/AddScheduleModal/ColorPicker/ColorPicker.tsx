@@ -1,16 +1,17 @@
 import { ColorModal } from '@/components/Calendar/AddScheduleModal/ColorPicker/ColorModal/ColorModal';
+import colorPalette, { ColorGroup } from '@/constants/colorPalette';
 import React, { useEffect, useRef, useState } from 'react';
 
 interface ColorPickerProps {
-  selectedColor: string;
-  onColorChange: (color: string) => void;
+  selectedColor: ColorGroup;
+  onColorChange: (color: ColorGroup) => void;
 }
 
 export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, onColorChange }) => {
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
   const pickerRef = useRef<HTMLDivElement>(null);
 
-  const handleColorSelect = (color: string) => {
+  const handleColorSelect = (color: ColorGroup) => {
     onColorChange(color); // 색상 선택 처리
     setIsColorModalOpen(false); // 색상 선택 후 모달 닫기
   };
@@ -36,11 +37,15 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, onColor
     <div
       ref={pickerRef}
       className="absolute bottom-[21px] right-[21px] w-5 h-5 rounded-full cursor-pointer"
-      style={{ backgroundColor: selectedColor }}
+      style={{ backgroundColor: colorPalette[selectedColor].main }}
       onClick={() => setIsColorModalOpen(!isColorModalOpen)}
     >
       {isColorModalOpen && (
-        <ColorModal onClose={() => setIsColorModalOpen(false)} onSelectColor={handleColorSelect} />
+        <ColorModal
+          colors={colorPalette}
+          onClose={() => setIsColorModalOpen(false)}
+          onSelectColor={handleColorSelect}
+        />
       )}
     </div>
   );

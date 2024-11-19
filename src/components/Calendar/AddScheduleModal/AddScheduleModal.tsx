@@ -3,6 +3,9 @@ import xGray from '@/assets/svgs/Main/xGray.svg';
 import { TitleInput } from '@/components/Calendar/AddScheduleModal/TitleInput/TitleInput';
 import { DatePicker } from '@/components/Calendar/AddScheduleModal/DatePicker/DatePicker';
 import { TimePicker } from '@/components/Calendar/AddScheduleModal/TimePicker/TimePicker';
+import { addSchedule } from '@/apis/Calendar/addSchedule';
+import { format } from 'date-fns';
+import { ColorGroup } from '@/constants/colorPalette';
 
 interface AddScheduleModalProps {
   onClose: () => void;
@@ -10,6 +13,7 @@ interface AddScheduleModalProps {
 
 export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) => {
   const [noteTitle, setNoteTitle] = useState('');
+  const [selectedColor, setSelectedColor] = useState<ColorGroup>('orange');
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [meridiem, setMeridiem] = useState<'AM' | 'PM'>('AM');
   const [hours, setHours] = useState('');
@@ -17,9 +21,23 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
 
   const isSubmitEnabled = noteTitle.trim() && selectedDates.length > 0 && hours && minutes;
 
-  const handleSubmit = () => {
-    if (isSubmitEnabled) {
-      // API 호출 로직
+  const handleSubmit = async () => {
+    if (!isSubmitEnabled) return;
+
+    // date : 'yyyy-MM-dd'
+    const formattedDates = selectedDates.map((date) => format(date, 'yyyy-MM-dd'));
+
+    // time : 'HH:mm'
+    let formattedHours = meridiem === 'PM' && hours !== '12' ? String(Number(hours) + 12) : hours;
+    formattedHours = meridiem === 'AM' && hours === '12' ? '00' : formattedHours;
+    const formattedTime = `${formattedHours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00`;
+
+    try {
+      const response = await addSchedule(noteTitle, selectedColor, formattedDates, formattedTime);
+      console.log('Schedule added successfully:', response);
+      onClose();
+    } catch (error) {
+      console.error('Error adding schedule:', error);
     }
   };
 
@@ -40,7 +58,12 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
           onClick={onClose}
         />
 
-        <TitleInput value={noteTitle} onChange={setNoteTitle} />
+        <TitleInput
+          value={noteTitle}
+          onChange={setNoteTitle}
+          selectedColor={selectedColor}
+          onColorChange={setSelectedColor}
+        />
         <div className="mt-5 flex gap-4">
           <DatePicker selectedDates={selectedDates} onSelectDates={setSelectedDates} />
           <TimePicker

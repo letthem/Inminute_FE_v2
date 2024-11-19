@@ -1,50 +1,34 @@
 import React from 'react';
 import { isSameDay, isSameMonth, format } from 'date-fns';
 import { Meeting } from '@/components/Calendar/CalendarGrid/DateCell/Meeting/Meeting';
+import { Schedule } from '@/components/Calendar/dto';
 
 interface DateCellProps {
   day: Date;
   currentMonth: Date;
   onClick: (date: Date, event: React.MouseEvent<HTMLDivElement>) => void;
-  specialDate?: Date;
+  isSelected: boolean;
+  schedules: Schedule[];
   isFirstRow: boolean;
   isLastRow: boolean;
   isFirstCol: boolean;
   isLastCol: boolean;
-  isSelected: boolean;
 }
 
 export const DateCell: React.FC<DateCellProps> = ({
   day,
   currentMonth,
   onClick,
-  specialDate,
+  isSelected,
+  schedules,
   isFirstRow,
   isLastRow,
   isFirstCol,
   isLastCol,
-  isSelected,
 }) => {
   const formattedDate = format(day, 'd');
   const isToday = isSameDay(day, new Date());
-  const isSpecial = specialDate && isSameDay(day, specialDate);
   const dateWidth = formattedDate.length === 1 ? '11px' : '19px';
-
-  const meetings = [
-    {
-      id: 1,
-      title: 'TF팀 회의',
-      backgroundColor: 'bg-[#EAFBEC]',
-      textColor: 'text-[#489D06]',
-    },
-    {
-      id: 2,
-      title: '해커톤 정기회의',
-      backgroundColor: 'bg-[#FCF3FD]',
-      textColor: 'text-[#E7546A]',
-      stripeColor: 'bg-[#FF94A4]',
-    },
-  ];
 
   return (
     <div
@@ -68,7 +52,7 @@ export const DateCell: React.FC<DateCellProps> = ({
       >
         {formattedDate}
       </span>
-      {isSpecial && <Meeting meetings={meetings} />}
+      {schedules.length > 0 && <Meeting meetings={schedules} />}
     </div>
   );
 };
