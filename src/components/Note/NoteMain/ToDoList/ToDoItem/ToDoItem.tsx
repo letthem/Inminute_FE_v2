@@ -1,9 +1,10 @@
 import React from 'react';
 import todoMint from '@/assets/webps/Note/todoMint.webp';
+import { ToDoItem as TaskItem } from '@/pages/Note/dto';
 
 interface ToDoItemProps {
-  name: string;
-  tasks: string[];
+  name: string; // 사용자 이름
+  tasks: TaskItem[]; // 할 일 리스트
 }
 
 export const ToDoItem: React.FC<ToDoItemProps> = ({ name, tasks }) => {
@@ -18,7 +19,7 @@ export const ToDoItem: React.FC<ToDoItemProps> = ({ name, tasks }) => {
         <p className="font-bold text-white text-[13px] leading-[14px] mt-6 mb-6 mx-auto">{name}</p>
         <ul className="text-white font-[300] font-pretendard text-[12px] list-outside list-disc ml-8 mr-5 mb-[18px] leading-[24px] tracking-[0.008rem]">
           {tasks.map((task, index) => (
-            <li key={index}>{task}</li>
+            <li key={index}>{task.todo}</li>
           ))}
         </ul>
       </div>

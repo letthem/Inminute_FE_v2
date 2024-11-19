@@ -3,7 +3,7 @@ import calendarBlack from '@/assets/webps/Note/calendarBlack.webp';
 import timeBlack from '@/assets/webps/Note/timeBlack.webp';
 import mic from '@/assets/svgs/Note/mic.svg';
 import headphones from '@/assets/svgs/Note/headphones.svg';
-import { NoteDetail, SummaryByMember } from '@/pages/Note/dto';
+import { NoteDetail, SummaryByMember, ToDoByMember } from '@/pages/Note/dto';
 import { PlatformModal } from '@/components/Note/NoteMain/NoteTitle/PlatformModal/PlatformModal';
 import CopyLink from '@/components/Note/NoteMain/NoteTitle/CopyLink/CopyLink';
 import { useSocket } from '@/context/SocketContext';
@@ -16,7 +16,11 @@ import { getNoteMainContents } from '@/apis/Note/getNote';
 interface NoteTitleProps {
   noteData: NoteDetail | null;
   uuid: string;
-  onSummaryUpdate: (summary: string, summaryByMemberList: SummaryByMember[]) => void; // summary 업데이트 핸들러
+  onSummaryUpdate: (
+    summary: string,
+    summaryByMemberList: SummaryByMember[],
+    toDoResponseList: ToDoByMember[]
+  ) => void; // summary 업데이트 핸들러
   setIsMeetingEnded: (ended: boolean) => void; // 회의 종료 상태 업데이트 핸들러
   setIsStart: (isStart: boolean) => void;
 }
@@ -84,7 +88,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
       setIsMeetingEnded(true);
 
       const response = await getNoteMainContents(uuid);
-      onSummaryUpdate(response.result.summary, response.result.summaryByMemberList); // 한 줄 요약 및 화자별 요약 전달
+      onSummaryUpdate(response.result.summary, response.result.summaryByMemberList, response.result.toDoResponseList); // 한 줄 요약, 화자별 요약, ToDoList 전달
     } else {
       // 회의 시작 요청
       const startMeeting = {

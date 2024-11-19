@@ -13,7 +13,7 @@ export const MicButton: React.FC<MicButtonProps> = ({ isRecording, onToggleRecor
     >
       <div
         className={`absolute cursor-pointer w-[100px] h-[84px] rounded-[50px] flex justify-center items-center 
-          ${isRecording ? 'bg-main02' : 'bg-gray02 group-hover:bg-main02'}`}
+          ${isRecording ? 'bg-main02 opacity-90' : 'bg-gray02 opacity-90 group-hover:bg-main02'}`}
         style={{
           animation: isRecording ? 'pulse 1s infinite' : 'none',
           zIndex: 1,

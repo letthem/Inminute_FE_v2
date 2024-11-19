@@ -3,12 +3,12 @@ import { NoteTitle } from '@/components/Note/NoteMain/NoteTitle/NoteTitle';
 import { ParticipantList } from '@/components/Note/NoteMain/ParticipantList/ParticipantList';
 import { OneLineSummary } from '@/components/Note/NoteMain/OneLineSummary/OneLineSummary';
 import { useEffect, useState } from 'react';
-import { NoteDetail, SummaryByMember } from '@/pages/Note/dto';
+import { NoteDetail, SummaryByMember, ToDoByMember } from '@/pages/Note/dto';
 import { useSocket } from '@/context/SocketContext';
 import { getNoteDetail } from '@/apis/Note/getNote';
 import { Loading } from '@/components/Common/Loading/Loading';
 import { SummaryBySpeakerList } from '@/components/Note/NoteMain/SummaryBySpeakerList/SummaryBySpeakerList';
-// import { ToDoList } from '@/components/Note/NoteMain/ToDoList/ToDoList';
+import { ToDoList } from '@/components/Note/NoteMain/ToDoList/ToDoList';
 
 interface NoteMainProps {
   initialNoteData: NoteDetail | null;
@@ -53,12 +53,17 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid }) => 
   }, [messages]);
 
   // NoteTitle에서 summary를 업데이트
-  const handleSummaryUpdate = (summary: string, summaryByMemberList: SummaryByMember[]) => {
+  const handleSummaryUpdate = (
+    summary: string,
+    summaryByMemberList: SummaryByMember[],
+    toDoResponseList: ToDoByMember[]
+  ) => {
     setIsMeetingEnded(true);
     setNoteData((prevNoteData) => ({
       ...prevNoteData!,
       summary,
       summaryByMemberList,
+      toDoResponseList,
     }));
   };
 
@@ -70,7 +75,7 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid }) => 
         uuid={uuid}
         onSummaryUpdate={handleSummaryUpdate}
         setIsMeetingEnded={setIsMeetingEnded}
-        setIsStart={setIsStart} 
+        setIsStart={setIsStart}
       />
       <div className="overflow-y-auto scrollbar-hide">
         <ParticipantList participants={participants} />
@@ -88,7 +93,7 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid }) => 
           <>
             <OneLineSummary noteData={noteData} />
             <SummaryBySpeakerList noteData={noteData} />
-            {/* <ToDoList /> */}
+            <ToDoList noteData={noteData} />
           </>
         ) : null}
       </div>

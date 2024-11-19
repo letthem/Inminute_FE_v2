@@ -3,6 +3,15 @@ export interface SummaryByMember {
   summary: string;
 }
 
+export interface ToDoItem {
+  todo: string;
+}
+
+export interface ToDoByMember {
+  nickname: string;
+  toDoLists: ToDoItem[];
+}
+
 export interface NoteDetail {
   id: number;
   name: string;
@@ -11,4 +20,5 @@ export interface NoteDetail {
   uuid: string;
   summary: string | null;
   summaryByMemberList: SummaryByMember[];
+  toDoResponseList: ToDoByMember[];
 }
