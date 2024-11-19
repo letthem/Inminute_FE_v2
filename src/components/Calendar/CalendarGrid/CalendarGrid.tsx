@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   startOfMonth,
   endOfMonth,
@@ -9,33 +9,21 @@ import {
   isSameDay,
 } from 'date-fns';
 import { DateCell } from '@/components/Calendar/CalendarGrid/DateCell/DateCell';
-import { getScheduleByMonth } from '@/apis/Calendar/getSchedule';
-import { Schedule } from '@/components/Calendar/dto';
+import { Schedule } from '@/pages/Calendar/dto';
 
 interface CalendarGridProps {
   currentMonth: Date;
   onDateClick: (date: Date, event: React.MouseEvent<HTMLDivElement>) => void;
   selectedDate: Date | null;
+  schedules: Schedule[];
 }
 
 export const CalendarGrid: React.FC<CalendarGridProps> = ({
   currentMonth,
   onDateClick,
   selectedDate,
+  schedules
 }) => {
-  const [schedules, setSchedules] = useState<Schedule[]>([]);
-
-  useEffect(() => {
-    const loadSchedules = async () => {
-      const year = currentMonth.getFullYear();
-      const month = currentMonth.getMonth() + 1;
-      const data = await getScheduleByMonth(year, month);
-      setSchedules(data);
-    };
-
-    loadSchedules();
-  }, [currentMonth]);
-
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
   const startDate = startOfWeek(monthStart);
@@ -81,6 +69,10 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
     days = [];
     rowIndex++;
   }
+
+  useEffect(() => {
+    console.log('Updated schedules:', schedules);
+  }, [schedules]);
 
   return <div className="mb-[46px] w-full">{rows}</div>;
 };

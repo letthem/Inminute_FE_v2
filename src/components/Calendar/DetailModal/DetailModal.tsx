@@ -5,7 +5,7 @@ import { ko } from 'date-fns/locale';
 import { DetailMenuModal } from '@/components/Calendar/DetailModal/DetailMenuModal/DetailMenuModal';
 import colorPalette, { ColorGroup } from '@/constants/colorPalette';
 import { getScheduleByMonth } from '@/apis/Calendar/getSchedule';
-import { Schedule } from '@/components/Calendar/dto';
+import { Schedule } from '@/pages/Calendar/dto';
 import { deleteSchedule } from '@/apis/Calendar/deleteSchedule';
 
 interface DetailModalProps {

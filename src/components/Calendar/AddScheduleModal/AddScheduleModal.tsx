@@ -6,12 +6,14 @@ import { TimePicker } from '@/components/Calendar/AddScheduleModal/TimePicker/Ti
 import { addSchedule } from '@/apis/Calendar/addSchedule';
 import { format } from 'date-fns';
 import { ColorGroup } from '@/constants/colorPalette';
+import { Schedule } from '@/pages/Calendar/dto';
 
 interface AddScheduleModalProps {
   onClose: () => void;
+  onAddSchedule: (newSchedule: Schedule) => void;
 }
 
-export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) => {
+export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose, onAddSchedule }) => {
   const [noteTitle, setNoteTitle] = useState('');
   const [selectedColor, setSelectedColor] = useState<ColorGroup>('orange');
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
@@ -32,9 +34,17 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ onClose }) =
     formattedHours = meridiem === 'AM' && hours === '12' ? '00' : formattedHours;
     const formattedTime = `${formattedHours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00`;
 
+    const newSchedule: Schedule = {
+      id: Date.now(),
+      name: noteTitle,
+      color: selectedColor,
+      startDateTime: formattedTime,
+    };
+
     try {
-      const response = await addSchedule(noteTitle, selectedColor, formattedDates, formattedTime);
-      console.log('Schedule added successfully:', response);
+      await addSchedule(noteTitle, selectedColor, formattedDates, formattedTime);
+      // 부모 상태 업데이트
+      onAddSchedule(newSchedule);
       onClose();
     } catch (error) {
       console.error('Error adding schedule:', error);
