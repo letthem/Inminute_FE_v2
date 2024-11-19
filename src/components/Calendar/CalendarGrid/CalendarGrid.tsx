@@ -10,17 +10,12 @@ import {
 } from 'date-fns';
 import { DateCell } from '@/components/Calendar/CalendarGrid/DateCell/DateCell';
 import { getScheduleByMonth } from '@/apis/Calendar/getSchedule';
+import { Schedule } from '@/components/Calendar/dto';
 
 interface CalendarGridProps {
   currentMonth: Date;
   onDateClick: (date: Date, event: React.MouseEvent<HTMLDivElement>) => void;
   selectedDate: Date | null;
-}
-
-interface Schedule {
-  name: string;
-  color: string;
-  startDateTime: string;
 }
 
 export const CalendarGrid: React.FC<CalendarGridProps> = ({

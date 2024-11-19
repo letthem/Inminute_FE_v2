@@ -1,13 +1,14 @@
 import React from 'react';
 import { isSameDay, isSameMonth, format } from 'date-fns';
 import { Meeting } from '@/components/Calendar/CalendarGrid/DateCell/Meeting/Meeting';
+import { Schedule } from '@/components/Calendar/dto';
 
 interface DateCellProps {
   day: Date;
   currentMonth: Date;
   onClick: (date: Date, event: React.MouseEvent<HTMLDivElement>) => void;
   isSelected: boolean;
-  schedules: { name: string; color: string; startDateTime: string }[];
+  schedules: Schedule[];
   isFirstRow: boolean;
   isLastRow: boolean;
   isFirstCol: boolean;
