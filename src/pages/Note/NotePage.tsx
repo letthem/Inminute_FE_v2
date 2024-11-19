@@ -16,12 +16,9 @@ export const NotePage = () => {
   const [noteData, setNoteData] = useState<NoteDetail | null>(null);
 
   const fetchNoteDetail = async () => {
-    if (!uuid) return;
+    if (!uuid || isMemberLoading || isNickNameLoading) return; // 로딩 중이거나 uuid 없으면 중단
 
     const redirectUuid = localStorage.getItem('redirectUuid');
-
-    // API 요청이 완료되지 않은 상태에서는 실행하지 않음
-    if (isMemberLoading || isNickNameLoading) return;
 
     // 회원이 아니라면
     if (!isMember) {
@@ -44,8 +41,7 @@ export const NotePage = () => {
         localStorage.removeItem('redirectUuid');
       } else {
         const data = await getNoteDetail(uuid);
-        const detail = data.result;
-        setNoteData(detail);
+        setNoteData(data.result);
       }
     }
   };
