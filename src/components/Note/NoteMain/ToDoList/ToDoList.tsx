@@ -1,5 +1,6 @@
 import todo from '@/assets/webps/Note/todo.webp';
 import { ToDoItem } from '@/components/Note/NoteMain/ToDoList/ToDoItem/ToDoItem';
+import edit from '@/assets/webps/FolderBar/editBlack.webp';
 
 const todoData = [
   {
@@ -26,6 +27,7 @@ export const ToDoList = () => {
       <div className="flex items-center">
         <img src={todo} alt="todo icon" className="w-5 h-5 mr-[6px]" />
         <span className="font-extrabold text-[15px]">TO DO</span>
+        <img src={edit} alt="edit" className="w-[14px] h-[14px] ml-2 cursor-pointer" />
       </div>
       <div className="flex flex-wrap mt-[28px] mb-[46px] mr-[120px]">
         {todoData.map((todo, index) => (

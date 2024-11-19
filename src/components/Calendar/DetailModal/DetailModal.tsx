@@ -6,6 +6,7 @@ import { DetailMenuModal } from '@/components/Calendar/DetailModal/DetailMenuMod
 import colorPalette, { ColorGroup } from '@/constants/colorPalette';
 import { getScheduleByMonth } from '@/apis/Calendar/getSchedule';
 import { Schedule } from '@/components/Calendar/dto';
+import { deleteSchedule } from '@/apis/Calendar/deleteSchedule';
 
 interface DetailModalProps {
   selectedDate: Date;
@@ -101,7 +102,8 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
     setIsMenuOpen(null);
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
+    await deleteSchedule(id);
     setMeetings((prevMeetings) => {
       const updatedMeetings = prevMeetings.filter((meeting) => meeting.id !== id);
 
@@ -163,10 +165,10 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
             <p className="text-[14px] text-gray05 font-[500]">등록된 회의 일정이 없어요!</p>
           </div>
         ) : (
-          meetings.map((meeting, index) => {
+          meetings.map((meeting) => {
             const colors = getColors(meeting.color);
             return (
-              <div key={index} className="ml-6 mr-[22px] flex mt-[18px]">
+              <div key={meeting.id} className="ml-6 mr-[22px] flex mt-[18px]">
                 <span className="min-w-[36px] text-[11px] font-[700] leading-[20px] text-mainBlack mr-[11px] mt-[12px]">
                   {format(new Date(meeting.startDateTime), 'HH:mm')}
                 </span>
