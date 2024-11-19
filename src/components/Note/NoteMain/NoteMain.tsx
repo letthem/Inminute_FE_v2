@@ -107,7 +107,9 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid }) => 
       {isMeetingEnded && (
         <button
           onClick={handleQnAClick}
-          className={`absolute bottom-7 right-6 w-14 h-14 ${isQnAModalOpen === true ? 'bg-main04' : 'bg-white'} flex justify-center items-center rounded-full transition-all duration-200 ease-in-out`}
+          className={`absolute bottom-7 right-6 w-14 h-14  ${
+            isQnAModalOpen ? 'bg-main04' : 'hover:bg-main02 bg-white'
+          } flex justify-center items-center rounded-full transition-all duration-200 ease-in-out`}
           style={{
             boxShadow: '0px 0px 6px 0px rgba(96, 96, 96, 0.16)',
           }}

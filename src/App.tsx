@@ -10,6 +10,8 @@ import { AboutPage } from '@/pages/About/AboutPage';
 import { OAuthRedirect } from '@/components/Login/OAuthRedirect/OAuthRedirect';
 import Layout from '@/components/Layout/Layout';
 import 'aos/dist/aos.css';
+import { LoginPage } from '@/pages/Login/LoginPage';
+import { JoinPage } from '@/pages/Join/JoinPage';
 
 const queryClient = new QueryClient();
 
@@ -27,6 +29,8 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <Routes>
           <Route path="/" element={<AboutPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/join" element={<JoinPage />} />
           <Route path="/google/callback" element={<OAuthRedirect />} />
           <Route path="/kakao/callback" element={<OAuthRedirect />} />
           <Route

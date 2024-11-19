@@ -1,27 +1,11 @@
-import React from 'react';
-import { SocialLoginButton } from '@/components/Login/LoginModal/SocialLoginButton/SocialLoginButton';
+import { SocialLoginButton } from '@/components/Login/SocialLoginButton/SocialLoginButton';
 import note from '@/assets/webps/Login/note.webp';
 import logoBlack from '@/assets/webps/Login/logoBlack.webp';
 import google from '@/assets/webps/Login/google.webp';
 import kakao from '@/assets/webps/Login/kakao.webp';
 import naver from '@/assets/webps/Login/naver.webp';
 
-interface LoginModalProps {
-  onClose: () => void;
-}
-
-export const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
-  // 모달 배경을 클릭하면 닫힘
-  const handleBackgroundClick = () => {
-    onClose();
-  };
-
-  // 모달 내부를 클릭하면 이벤트가 전파되지 않도록 함
-  const handleModalClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
-
-  // 소셜 로그인 처리
+export const LoginPage = () => {
   const handleSocialLogin = (provider: string) => {
     if (provider === 'google') {
       const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
@@ -37,14 +21,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-sub2Black bg-opacity-80"
-      onClick={handleBackgroundClick}
-    >
-      <div
-        className="bg-white w-[522px] h-[442px] rounded-[20px] relative flex flex-col items-center"
-        onClick={handleModalClick}
-      >
+    <div className="w-full h-screen bg-sub2Black flex justify-center items-center">
+      <div className="bg-white w-[522px] h-[442px] rounded-[20px] relative flex flex-col items-center">
         <img src={note} alt="note" className="w-[108.6px] absolute top-[-78px] left-[210px]" />
         <img src={logoBlack} alt="logo" className="w-[240px] h-[45.52px] mt-[72px]" />
 
