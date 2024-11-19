@@ -94,7 +94,7 @@ export const ScriptItem: React.FC<ScriptItemProps> = ({
   return (
     <div
       ref={scriptRef}
-      className={`pb-4 pt-4 pl-[15px] pr-3 hover:bg-gray02 rounded-[10px] ${isEditing && 'bg-gray02'}`}
+      className={`pb-4 pt-4 pl-[15px] pr-3 hover:bg-gray02 rounded-[10px] ${isEditing && 'bg-gray02 pb-[9.5px]'}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
