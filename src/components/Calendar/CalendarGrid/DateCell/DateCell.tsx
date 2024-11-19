@@ -1,7 +1,7 @@
 import React from 'react';
 import { isSameDay, isSameMonth, format } from 'date-fns';
 import { Meeting } from '@/components/Calendar/CalendarGrid/DateCell/Meeting/Meeting';
-import { Schedule } from '@/components/Calendar/dto';
+import { Schedule } from '@/pages/Calendar/dto';
 
 interface DateCellProps {
   day: Date;

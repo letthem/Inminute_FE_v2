@@ -1,4 +1,4 @@
-import { Schedule } from '@/components/Calendar/dto';
+import { Schedule } from '@/pages/Calendar/dto';
 import colorPalette from '@/constants/colorPalette';
 import React from 'react';
 
@@ -31,7 +31,10 @@ export const Meeting: React.FC<MeetingProps> = ({ meetings }) => {
             style={{ backgroundColor: bgColor }}
           >
             {isFutureEvent && stripeColor && (
-              <div className="min-w-[5px] mr-[-2px] h-full" style={{ backgroundColor: stripeColor }} />
+              <div
+                className="min-w-[5px] mr-[-2px] h-full"
+                style={{ backgroundColor: stripeColor }}
+              />
             )}
             <p
               className={`truncate ml-[8px] mr-1 text-[12px] font-[500] leading-[22px]`}

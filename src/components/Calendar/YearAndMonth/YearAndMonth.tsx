@@ -4,17 +4,20 @@ import leftBlack from '@/assets/webps/Calendar/leftBlack.webp';
 import rightBlack from '@/assets/webps/Calendar/rightBlack.webp';
 import calendarMint from '@/assets/webps/Calendar/calendarMint.webp';
 import { AddScheduleModal } from '@/components/Calendar/AddScheduleModal/AddScheduleModal';
+import { Schedule } from '@/pages/Calendar/dto';
 
 interface YearAndMonthProps {
   currentMonth: Date;
   onPrevMonth: () => void;
   onNextMonth: () => void;
+  onAddSchedule: (newSchedule: Schedule) => void;
 }
 
 export const YearAndMonth: React.FC<YearAndMonthProps> = ({
   currentMonth,
   onPrevMonth,
   onNextMonth,
+  onAddSchedule,
 }) => {
   const [isAddScheduleModalOpen, setIsAddScheduleModalOpen] = useState(false);
 
@@ -58,7 +61,9 @@ export const YearAndMonth: React.FC<YearAndMonthProps> = ({
           <span className="text-white text-[12px] font-[500] leading-[22px]">일정 추가</span>
         </div>
       </div>
-      {isAddScheduleModalOpen && <AddScheduleModal onClose={closeAddScheduleModal} />}
+      {isAddScheduleModalOpen && (
+        <AddScheduleModal onClose={closeAddScheduleModal} onAddSchedule={onAddSchedule} />
+      )}
     </>
   );
 };
