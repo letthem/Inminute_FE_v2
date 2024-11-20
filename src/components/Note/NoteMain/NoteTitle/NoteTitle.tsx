@@ -10,7 +10,6 @@ import { useSocket } from '@/context/SocketContext';
 import { Message } from '@stomp/stompjs';
 import { MicButton } from '@/components/Note/NoteMain/NoteTitle/MicButton/MicButton';
 import { useNickName } from '@/apis/Member/hooks';
-import { Loading } from '@/components/Common/Loading/Loading';
 import { getNoteMainContents } from '@/apis/Note/getNote';
 
 interface NoteTitleProps {
@@ -62,11 +61,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
   }, [stompClient, uuid]); // stompClient와 uuid에 의존성 추가
 
   if (!noteData) {
-    return (
-      <div className="ml-[60px]">
-        <Loading />
-      </div>
-    );
+    return <></>;
   }
 
   const date = new Date(noteData.createdAt);
@@ -88,7 +83,11 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
       setIsMeetingEnded(true);
 
       const response = await getNoteMainContents(uuid);
-      onSummaryUpdate(response.result.summary, response.result.summaryByMemberList, response.result.toDoResponseList); // 한 줄 요약, 화자별 요약, ToDoList 전달
+      onSummaryUpdate(
+        response.result.summary,
+        response.result.summaryByMemberList,
+        response.result.toDoResponseList
+      ); // 한 줄 요약, 화자별 요약, ToDoList 전달
     } else {
       // 회의 시작 요청
       const startMeeting = {
