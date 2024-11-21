@@ -21,7 +21,7 @@ export const QnAModal: React.FC<QnAModalProps> = ({ onClose, uuid }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: '안녕하세요, Inminute의 ChatGPT입니다.\n이 회의록과 관련해서 어떤 부분이 궁금하신가요?',
+      text: '안녕하세요, Inminute의 챗봇입니다.\n이 회의록과 관련해서 어떤 부분이 궁금하신가요?',
       sender: 'bot',
     },
   ]);
