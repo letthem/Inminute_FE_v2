@@ -87,11 +87,11 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid }) => 
         <ParticipantList participants={participants} />
         {isStart && <p className="ml-12 text-[16px] font-[500] mt-[18px] text-gray05">회의 중..</p>}
         {isMeetingEnded && !noteData?.summary ? ( // 회의 종료 후 summary가 업데이트될 때까지 Loading 표시
-          <div className="flex flex-col gap-5 justify-center items-center h-[50vh]">
+          <div className="flex flex-col justify-center items-center h-[50vh]">
             <div style={{ transform: 'scale(2)' }}>
               <Loading />
             </div>
-            <p className="text-mainBlack font-[500] text-[15px] leading-[24px]">
+            <p className="text-mainBlack font-[500] text-[16px] leading-[24px] mt-[24px]">
               회의 내용을 불러오고 있어요
             </p>
           </div>

@@ -64,7 +64,7 @@ export const OAuthRedirect: React.FC = () => {
   if (isLoading) {
     // 로딩 중에는 인미닛 로딩 화면 표시
     return (
-      <div className="bg-sub2Black w-full h-[100vh] font-nanum text-[18px] text-gray04 flex flex-col gap-8 justify-center items-center">
+      <div className="bg-sub2Black w-full h-[100vh] font-nanum text-[17px] text-gray04 flex flex-col gap-[30px] justify-center items-center">
         인미닛으로 들어가는 중 !
         <img src={note} alt="note" className="w-[147px] h-[154px]" />
       </div>
