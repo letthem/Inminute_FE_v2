@@ -73,7 +73,7 @@ export const SubFeature = () => {
 
   return (
     <article className="bg-bg leading-[170%] relative">
-      <div className="flex justify-center mt-[262px] text-mainBlack text-[20px] s960:text-[52px] s1400:text-[42px] s1600:text-[52px] font-[800] leading-[170%]">
+      <div className="flex justify-center mt-[112px] s960:mt-[285px] s1400:mt-[350px] s1600:mt-[246px] text-mainBlack text-[20px] s960:text-[52px] s1400:text-[42px] s1600:text-[52px] font-[800] leading-[170%]">
         <div className="flex flex-col w-[298px] s510:w-[453px] s960:w-[856px] s1400:w-[1046px] s1600:w-[1292px] z-10">
           <p>인미닛에서는,</p>
           <p>이런 것도 할 수 있어요!</p>
@@ -119,9 +119,9 @@ export const SubFeature = () => {
                 </div>
                 <div className="absolute bottom-0 left-0 w-[31.5px] h-[25px] s1400:w-[73px] s1400:h-[58px] s1600:w-[90px] s1600:h-[72px] bg-[#9DFF4D] rounded-b-[10px] s1400:rounded-b-[24px] s1600:rounded-b-[30px] rounded-tr-[10px] s1400:rounded-tr-[24px] s1600:rounded-tr-[30px] flex justify-center items-center">
                   <div className="flex gap-[2px] s1400:gap-[5px] s1600:gap-[6px]">
-                    <div className="rounded-full w-[2px] h-[2px] s1400:w-[5px] s1400:h-[5px] s1600:w-[6px] s1600:h-[6px] bg-[#2B2B2B]" />
-                    <div className="rounded-full w-[2px] h-[2px] s1400:w-[5px] s1400:h-[5px] s1600:w-[6px] s1600:h-[6px] bg-[#2B2B2B]" />
-                    <div className="rounded-full w-[2px] h-[2px] s1400:w-[5px] s1400:h-[5px] s1600:w-[6px] s1600:h-[6px] bg-[#2B2B2B]" />
+                    <div className="rounded-full w-[2px] h-[2px] bg-[#2B2B2B]" />
+                    <div className="rounded-full w-[2px] h-[2px] bg-[#2B2B2B]" />
+                    <div className="rounded-full w-[2px] h-[2px] bg-[#2B2B2B]" />
                   </div>
                 </div>
               </div>
@@ -244,17 +244,13 @@ export const SubFeature = () => {
               <div className="absolute top-[53px] right-[68px] s1400:top-[146px] s1400:right-[137px] s1600:top-[194px] s1600:right-[171px]">
                 <ul className="list-inside list-disc text-[#666666] font-pretendard font-[700] text-[11px] s1400:text-[27px] s1600:text-[33px] leading-[200%]">
                   <li>
-                    <span className="ml-[-5px] s1400:ml-[-12px] s1600:ml-[-16px]">
-                      회의 장소 예약
-                    </span>
+                    <span className="ml-[-5px]">회의 장소 예약</span>
                   </li>
                   <li>
-                    <span className="ml-[-5px] s1400:ml-[-12px] s1600:ml-[-16px]">
-                      카드뉴스 제작
-                    </span>
+                    <span className="ml-[-5px]">카드뉴스 제작</span>
                   </li>
                   <li>
-                    <span className="ml-[-5px] s1400:ml-[-12px] s1600:ml-[-16px]">레퍼런</span>
+                    <span className="ml-[-5px]">레퍼런</span>
                   </li>
                 </ul>
               </div>
@@ -286,50 +282,49 @@ export const SubFeature = () => {
           </div>
         </div>
 
+        {/* -------------------------------------------------- */}
         {/* ph, s960 */}
-        <div className="flex s510:hidden s960:flex s1400:hidden flex-col gap-3 s960:gap-9 s1400:gap-[30px] s1600:gap-9">
-          <div className="flex gap-3 s960:gap-[37px] s1400:gap-7 s1600:gap-9">
+        <div className="flex s510:hidden s960:flex s1400:hidden flex-col gap-3 s960:gap-9">
+          <div className="flex gap-3 s960:gap-[37px]">
             {/* Q&A */}
             <div
               data-aos="fade-up"
-              className="flex col-span-2 w-[298px] h-[154px] s960:w-[856px] s960:h-[440px] s1400:w-[694px] s1400:h-[356px] s1600:w-[856px] s1600:h-[440px] bg-white rounded-[8px] s1400:rounded-[20px] shadow-subFeature z-10"
+              className="flex col-span-2 w-[298px] h-[154px] s960:w-[856px] s960:h-[440px] bg-white rounded-[8px] shadow-subFeature z-10"
             >
-              <div className="ml-[14px] mt-[12px] s1400:ml-[34px] s1400:mt-[30px] s1600:ml-[42px] s1600:mt-[38px]">
-                <p className="text-mainBlack font-[800] leading-[170%] text-[12px] s1400:text-[26px] s1600:text-[32px]">
-                  Q&A
-                </p>
-                <div className="w-[116px] s1400:w-[203px] s1600:w-[232px] text-gray05 text-[8px] s1400:text-[14px] s1600:text-[16px] font-[400] leading-[170%] mt-[3px] s1400:mt-[6px] s1600:mt-3">
+              <div className="ml-[14px] mt-[12px]">
+                <p className="text-mainBlack font-[800] leading-[170%] text-[12px]">Q&A</p>
+                <div className="w-[116px] text-gray05 text-[8px] font-[400] leading-[170%] mt-[3px]">
                   <p>회의록에 대해 궁금한 점이 있다면</p>
                   <p>질문해보세요.</p>
                 </div>
               </div>
-              <div className="relative ml-[-14px] s1400:ml-[41px] s1600:ml-[69px] mr-5 s1400:mr-10 s1600:mr-12 mt-[18px] s1400:mt-10 s1600:mt-12 mb-[15px] s1400:mb-[34px] s1600:mb-11 w-[162px] h-[121px] s1400:w-[376px] s1400:h-[282px] s1600:w-[465px] s1600:h-[348px] font-pretendard text-[8.5px] s1400:text-[19px] s1600:text-[24px] font-[500] leading-[170%]">
-                <div className="absolute right-0 w-[58px] h-[25px] s1400:w-[135px] s1400:h-[58px] s1600:w-[167px] s1600:h-[72px] bg-[#E1FF4D] rounded-t-[10px] s1400:rounded-t-[24px] s1600:rounded-t-[30px] rounded-bl-[10px] s1400:rounded-bl-[24px] s1600:rounded-bl-[30px] pt-[5.5px] pl-[8.4px] s1400:pt-[13px] s1400:pl-[20px] s1600:pt-4 s1600:pl-6">
+              <div className="relative ml-[-14px] mr-5 mt-[18px] mb-[15px] w-[162px] h-[121px] font-pretendard text-[8.5px] font-[500] leading-[170%]">
+                <div className="absolute right-0 w-[58px] h-[25px] bg-[#E1FF4D] rounded-t-[10px] rounded-bl-[10px] pt-[5.5px] pl-[8.4px]">
                   <span>OO에 대해서</span>
                 </div>
-                <div className="absolute top-[30px] s1400:top-[71px] s1600:top-[88px] right-0 w-[103px] h-[25px] s1400:w-[238px] s1400:h-[58px] s1600:w-[294px] s1600:h-[72px] bg-[#E1FF4D] rounded-t-[10px] s1400:rounded-t-[24px] s1600:rounded-t-[30px] rounded-bl-[10px] s1400:rounded-bl-[24px] s1600:rounded-bl-[30px] pt-[5.5px] pl-[8.7px] s1400:pt-[13px] s1400:pl-[20px] s1600:pt-4 s1600:pl-6">
+                <div className="absolute top-[30px] right-0 w-[103px] h-[25px] bg-[#E1FF4D] rounded-t-[10px] rounded-bl-[10px] pt-[5.5px] pl-[8.7px]">
                   <span>어떤 이야기들을 나눴었지?</span>
                 </div>
-                <div className="absolute top-[65.4px] s1400:top-[152px] s1600:top-[188px] left-0 w-[108px] h-[25px] s1400:w-[250px] s1400:h-[58px] s1600:w-[309px] s1600:h-[72px] bg-[#9DFF4D] rounded-b-[10px] s1400:rounded-b-[24px] s1600:rounded-b-[30px] rounded-tr-[10px] s1400:rounded-tr-[24px] s1600:rounded-tr-[30px] pt-[5.5px] pl-2 s1400:pt-[13px] s1400:pl-[20px] s1600:pt-4 s1600:pl-6">
+                <div className="absolute top-[65.4px] left-0 w-[108px] h-[25px] bg-[#9DFF4D] rounded-b-[10px] rounded-tr-[10px] pt-[5.5px] pl-2">
                   <span>OO에 대해서 알려드릴게요!</span>
                 </div>
-                <div className="absolute bottom-0 left-0 w-[31.5px] h-[25px] s1400:w-[73px] s1400:h-[58px] s1600:w-[90px] s1600:h-[72px] bg-[#9DFF4D] rounded-b-[10px] s1400:rounded-b-[24px] s1600:rounded-b-[30px] rounded-tr-[10px] s1400:rounded-tr-[24px] s1600:rounded-tr-[30px] flex justify-center items-center">
-                  <div className="flex gap-[2px] s1400:gap-[5px] s1600:gap-[6px]">
-                    <div className="rounded-full w-[2px] h-[2px] s1400:w-[5px] s1400:h-[5px] s1600:w-[6px] s1600:h-[6px] bg-[#2B2B2B]" />
-                    <div className="rounded-full w-[2px] h-[2px] s1400:w-[5px] s1400:h-[5px] s1600:w-[6px] s1600:h-[6px] bg-[#2B2B2B]" />
-                    <div className="rounded-full w-[2px] h-[2px] s1400:w-[5px] s1400:h-[5px] s1600:w-[6px] s1600:h-[6px] bg-[#2B2B2B]" />
+                <div className="absolute bottom-0 left-0 w-[31.5px] h-[25px] bg-[#9DFF4D] rounded-b-[10px] rounded-tr-[10px] flex justify-center items-center">
+                  <div className="flex gap-[2px]">
+                    <div className="rounded-full w-[2px] h-[2px] bg-[#2B2B2B]" />
+                    <div className="rounded-full w-[2px] h-[2px] bg-[#2B2B2B]" />
+                    <div className="rounded-full w-[2px] h-[2px] bg-[#2B2B2B]" />
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="flex gap-3 s960:gap-[37px] s1400:gap-7 s1600:gap-9">
+          <div className="flex gap-3 s960:gap-[37px]">
             {/* 다른 플랫폼 */}
             <div
               data-aos="fade-up"
               data-aos-delay="200"
-              className="w-[143px] h-[154px] s960:w-[410px] s960:h-[440px] s1400:w-[324px] s1400:h-[356px] s1600:w-[400px] s1600:h-[440px] bg-white rounded-[8px] s1400:rounded-[20px] shadow-subFeature z-10"
+              className="w-[143px] h-[154px] s960:w-[410px] s960:h-[440px] bg-white rounded-[8px] shadow-subFeature z-10"
             >
               <div className={`transition-opacity duration-300 ${fadeClass}`}>
                 <img
@@ -338,14 +333,14 @@ export const SubFeature = () => {
                   className={`${platforms[currentPlatformIndex].className}`}
                 />
               </div>
-              <div className="ml-[14px] s1400:ml-[34px] s1600:ml-[42px]">
-                <p className="text-mainBlack font-[800] leading-[170%] text-[12px] s1400:text-[26px] s1600:text-[32px]">
+              <div className="ml-[14px]">
+                <p className="text-mainBlack font-[800] leading-[170%] text-[12px]">
                   with{' '}
                   <span className={`${platforms[currentPlatformIndex].color} ${textFadeClass}`}>
                     {platforms[currentPlatformIndex].name}
                   </span>
                 </p>
-                <div className="text-gray05 text-[8px] s1400:text-[14px] s1600:text-[16px] font-[400] leading-[170%] mt-[3px] s1400:mt-[6px] s1600:mt-3">
+                <div className="text-gray05 text-[8px] font-[400] leading-[170%] mt-[3px]">
                   <p>회의 서비스와 함께 더욱 편하게</p>
                   <p>비대면 회의를 진행하세요.</p>
                 </div>
@@ -356,18 +351,12 @@ export const SubFeature = () => {
             <div
               data-aos="fade-up"
               data-aos-delay="400"
-              className="w-[143px] h-[154px] s960:w-[410px] s960:h-[440px] s1400:w-[324px] s1400:h-[356px] s1600:w-[400px] s1600:h-[440px] bg-white rounded-[8px] s1400:rounded-[20px] shadow-subFeature z-10"
+              className="w-[143px] h-[154px] s960:w-[410px] s960:h-[440px] bg-white rounded-[8px] shadow-subFeature z-10"
             >
-              <img
-                src={calendar}
-                alt="calendar"
-                className="w-[80px] s1400:w-[192px] s1600:w-[238px] mt-[10px] s1400:mt-6 s1600:mt-[28px] mx-auto"
-              />
-              <div className="ml-[14px] s1400:ml-[34px] s1600:ml-[42px] mt-[7px] s1400:mt-6 s1600:mt-[27.7px]">
-                <p className="text-mainBlack font-[800] leading-[170%] text-[12px] s1400:text-[26px] s1600:text-[32px]">
-                  캘린더
-                </p>
-                <div className="text-gray05 text-[8px] s1400:text-[14px] s1600:text-[16px] font-[400] leading-[170%] s1400:mt-[6px] s1600:mt-3">
+              <img src={calendar} alt="calendar" className="w-[80px] mt-[10px] mx-auto" />
+              <div className="ml-[14px] mt-[7px]">
+                <p className="text-mainBlack font-[800] leading-[170%] text-[12px]">캘린더</p>
+                <div className="text-gray05 text-[8px] font-[400] leading-[170%]">
                   <p>정기적인 회의 일정을 등록하고</p>
                   <p>편리하게 관리하세요.</p>
                 </div>
@@ -379,47 +368,35 @@ export const SubFeature = () => {
           <div
             data-aos="fade-up"
             data-aos-delay="600"
-            className="col-span-2 w-[298px] h-[154px] s960:w-[856px] s960:h-[440px] s1400:w-[694px] s1400:h-[356px] s1600:w-[856px] s1600:h-[440px] bg-white rounded-[8px] s1400:rounded-[20px] shadow-subFeature relative z-10"
+            className="col-span-2 w-[298px] h-[154px] s960:w-[856px] s960:h-[440px] bg-white rounded-[8px] shadow-subFeature relative z-10"
           >
-            <div className="ml-[14px] mt-3 s1400:ml-[36px] s1400:mt-[30px] s1600:ml-[42px] s1600:mt-[38px]">
-              <p className="text-mainBlack font-[800] leading-[170%] text-[12px] s1400:text-[26px] s1600:text-[32px]">
-                회의록 공유
-              </p>
-              <div className="text-gray05 text-[8px] s1400:text-[14px] s1600:text-[16px] font-[400] leading-[170%] mt-[3px] s1400:mt-[6px] s1600:mt-3">
+            <div className="ml-[14px] mt-3">
+              <p className="text-mainBlack font-[800] leading-[170%] text-[12px]">회의록 공유</p>
+              <div className="text-gray05 text-[8px] font-[400] leading-[170%] mt-[3px]">
                 <p>링크를 공유해서 사용자를 초대하고 회의를 진행하세요!</p>
                 <p>하나의 회의록을 함께 공유할 수 있어요.</p>
               </div>
             </div>
-            <div className="bg-[#ECECEC] w-[155px] h-[56px] s1400:w-[359px] s1400:h-[131px] rounded-tl-[8px] rounded-br-[8px] s1400:rounded-tl-[16px] s1400:rounded-br-[16px] s1600:w-[444px] s1600:h-[162px] s1600:rounded-tl-[20px] s1600:rounded-br-[20px] absolute bottom-0 right-0">
-              <img
-                src={plane}
-                alt="plane"
-                className="w-7 h-7 s1400:w-[70px] s1400:h-[68px] s1600:w-[88px] s1600:h-[86px] absolute top-[-26px] left-[-30px] s1400:top-[-80px] s1400:left-[-68px] s1600:top-[-104px] s1600:left-[-83px]"
-              />
-              <div className="w-[61px] h-[21px] px-2 py-1 gap-1 s1400:w-[143px] s1400:h-[50px] s1400:px-5 s1400:py-[10px] s1400:gap-[10px] s1600:w-[175px] s1600:h-[60px] s1600:px-6 s1600:py-3 s1600:gap-3 flex items-center bg-mainBlack rounded-[2px] s1400:rounded-[4px] s1600:rounded-[6px] mt-[10px] s1400:mt-[24px] s1600:mt-[32px] ml-3 s1400:ml-[26px] s1600:ml-9">
-                <img
-                  src={link}
-                  alt="link"
-                  className="w-[10px] h-[10px] s1400:w-[24px] s1400:h-[24px] s1600:w-[30px] s1600:h-[30px]"
-                />
-                <span className="text-white text-[7px] s1400:text-[17px] s1600:text-[21px] font-[500] leading-[12.5px] s1400:leading-[30px] s1600:leading-[36px]">
-                  링크 복사
-                </span>
+            <div className="bg-[#ECECEC] w-[155px] h-[56px] rounded-tl-[8px] rounded-br-[8px] absolute bottom-0 right-0">
+              <img src={plane} alt="plane" className="w-7 h-7 absolute top-[-26px] left-[-30px]" />
+              <div className="w-[61px] h-[21px] px-2 py-1 gap-1 flex items-center bg-mainBlack rounded-[2px] mt-[10px] ml-3">
+                <img src={link} alt="link" className="w-[10px] h-[10px]" />
+                <span className="text-white text-[7px] font-[500] leading-[12.5px]">링크 복사</span>
               </div>
             </div>
           </div>
-          <div className="flex gap-3 s960:gap-[37px] s1400:gap-7 s1600:gap-9">
+          <div className="flex gap-3 s960:gap-[37px]">
             {/* 회의록 수정 기능 */}
             <div
               data-aos="fade-up"
               data-aos-delay="800"
-              className="col-span-2 w-[143px] h-[154px] s960:w-[410px] s960:h-[440px] s1400:w-[694px] s1400:h-[356px] s1600:w-[856px] s1600:h-[440px] bg-white rounded-[8px] s1400:rounded-[20px] shadow-subFeature relative z-10"
+              className="col-span-2 w-[143px] h-[154px] s960:w-[410px] s960:h-[440px] bg-white rounded-[8px] shadow-subFeature relative z-10"
             >
-              <div className="ml-[14px] mt-[93px] s1400:ml-[34px] s1400:mt-[30px] s1600:ml-[42px] s1600:mt-[38px]">
-                <p className="text-mainBlack font-[800] leading-[170%] text-[12px] s1400:text-[26px] s1600:text-[32px]">
+              <div className="ml-[14px] mt-[93px]">
+                <p className="text-mainBlack font-[800] leading-[170%] text-[12px]">
                   회의록 수정 기능
                 </p>
-                <div className="text-gray05 hidden s960:block s1400:w-[235px] s1600:w-[232px] text-[8px] s1400:text-[14px] s1600:text-[16px] font-[400] leading-[170%] s1400:mt-[6px] s1600:mt-3">
+                <div className="text-gray05 hidden s960:block text-[8px] font-[400] leading-[170%]">
                   <p>스크립트부터 한 줄 요약, TO DO</p>
                   <p>까지 원하는대로 수정 가능해요!</p>
                 </div>
@@ -429,50 +406,40 @@ export const SubFeature = () => {
                 </div>
               </div>
               <div>
-                <div className="w-[128px] h-[24px] s1400:w-[280px] s1400:h-[56px] s1600:w-[346px] s1600:h-[70px] bg-[#FFF2B5] rounded-[14px] s1400:rounded-[30px] s1600:rounded-[40px] py-[5px] s1400:py-[13px] s1600:py-4 flex absolute top-4 right-4 s1400:top-[54px] s1400:right-[38px] s1600:top-[58px] s1600:right-[42px]">
-                  <span className="mx-auto text-[#AB942C] font-pretendard text-[7px] s1400:text-[15.5px] s1600:text-[19px] font-[600] leading-[200%]">
+                <div className="hidden s960:flex w-[128px] h-[24px] bg-[#FFF2B5] rounded-[14px] py-[5px] s1400:py-[13px] absolute top-4 right-4">
+                  <span className="mx-auto text-[#AB942C] font-pretendard text-[7px] font-[600] leading-[200%]">
                     다음 회의까지 해야 할 일이 변경되었어!
                   </span>
                 </div>
-                <div className="absolute top-[35px] right-[28px] s1400:top-[100px] s1400:right-[72px] s1600:top-[126px] s1600:right-[82px] w-0 h-0 border border-t-[8px] s1400:border-t-[14px] border-t-[#FFF2B5] border-r-[4px] s1400:border-r-[16px] border-r-[#FFF2B5] border-l-[8px] s1400:border-l-[16px] border-l-transparent border-b-[4px] s1400:border-b-[14px] border-b-transparent" />
+                <div className="hidden s960:block absolute top-[35px] right-[28px] w-0 h-0 border border-t-[8px] border-t-[#FFF2B5] border-r-[4px] border-r-[#FFF2B5] border-l-[8px] border-l-transparent border-b-[4px] border-b-transparent" />
               </div>
-              <div className="absolute top-[53px] right-[68px] s1400:top-[146px] s1400:right-[137px] s1600:top-[194px] s1600:right-[171px]">
-                <ul className="list-inside list-disc text-[#666666] font-pretendard font-[700] text-[11px] s1400:text-[27px] s1600:text-[33px] leading-[200%]">
+              <div className="absolute top-[15px] right-[36.5px] s960:top-[53px] s960:right-[68px]">
+                <ul className="list-inside list-disc text-[#666666] font-pretendard font-[700] text-[11px] leading-[200%]">
                   <li>
-                    <span className="ml-[-5px] s1400:ml-[-12px] s1600:ml-[-16px]">
-                      회의 장소 예약
-                    </span>
+                    <span className="ml-[-5px]">회의 장소 예약</span>
                   </li>
                   <li>
-                    <span className="ml-[-5px] s1400:ml-[-12px] s1600:ml-[-16px]">
-                      카드뉴스 제작
-                    </span>
+                    <span className="ml-[-5px]">카드뉴스 제작</span>
                   </li>
                   <li>
-                    <span className="ml-[-5px] s1400:ml-[-12px] s1600:ml-[-16px]">레퍼런</span>
+                    <span className="ml-[-5px]">레퍼런</span>
                   </li>
                 </ul>
               </div>
-              <div className="absolute top-[64px] right-[66px] s1400:top-[173px] s1400:right-[136px] w-[66px] h-[1px] s1400:w-[156px] s1400:h-[3px] s1600:top-[225px] s1600:right-[165px] s1600:w-[197px] bg-[#666666] rounded-lg" />
-              <div className="absolute top-[103px] right-[100px] s1400:top-[268px] s1400:right-[214px] w-[1px] h-[10px] s1400:w-[2px] s1400:h-[26px] s1600:top-[343px] s1600:right-[266px] s1600:w-[3px] s1600:h-[32px] bg-[#666666] rounded-lg" />
+              <div className="absolute top-[26px] right-[35px] s960:top-[64px] s960:right-[66px] w-[66px] h-[1px] bg-[#666666] rounded-lg" />
+              <div className="absolute top-[65px] right-[68px] s960:top-[103px] s960:right-[100px] w-[1px] h-[10px] bg-[#666666] rounded-lg" />
             </div>
 
             {/* 폴더로 정리 */}
             <div
               data-aos="fade-up"
               data-aos-delay="1000"
-              className="w-[143px] h-[154px] s960:w-[410px] s960:h-[440px] s1400:w-[324px] s1400:h-[356px] s1600:w-[400px] s1600:h-[440px] bg-white rounded-[8px] s1400:rounded-[20px] shadow-subFeature z-10"
+              className="w-[143px] h-[154px] s960:w-[410px] s960:h-[440px] bg-white rounded-[8px] shadow-subFeature z-10"
             >
-              <img
-                src={folder}
-                alt="folder"
-                className="w-[77px] h-[71px] mt-[14px] s1400:w-[180px] s1400:h-[165px] s1400:mt-[36px] s1600:w-[221px] s1600:h-[202px] s1600:mt-[44px] mx-auto"
-              />
-              <div className="ml-[14px] mt-2 s1400:ml-[34px] s1400:mt-[30px] s1600:ml-[42px] s1600:mt-[36px]">
-                <p className="text-mainBlack font-[800] leading-[170%] text-[12px] s1400:text-[26px] s1600:text-[32px]">
-                  폴더로 정리
-                </p>
-                <div className="text-gray05 text-[8px] s1400:text-[14px] s1600:text-[16px] font-[400] leading-[170%] mt-[3px] s1400:mt-[6px] s1600:mt-3">
+              <img src={folder} alt="folder" className="w-[77px] h-[71px] mt-[14px] mx-auto" />
+              <div className="ml-[14px] mt-2">
+                <p className="text-mainBlack font-[800] leading-[170%] text-[12px]">폴더로 정리</p>
+                <div className="text-gray05 text-[8px] font-[400] leading-[170%] mt-[3px]">
                   <p>수많은 회의록을</p>
                   <p>폴더로 보기 좋게 정리해요.</p>
                 </div>
