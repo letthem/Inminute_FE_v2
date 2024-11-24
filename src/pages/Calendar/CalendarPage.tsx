@@ -18,15 +18,36 @@ export const CalendarPage = () => {
   } | null>(null);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
 
-  // 새 일정 추가 시 상태 업데이트
-  const handleAddSchedule = async (newSchedule: Schedule) => {
-    setSchedules((prevSchedules) => [...prevSchedules, newSchedule]); // 상태 업데이트
-
-    // 동기화된 일정 데이터 다시 가져오기
+  // 일정 불러오기
+  const loadSchedules = async () => {
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth() + 1;
-    const updatedSchedules = await getScheduleByMonth(year, month);
-    setSchedules(updatedSchedules); // 최신 데이터로 동기화
+    const data = await getScheduleByMonth(year, month);
+    setSchedules(data);
+  };
+
+  useEffect(() => {
+    loadSchedules();
+  }, [currentMonth]);
+
+  // 일정 추가
+  const handleAddSchedule = async (newSchedule: Schedule) => {
+    setSchedules((prevSchedules) => [...prevSchedules, newSchedule]); // 상태 업데이트
+    loadSchedules();
+  };
+
+  // 일정 수정
+  const handleEditSchedule = (id: number, updatedName: string) => {
+    setSchedules((prevSchedules) =>
+      prevSchedules.map((schedule) =>
+        schedule.id === id ? { ...schedule, name: updatedName } : schedule
+      )
+    );
+  };
+
+  // 일정 삭제
+  const handleDeleteSchedule = async (id: number) => {
+    setSchedules((prevSchedules) => prevSchedules.filter((schedule) => schedule.id !== id));
   };
 
   const toggleModal = (date: Date, event: React.MouseEvent<HTMLDivElement>) => {
@@ -97,6 +118,8 @@ export const CalendarPage = () => {
           selectedDate={selectedDate}
           position={selectedDatePosition}
           onClose={closeModal}
+          onEdit={handleEditSchedule} // 수정 핸들러 전달
+          onDelete={handleDeleteSchedule} // 삭제 핸들러 전달
         />
       )}
     </section>
