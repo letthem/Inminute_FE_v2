@@ -146,7 +146,7 @@ export const FolderBar: React.FC = () => {
     <>
       {isFolderBarVisible && (
         <aside>
-          <div className="w-[280px] h-full bg-subBlack flex flex-col font-nanum leading-[22px]">
+          <div className="relative w-[280px] h-full bg-subBlack flex flex-col font-nanum leading-[22px]">
             {location.pathname.includes('/calendar') && (
               <button
                 onClick={toggleFolderBar}
