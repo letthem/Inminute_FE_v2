@@ -139,7 +139,7 @@ export const MainFeature = () => {
 
   return (
     <article className="flex flex-col bg-sub2Black">
-      <div className="flex flex-col s1000:flex-row s1000:justify-between">
+      <div className="flex flex-col s960:flex-row s960:justify-between">
         {isSmallScreen ? (
           animations.slice(1).map((animation, index) => (
             <div key={index + 1} className="flex flex-col items-center gap-5 my-5">
@@ -156,7 +156,7 @@ export const MainFeature = () => {
         ) : (
           <>
             <div>
-              <div className="s1000:sticky top-[17%] transform translate-y-[0%]">
+              <div className="s960:sticky top-[17%] transform translate-y-[0%]">
                 <div
                   style={{ width: animationStyles.width, marginLeft: animationStyles.marginLeft }}
                   className={`transition-opacity duration-300 ${fadeClass}`}
@@ -178,7 +178,7 @@ export const MainFeature = () => {
           </>
         )}
       </div>
-      <div className="h-[262px]" />
+      <div className="h-0 s960:h-[262px]" />
     </article>
   );
 };

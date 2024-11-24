@@ -10,7 +10,7 @@ export const Title = () => {
 
   return (
     <article className="bg-sub2Black w-screen">
-      <div className="s10:mx-[30px] s1200:mx-[60px] s14:mx-[117px] mt-[144px] s10:w-[967px] mb-[292px]">
+      <div className="mx-[12px] s510:mx-[20px] s10:mx-[30px] s1200:mx-[60px] s14:mx-[117px] mt-[144px] s10:w-[967px] mb-[292px]">
         <Lottie animationData={aboutTitle} />
         {/* <div
           className="w-8 h-[22px] bg-gray06 rounded-md cursor-pointer"
