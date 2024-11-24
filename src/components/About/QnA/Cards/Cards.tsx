@@ -13,7 +13,7 @@ const cardData: CardData[] = [
     ✨ 회의 내용의 핵심, 혹은 팀원 개개인의 의견을 기록하고 싶으신 분
     ✨ 비대면 회의 중 회의록을 직접 따로 작성해야 하는 점이 불편하셨던 분
     ✨ 회의가 끝난 이후 화자별로 해야할 일을 다같이 공유하고 체크하고 싶으신 분
-    ✨ 회의 일정 관리, 진행, 회의록 작성 모든 것을 한 번에 하고 싶으신 분께 추천드려요`,
+    ✨ 회의 일정 관리, 진행, 회의록 작성 모든 걸 한 번에 하고 싶으신 분께 추천드려요`,
   },
   {
     question: 'Q.  회의록 내용 수정이 가능한가요?',
@@ -51,13 +51,15 @@ export const Cards = () => {
   const getBgColor = (i: number) => bgColors[i % bgColors.length];
 
   return (
-    <div className="relative h-[760px] flex items-center justify-center mt-[202px] mb-[50px]">
+    <div className="relative h-[300px] mt-[64px] s510:h-[400px] s510:mt-[66px] s960:h-[681px] s1400:h-[794px] flex items-center justify-center s960:mt-[142px] s1400:mt-[202px]">
+      {/* 3 번째 */}
       <div
-        className="w-[688px] h-[460px] absolute top-0 rounded-[36px]"
+        className="w-[264px] h-[176px] rounded-[12px] s510:w-[330px] s510:h-[220px] s510:rounded-[14px] s960:w-[550px] s960:h-[368px] s960:rounded-[24px] s1400:w-[688px] s1400:h-[460px] absolute top-0 s1400:rounded-[36px]"
         style={{ backgroundColor: getBgColor(index) }}
       ></div>
+      {/* 2 번째 */}
       <motion.div
-        className="w-[724px] h-[460px] absolute top-[38px] rounded-[36px]"
+        className="w-[277px] h-[176px] rounded-[12px] top-[14px] s510:w-[347px] s510:h-[220px] s510:rounded-[14px] s510:top-[18px] s960:w-[579px] s960:h-[368px] s960:rounded-[24px] s960:top-[30px] s1400:w-[724px] s1400:h-[460px] absolute s1400:top-[38px] s1400:rounded-[36px]"
         style={{ backgroundColor: getBgColor(index + 1), scale }} // 드래그에 따른 scale 적용
         drag="y" // 드래그 방향 설정
         dragConstraints={{ top: 0, bottom: 0 }} // 드래그 제한
@@ -68,6 +70,7 @@ export const Cards = () => {
         const cardIndex = (i - index + cardData.length) % cardData.length;
 
         return (
+          // 첫 번째
           <motion.div
             key={i}
             drag="y"
@@ -79,10 +82,12 @@ export const Cards = () => {
             }}
             dragConstraints={{ top: 0, bottom: 0 }}
             onDragEnd={handleDragEnd}
-            className="absolute flex flex-col justify-between top-[76px] w-[760px] h-[460px] bg-mainBlack text-white rounded-[36px] px-[80px] shadow-lg"
+            className="absolute flex flex-col justify-between w-[291px] h-[176px] rounded-[12px] top-[28px] px-[30px] s510:w-[364px] s510:h-[220px] s510:rounded-[14px] s510:top-[36px] s510:px-[38px] s960:w-[608px] s960:h-[368px] s960:rounded-[24px] s960:px-[64px] s960:top-[60px] s1400:top-[76px] s1400:w-[760px] s1400:h-[460px] bg-mainBlack text-white s1400:rounded-[36px] s1400:px-[80px] shadow-lg"
           >
-            <h2 className="text-[28px] font-[700] leading-[170%] mt-[56px]">{card.question}</h2>
-            <p className="text-[18px] font-pretendard font-[300] leading-[34px] mb-[56px]">
+            <h2 className="text-[10px] mt-6 s510:text-[13px] s510:mt-7 s960:text-[22px] s960:mt-[46px] s1400:text-[28px] font-[700] leading-[170%] s1400:mt-[56px]">
+              {card.question}
+            </h2>
+            <p className="text-[7px] mb-[22px] s510:text-[9px] s510:mb-7 s960:text-[15px] s960:mb-[44px] s1400:text-[18px] font-pretendard font-[300] leading-[210%] s1400:leading-[34px] s1400:mb-[56px]">
               {card.answer.split('\n').map((line, index) => (
                 <span key={index}>
                   {line}

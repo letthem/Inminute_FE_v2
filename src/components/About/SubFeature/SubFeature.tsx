@@ -284,7 +284,7 @@ export const SubFeature = () => {
 
         {/* -------------------------------------------------- */}
         {/* ph, s960 */}
-        <div className="flex s510:hidden s960:flex s1400:hidden flex-col gap-3 s960:gap-9">
+        <div className="s510:hidden s960:flex s1400:hidden flex flex-col gap-3 s960:gap-9">
           <div className="flex gap-3 s960:gap-[37px]">
             {/* Q&A */}
             <div
