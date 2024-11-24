@@ -175,7 +175,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
         <div className="max-h-[176px] overflow-y-auto scrollbar-visible scrollbar-thin-custom mr-1">
           {/* 회의 일정 내용 */}
           {meetings.length === 0 ? (
-            <div className="flex flex-col ml-6 justify-center mb-[26px]">
+            <div className="flex flex-col ml-6 justify-center mb-[24px]">
               <p className="text-[14px] text-gray05 font-[500]">등록된 회의 일정이 없어요!</p>
             </div>
           ) : (
