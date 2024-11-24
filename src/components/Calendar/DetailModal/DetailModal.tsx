@@ -7,19 +7,107 @@ import colorPalette, { ColorGroup } from '@/constants/colorPalette';
 import { getScheduleByMonth } from '@/apis/Calendar/getSchedule';
 import { Schedule } from '@/pages/Calendar/dto';
 import { deleteSchedule } from '@/apis/Calendar/deleteSchedule';
+import { patchSchedule } from '@/apis/Calendar/patchSchedule';
 
 interface DetailModalProps {
   selectedDate: Date;
-  position: { top: number | undefined; bottom: number | undefined; right: number };
+  position: { top: number | undefined; bottom: number | undefined; left: number | undefined };
   onClose: () => void;
+  onEdit: (id: number, updatedName: string) => void;
+  onDelete: (id: number) => void;
 }
 
-export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position, onClose }) => {
+export const DetailModal: React.FC<DetailModalProps> = ({
+  selectedDate,
+  position,
+  onClose,
+  onEdit,
+  onDelete,
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState<number | null>(null);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [meetings, setMeetings] = useState<Schedule[]>([]);
+  const [isVisible, setIsVisible] = useState(false);
   const divRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // 메뉴 아이콘 클릭 시 DetailMenuModal 열기
+  const handleMenuClick = (event: React.MouseEvent<HTMLDivElement>, id: number) => {
+    event.stopPropagation();
+    setIsMenuOpen((prev) => (prev === id ? null : id)); // 클릭 시 해당 아이템의 메뉴 토글
+  };
+
+  // 모달 바깥 클릭 시 모달 닫기
+  const handleClickOutsideModal = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    setIsVisible(false);
+    setTimeout(() => {
+      onClose();
+    }, 200);
+  };
+
+  const getColors = (color: ColorGroup) => {
+    return colorPalette[color] || colorPalette.orange; // 안전한 접근 및 기본값 설정
+  };
+
+  // 일정 삭제
+  const handleDelete = async (id: number) => {
+    await deleteSchedule(id); // 서버에서 삭제
+    setMeetings((prevMeetings) => {
+      const updatedMeetings = prevMeetings.filter((meeting) => meeting.id !== id);
+
+      if (updatedMeetings.length === 0) {
+        onClose(); // 모달 닫기
+      }
+
+      return updatedMeetings;
+    });
+    onDelete(id); // 부모 컴포넌트에 삭제 알림
+  };
+
+  // 일정 수정 버튼 클릭
+  const handleEdit = (id: number) => {
+    setEditingId(id);
+    setIsMenuOpen(null);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
+    const updatedValue = e.target.value;
+    const nameWithoutSpaces = updatedValue.replace(/\s/g, ''); // 공백 제거 후 길이 계산
+
+    if (nameWithoutSpaces.length <= 11) {
+      setMeetings((prevMeetings) =>
+        prevMeetings.map((meeting) =>
+          meeting.id === id ? { ...meeting, name: updatedValue } : meeting
+        )
+      );
+    }
+  };
+
+  // 일정 수정
+  const handleInputKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>, id: number) => {
+    if (e.key === 'Enter') {
+      const updatedName = inputRef.current?.value || '';
+      const nameWithoutSpaces = updatedName.replace(/\s/g, ''); // 공백 제거 후 길이 계산
+
+      if (nameWithoutSpaces.trim()) {
+        await patchSchedule(id, updatedName.trim()); // 서버에서 수정
+        setEditingId(null);
+        setIsMenuOpen(null);
+        setMeetings((prevMeetings) =>
+          prevMeetings.map((meeting) =>
+            meeting.id === id ? { ...meeting, name: updatedName.trim() } : meeting
+          )
+        );
+        onEdit(id, updatedName.trim()); // 부모 컴포넌트에 수정 알림
+      }
+    }
+  };
+
+  useEffect(() => {
+    setIsVisible(true);
+    return () => setIsVisible(false); // 모달 닫힐 때 애니메이션 리셋
+  }, []);
 
   // 해당 날짜의 일정을 가져오기
   useEffect(() => {
@@ -66,22 +154,6 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
     }
   }, [editingId]);
 
-  // 메뉴 아이콘 클릭 시 DetailMenuModal 열기
-  const handleMenuClick = (event: React.MouseEvent<HTMLDivElement>, id: number) => {
-    event.stopPropagation();
-    setIsMenuOpen((prev) => (prev === id ? null : id)); // 클릭 시 해당 아이템의 메뉴 토글
-  };
-
-  // 모달 바깥 클릭 시 모달 닫기
-  const handleClickOutsideModal = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    onClose(); // 모달 닫기
-  };
-
-  const getColors = (color: ColorGroup) => {
-    return colorPalette[color] || colorPalette.orange; // 안전한 접근 및 기본값 설정
-  };
-
   // 수정 div 바깥 클릭 시 수정 취소
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -97,43 +169,11 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
     };
   }, [editingId]);
 
-  const handleEdit = (id: number) => {
-    setEditingId(id);
-    setIsMenuOpen(null);
-  };
-
-  const handleDelete = async (id: number) => {
-    await deleteSchedule(id);
-    setMeetings((prevMeetings) => {
-      const updatedMeetings = prevMeetings.filter((meeting) => meeting.id !== id);
-
-      if (updatedMeetings.length === 0) {
-        onClose(); // 아이템이 0개가 되면 DetailModal 닫기
-      }
-
-      return updatedMeetings;
-    });
-    setIsMenuOpen(null);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
-    const { value } = e.target;
-    setMeetings((prevMeetings) =>
-      prevMeetings.map((meeting) => (meeting.id === id ? { ...meeting, title: value } : meeting))
-    );
-  };
-
-  const handleInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>, id: number) => {
-    if (e.key === 'Enter') {
-      setEditingId(null);
-      setIsMenuOpen(null);
-    }
-    console.log(id);
-  };
-
   return (
     <div
-      className="fixed inset-0 z-10 flex items-center justify-center"
+      className={`fixed inset-0 z-10 flex items-center justify-center transition-opacity duration-200 ${
+        isVisible ? 'opacity-100' : 'opacity-0'
+      }`}
       onClick={handleClickOutsideModal}
     >
       <div
@@ -141,7 +181,8 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
           position: 'absolute',
           ...(position.top !== undefined && { top: position.top }),
           ...(position.bottom !== undefined && { bottom: position.bottom }),
-          right: position.right || 0,
+          left: position.left,
+          transform: 'translate(-50%, 0)',
           boxShadow: '0px 0px 6px 0px rgba(96, 96, 96, 0.16)',
         }}
         className="bg-white rounded-[10px] w-[276px] z-10"
@@ -163,7 +204,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
         <div className="max-h-[176px] overflow-y-auto scrollbar-visible scrollbar-thin-custom mr-1">
           {/* 회의 일정 내용 */}
           {meetings.length === 0 ? (
-            <div className="flex flex-col ml-6 justify-center">
+            <div className="flex flex-col ml-6 justify-center mb-[24px]">
               <p className="text-[14px] text-gray05 font-[500]">등록된 회의 일정이 없어요!</p>
             </div>
           ) : (

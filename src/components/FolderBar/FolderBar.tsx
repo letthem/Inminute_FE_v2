@@ -7,7 +7,9 @@ import { FolderItem } from '@/components/FolderBar/FolderItem/FolderItem';
 import { addFolder } from '@/apis/Folder/addFolder';
 import { getFolder } from '@/apis/Folder/getFolder';
 import { Folder, Note } from '@/components/FolderBar/dto';
-
+import { useLocation } from 'react-router-dom';
+import asideIcon from '@/assets/webps/Note/aside.webp';
+import asideGray from '@/assets/webps/FolderBar/asideGray.webp';
 
 export const FolderBar: React.FC = () => {
   const [folders, setFolders] = useState<Folder[]>([]);
@@ -18,6 +20,8 @@ export const FolderBar: React.FC = () => {
   const [hoveredFolderName, setHoveredFolderName] = useState<number | null>(null); // 폴더 이름 호버 상태 관리
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [activeFolderIndex, setActiveFolderIndex] = useState<number | null>(null); // 활성화된 폴더 인덱스 상태
+  const [isFolderBarVisible, setIsFolderBarVisible] = useState(true); // 폴더바 표시 여부
+  const location = useLocation();
 
   const handleFolderClick = (index: number) => {
     setActiveFolderIndex((prevIndex) => (prevIndex === index ? null : index)); // 클릭한 폴더 인덱스 활성화
@@ -43,6 +47,27 @@ export const FolderBar: React.FC = () => {
   useEffect(() => {
     fetchData(); // 컴포넌트 마운트 시 폴더 및 노트 데이터 가져오기
   }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (location.pathname.includes('/calendar') && window.innerWidth < 960) {
+        setIsFolderBarVisible(false);
+      } else {
+        setIsFolderBarVisible(true);
+      }
+    };
+
+    handleResize(); // 초기 실행
+    window.addEventListener('resize', handleResize); // 리사이즈 이벤트 등록
+
+    return () => {
+      window.removeEventListener('resize', handleResize); // 이벤트 클린업
+    };
+  }, [location.pathname]);
+
+  const toggleFolderBar = () => {
+    setIsFolderBarVisible((prev) => !prev);
+  };
 
   // 드래그 시작
   const handleDragStart = (index: number) => {
@@ -118,39 +143,60 @@ export const FolderBar: React.FC = () => {
   }, [folders, isAddingFolder]);
 
   return (
-    <aside>
-      <div className="w-[280px] h-full bg-subBlack flex flex-col font-nanum leading-[22px]">
-        <Logo />
+    <>
+      {isFolderBarVisible && (
+        <aside>
+          <div className="relative w-[280px] h-full bg-subBlack flex flex-col font-nanum leading-[22px]">
+            {location.pathname.includes('/calendar') && (
+              <button
+                onClick={toggleFolderBar}
+                className="absolute top-[18px] right-3 bg-transparent cursor-pointer"
+              >
+                <img src={asideGray} alt="toggle folder bar" className="w-[18px] h-[18px]" />
+              </button>
+            )}
+            <Logo />
 
-        <section className="flex-1 overflow-y-auto mt-3 scrollbar-hide">
-          {folders.map((folderItem, index) => (
-            <FolderItem
-              key={index}
-              index={index}
-              folderItem={folderItem}
-              expanded={expandedFolders[index]}
-              hoveredFolderName={hoveredFolderName}
-              toggleFolder={toggleFolder}
-              setHoveredFolderName={setHoveredFolderName}
-              onRenameFolder={handleRenameFolder}
-              onDeleteFolder={handleDeleteFolder}
-              onDragStart={handleDragStart}
-              onDrop={handleDrop}
-              onDragOver={handleDragOver}
-              isActive={activeFolderIndex === index} // 현재 활성화된 폴더 인덱스와 비교
-              setActiveFolder={() => handleFolderClick(index)} // 클릭 핸들러 전달
-            />
-          ))}
-          <UnassignedNotes notes={unassignedNotes} />
-          <NewFolderInput
-            newFolderName={newFolderName}
-            setNewFolderName={setNewFolderName}
-            handleKeyDown={handleKeyDown}
-          />
-        </section>
+            <section className="flex-1 overflow-y-auto mt-3 scrollbar-hide">
+              {folders.map((folderItem, index) => (
+                <FolderItem
+                  key={index}
+                  index={index}
+                  folderItem={folderItem}
+                  expanded={expandedFolders[index]}
+                  hoveredFolderName={hoveredFolderName}
+                  toggleFolder={toggleFolder}
+                  setHoveredFolderName={setHoveredFolderName}
+                  onRenameFolder={handleRenameFolder}
+                  onDeleteFolder={handleDeleteFolder}
+                  onDragStart={handleDragStart}
+                  onDrop={handleDrop}
+                  onDragOver={handleDragOver}
+                  isActive={activeFolderIndex === index} // 현재 활성화된 폴더 인덱스와 비교
+                  setActiveFolder={() => handleFolderClick(index)} // 클릭 핸들러 전달
+                />
+              ))}
+              <UnassignedNotes notes={unassignedNotes} />
+              <NewFolderInput
+                newFolderName={newFolderName}
+                setNewFolderName={setNewFolderName}
+                handleKeyDown={handleKeyDown}
+              />
+            </section>
 
-        <Logout />
-      </div>
-    </aside>
+            <Logout />
+          </div>
+        </aside>
+      )}
+      {!isFolderBarVisible && location.pathname.includes('/calendar') && (
+        <button
+          onClick={toggleFolderBar}
+          className="fixed w-9 h-9 top-4 left-4 bg-white rounded-[6px] flex justify-center items-center cursor-pointer z-20 hover:bg-gray02 hover:border-[0.5px] hover:border-gray03"
+          style={{ boxShadow: '0px 0px 4px 0px rgba(187, 187, 187, 0.80)' }}
+        >
+          <img src={asideIcon} alt="open folder bar" className="w-[18px] h-[18px]" />
+        </button>
+      )}
+    </>
   );
 };

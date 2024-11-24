@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface TimePickerProps {
   meridiem: 'AM' | 'PM';
@@ -18,10 +18,12 @@ export const TimePicker: React.FC<TimePickerProps> = ({
   setMinutes,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
+  const timePickerRef = useRef<HTMLDivElement>(null);
 
   const handleFocus = () => setIsFocused(true);
-  const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
-    if (!e.currentTarget.contains(e.relatedTarget)) {
+
+  const handleClickOutside = (e: MouseEvent) => {
+    if (timePickerRef.current && !timePickerRef.current.contains(e.target as Node)) {
       setIsFocused(false);
     }
   };
@@ -60,12 +62,20 @@ export const TimePicker: React.FC<TimePickerProps> = ({
     }
   };
 
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <div
+      ref={timePickerRef}
       className="w-[196px] h-[53px] rounded-[10px] flex justify-between px-4 items-center text-[13px]"
       style={{ boxShadow: isFocused ? '0 0 0 1px #2B2B2B inset' : '0 0 0 1px #D9D9D9 inset' }}
       onMouseDown={handleFocus}
-      onBlur={handleBlur}
     >
       <div className="flex gap-3 font-[700]">
         <span
