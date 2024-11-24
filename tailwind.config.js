@@ -6,17 +6,21 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     screens: {
-      dt: '1025px',
-      tab: '768px',
       ph: '344px',
+      tab: '768px',
+      dt: '1025px',
+      s510: '510px',
       s900: '900px',
+      s960: '960px',
       s1000: '1000px',
       s10: '1064px',
       s1100: '1100px',
       s1200: '1200px',
       s1300: '1300px',
       s13: '1390px',
+      s1400: '1400px',
       s14: '1440px',
+      s1600: '1600px',
       s16: '1630px',
     },
     extend: {

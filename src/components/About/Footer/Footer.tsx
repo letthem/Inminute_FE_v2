@@ -8,13 +8,13 @@ export const Footer = () => {
     // 링크들 추후 수정
     <article className="h-[204px] bg-sub2Black">
       <div className="flex mt-[61px] ml-[50px] items-center gap-[18px]">
-        <Link to="https://www.instagram.com/letthembeloved/" target="_blank">
+        <Link to="https://www.instagram.com/inminute_official/" target="_blank">
           <img src={insta} alt="insta" className="w-[44px] h-[44px]" />
         </Link>
         <Link to="https://github.com/orgs/letthemon8on/repositories" target="_blank">
           <img src={github} alt="github" className="w-[44px] h-[44px]" />
         </Link>
-        <Link to="https://www.youtube.com/" target="_blank">
+        <Link to="https://www.youtube.com/watch?v=O1uQjc3hda8" target="_blank">
           <img src={youtube} alt="youtube" className="w-[44px] h-[44px]" />
         </Link>
       </div>

@@ -66,7 +66,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
 
   const date = new Date(noteData.createdAt);
   const formattedDate = `${date.getFullYear().toString().slice(-2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
-  const formattedTime = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
+  const formattedTime = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
   const currentUrl = window.location.href;
 
   // 회의 시작 또는 종료 핸들러
