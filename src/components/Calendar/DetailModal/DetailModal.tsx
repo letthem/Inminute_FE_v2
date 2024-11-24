@@ -10,7 +10,7 @@ import { deleteSchedule } from '@/apis/Calendar/deleteSchedule';
 
 interface DetailModalProps {
   selectedDate: Date;
-  position: { top: number | undefined; bottom: number | undefined; right: number };
+  position: { top: number | undefined; bottom: number | undefined; left: number | undefined };
   onClose: () => void;
 }
 
@@ -141,7 +141,8 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
           position: 'absolute',
           ...(position.top !== undefined && { top: position.top }),
           ...(position.bottom !== undefined && { bottom: position.bottom }),
-          right: position.right || 0,
+          left: position.left,
+          transform: 'translate(-50%, 0)',
           boxShadow: '0px 0px 6px 0px rgba(96, 96, 96, 0.16)',
         }}
         className="bg-white rounded-[10px] w-[276px] z-10"
@@ -163,7 +164,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
         <div className="max-h-[176px] overflow-y-auto scrollbar-visible scrollbar-thin-custom mr-1">
           {/* 회의 일정 내용 */}
           {meetings.length === 0 ? (
-            <div className="flex flex-col ml-6 justify-center">
+            <div className="flex flex-col ml-6 justify-center mb-[26px]">
               <p className="text-[14px] text-gray05 font-[500]">등록된 회의 일정이 없어요!</p>
             </div>
           ) : (

@@ -14,7 +14,7 @@ export const CalendarPage = () => {
   const [selectedDatePosition, setSelectedDatePosition] = useState<{
     top: number | undefined;
     bottom: number | undefined;
-    right: number;
+    left: number | undefined;
   } | null>(null);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
 
@@ -41,12 +41,12 @@ export const CalendarPage = () => {
         ? {
             top: undefined,
             bottom: window.innerHeight - rect.bottom + 40, // bottom 기준
-            right: window.innerWidth - rect.right,
+            left: rect.left + rect.width / 2,
           }
         : {
             top: rect.top + window.scrollY + 40, // top 기준
             bottom: undefined,
-            right: window.innerWidth - rect.right,
+            left: rect.left + rect.width / 2,
           }
     );
 
