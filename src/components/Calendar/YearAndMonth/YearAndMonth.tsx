@@ -33,15 +33,15 @@ export const YearAndMonth: React.FC<YearAndMonthProps> = ({
   return (
     <>
       <div className="w-full flex justify-between">
-        <div className="flex flex-1 s1000:ml-0 ml-[4px] s1000:justify-center justify-start mb-9">
-          <div className="s1000:w-[270px] w-[202px] flex justify-between items-center ">
+        <div className="flex flex-1 s960:ml-0 ml-[4px] s960:justify-center justify-start mb-9">
+          <div className="s960:w-[270px] w-[202px] flex justify-between items-center ">
             <img
               onClick={onPrevMonth}
               className="w-[22px] h-[22px] cursor-pointer"
               src={leftBlack}
               alt="prev month"
             />
-            <h2 className="text-mainBlack s1000:text-[32px] text-[28px] font-[750] leading-[35px]">
+            <h2 className="text-mainBlack s960:text-[32px] text-[28px] font-[750] leading-[35px]">
               {format(currentMonth, 'yyyy.MM')}
             </h2>
             <img
