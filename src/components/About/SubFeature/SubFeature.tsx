@@ -119,9 +119,9 @@ export const SubFeature = () => {
                 </div>
                 <div className="absolute bottom-0 left-0 w-[31.5px] h-[25px] s1400:w-[73px] s1400:h-[58px] s1600:w-[90px] s1600:h-[72px] bg-[#9DFF4D] rounded-b-[10px] s1400:rounded-b-[24px] s1600:rounded-b-[30px] rounded-tr-[10px] s1400:rounded-tr-[24px] s1600:rounded-tr-[30px] flex justify-center items-center">
                   <div className="flex gap-[2px] s1400:gap-[5px] s1600:gap-[6px]">
-                    <div className="rounded-full w-[2px] h-[2px] bg-[#2B2B2B]" />
-                    <div className="rounded-full w-[2px] h-[2px] bg-[#2B2B2B]" />
-                    <div className="rounded-full w-[2px] h-[2px] bg-[#2B2B2B]" />
+                    <div className="rounded-full w-[2px] h-[2px] s1400:w-[5px] s1400:h-[5px] s1600:w-[6px] s1600:h-[6px] bg-[#2B2B2B]" />
+                    <div className="rounded-full w-[2px] h-[2px] s1400:w-[5px] s1400:h-[5px] s1600:w-[6px] s1600:h-[6px] bg-[#2B2B2B]" />
+                    <div className="rounded-full w-[2px] h-[2px] s1400:w-[5px] s1400:h-[5px] s1600:w-[6px] s1600:h-[6px] bg-[#2B2B2B]" />
                   </div>
                 </div>
               </div>
