@@ -18,8 +18,14 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
   const [isMenuOpen, setIsMenuOpen] = useState<number | null>(null);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [meetings, setMeetings] = useState<Schedule[]>([]);
+  const [isVisible, setIsVisible] = useState(false);
   const divRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setIsVisible(true);
+    return () => setIsVisible(false); // 모달 닫힐 때 애니메이션 리셋
+  }, []);
 
   // 해당 날짜의 일정을 가져오기
   useEffect(() => {
@@ -75,7 +81,10 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
   // 모달 바깥 클릭 시 모달 닫기
   const handleClickOutsideModal = (event: React.MouseEvent) => {
     event.stopPropagation();
-    onClose(); // 모달 닫기
+    setIsVisible(false);
+    setTimeout(() => {
+      onClose();
+    }, 200);
   };
 
   const getColors = (color: ColorGroup) => {
@@ -133,7 +142,9 @@ export const DetailModal: React.FC<DetailModalProps> = ({ selectedDate, position
 
   return (
     <div
-      className="fixed inset-0 z-10 flex items-center justify-center"
+      className={`fixed inset-0 z-10 flex items-center justify-center transition-opacity duration-200 ${
+        isVisible ? 'opacity-100' : 'opacity-0'
+      }`}
       onClick={handleClickOutsideModal}
     >
       <div
