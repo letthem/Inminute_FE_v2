@@ -91,7 +91,7 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid }) => 
             <div style={{ transform: 'scale(2)' }}>
               <Loading />
             </div>
-            <p className="text-mainBlack font-[500] text-[16px] leading-[24px] mt-[24px]">
+            <p className="text-mainBlack font-[500] text-[15px] leading-[24px] mt-[22px]">
               회의 내용을 불러오고 있어요
             </p>
           </div>
