@@ -4,28 +4,34 @@ import edit from '@/assets/webps/FolderBar/editBlack.webp';
 import { NoteDetail, ToDoByMember } from '@/pages/Note/dto';
 
 interface ToDoListProps {
-  noteData: NoteDetail | null;
+  noteData?: NoteDetail | null; // 기존 NoteData
+  toDoByMembers?: ToDoByMember[]; // DB에서 가져온 To Do 데이터
 }
 
 const groupByNickname = (toDoResponseList: ToDoByMember[]) => {
-  return toDoResponseList.reduce(
-    (acc, item) => {
-      if (!acc[item.nickname]) {
-        acc[item.nickname] = [];
-      }
-      acc[item.nickname].push(item);
-      return acc;
-    },
-    {} as Record<string, ToDoByMember[]>
-  );
+  return toDoResponseList
+    .filter((item) => item.nickname) // nickname이 null 또는 빈 문자열인 항목 필터링
+    .reduce(
+      (acc, item) => {
+        if (!acc[item.nickname]) {
+          acc[item.nickname] = [];
+        }
+        acc[item.nickname].push(item);
+        return acc;
+      },
+      {} as Record<string, ToDoByMember[]>
+    );
 };
 
-export const ToDoList: React.FC<ToDoListProps> = ({ noteData }) => {
-  if (!noteData?.toDoResponseList) {
+export const ToDoList: React.FC<ToDoListProps> = ({ noteData, toDoByMembers }) => {
+  const toDoData = toDoByMembers?.length ? toDoByMembers : noteData?.toDoResponseList || [];
+
+  // 데이터가 없는 경우 아무것도 렌더링하지 않음
+  if (!toDoData || toDoData.length === 0) {
     return <></>;
   }
 
-  const groupedData = groupByNickname(noteData.toDoResponseList);
+  const groupedData = groupByNickname(toDoData);
 
   return (
     <section className="mt-[92px] ml-12">
