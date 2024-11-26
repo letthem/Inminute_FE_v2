@@ -10,7 +10,6 @@ import { useSocket } from '@/context/SocketContext';
 import { Message } from '@stomp/stompjs';
 import { MicButton } from '@/components/Note/NoteMain/NoteTitle/MicButton/MicButton';
 import { useNickName } from '@/apis/Member/hooks';
-import { getNoteMainContents } from '@/apis/Note/getNote';
 
 interface NoteTitleProps {
   noteData: NoteDetail | null;
@@ -43,12 +42,27 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
 
     const handleMessageReceived = (message: Message) => {
       const chatMessage = JSON.parse(message.body);
+
       if (chatMessage.isStart === true) {
         setIsStartLocal(true); // 회의 시작 상태 업데이트
         setIsStart(true); // NoteMain에도 회의 시작 상태 전달
       } else if (chatMessage.isStart === false) {
         setIsStartLocal(false); // 회의 종료 상태 업데이트
         setIsStart(false); // NoteMain에도 회의 종료 상태 전달
+        setIsMeetingEnded(true);
+
+        // 회의 종료 시 summary, summaryByMemberList, toDoResponseList 수신 처리
+        if (
+          chatMessage.summary &&
+          chatMessage.summaryByMemberList &&
+          chatMessage.toDoResponseList
+        ) {
+          onSummaryUpdate(
+            chatMessage.summary,
+            chatMessage.summaryByMemberList,
+            chatMessage.toDoResponseList
+          );
+        }
       }
     };
 
@@ -71,6 +85,10 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
 
   // 회의 시작 또는 종료 핸들러
   const handleMeetingToggle = async () => {
+    if (!stompClient || !stompClient.connected) {
+      console.error('STOMP 클라이언트가 연결되지 않았습니다.');
+      return; // 연결되지 않은 경우 early return
+    }
     if (isStart) {
       // 회의 종료 요청
       const stopMeeting = {
@@ -80,14 +98,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
         destination: `/app/chat.stop/${uuid}`, // 종료 요청 보내기
         body: JSON.stringify(stopMeeting),
       });
-      setIsMeetingEnded(true);
 
-      const response = await getNoteMainContents(uuid);
-      onSummaryUpdate(
-        response.result.summary,
-        response.result.summaryByMemberList,
-        response.result.toDoResponseList
-      ); // 한 줄 요약, 화자별 요약, ToDoList 전달
     } else {
       // 회의 시작 요청
       const startMeeting = {

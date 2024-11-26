@@ -107,7 +107,7 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid }) => 
               <Loading />
             </div>
             <p className="text-mainBlack font-[500] text-[15px] leading-[24px] mt-[22px]">
-              회의 내용을 불러오고 있어요
+              AI가 회의록을 만들고 있어요 !
             </p>
           </div>
         ) : summaryBySpeaker.length > 0 || toDoByMembers.length > 0 ? ( // DB 데이터가 있을 때
