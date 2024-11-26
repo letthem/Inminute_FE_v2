@@ -28,20 +28,6 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid }) => 
   const [isStart, setIsStart] = useState(false); // 회의 상태
   const { messages } = useSocket();
 
-  // // 초기 로딩 시 nicknameList 데이터를 불러오기
-  // useEffect(() => {
-  //   const loadNoteData = async () => {
-  //     try {
-  //       const noteDetail = await getNoteDetail(uuid); // uuid로 노트 상세 정보 가져오기
-  //       setNoteData(noteDetail.result); // noteData 상태 업데이트
-  //       setParticipants(noteDetail.result.nicknameList); // nicknameList를 participants에 설정
-  //     } catch (error) {
-  //       console.error('Failed to load participants from note detail:', error);
-  //     }
-  //   };
-  //   loadNoteData();
-  // }, [uuid]);
-
   // DB에서 데이터를 가져오는 함수
   const fetchDataFromDB = async () => {
     try {
