@@ -40,6 +40,8 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
   useEffect(() => {
     if (!stompClient) return; // stompClient가 null일 경우 early return
 
+    let isStopCall = false;
+
     const handleMessageReceived = (message: Message) => {
       const chatMessage = JSON.parse(message.body);
 
@@ -52,13 +54,17 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
         setIsStart(false); // NoteMain에도 회의 종료 상태 전달
         setIsMeetingEnded(true);
 
-        const stopMeeting = {
-          content: '안녕 내 사랑', // 요청 본문
-        };
-        stompClient?.publish({
-          destination: `/app/chat.stop/${uuid}`,
-          body: JSON.stringify(stopMeeting),
-        });
+        // stop 호출이 중복되지 않도록 조건 추가
+        if (!isStopCall) {
+          isStopCall = true;
+          const stopMeeting = {
+            content: '안녕 내 사랑', // 요청 본문
+          };
+          stompClient?.publish({
+            destination: `/app/chat.stop/${uuid}`,
+            body: JSON.stringify(stopMeeting),
+          });
+        }
 
         // 회의 종료 시 summary, summaryByMemberList, toDoResponseList 수신 처리
         if (
@@ -157,7 +163,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
         }
       };
 
-      recorder.start(1000); // 1초마다 데이터 청크 생성
+      recorder.start(200); // 0.2초마다 데이터 청크 생성
       setMediaRecorder(recorder);
     } else {
       mediaRecorder?.stop();
