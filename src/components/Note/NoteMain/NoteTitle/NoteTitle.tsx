@@ -10,7 +10,6 @@ import { useSocket } from '@/context/SocketContext';
 import { Message } from '@stomp/stompjs';
 import { MicButton } from '@/components/Note/NoteMain/NoteTitle/MicButton/MicButton';
 import { useNickName } from '@/apis/Member/hooks';
-import { getNoteMainContents } from '@/apis/Note/getNote';
 
 interface NoteTitleProps {
   noteData: NoteDetail | null;
@@ -41,14 +40,44 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
   useEffect(() => {
     if (!stompClient) return; // stompClient가 null일 경우 early return
 
+    let isStopCall = false;
+
     const handleMessageReceived = (message: Message) => {
       const chatMessage = JSON.parse(message.body);
+
+      console.log(chatMessage);
       if (chatMessage.isStart === true) {
         setIsStartLocal(true); // 회의 시작 상태 업데이트
         setIsStart(true); // NoteMain에도 회의 시작 상태 전달
       } else if (chatMessage.isStart === false) {
         setIsStartLocal(false); // 회의 종료 상태 업데이트
         setIsStart(false); // NoteMain에도 회의 종료 상태 전달
+        setIsMeetingEnded(true);
+
+        // stop 호출이 중복되지 않도록 조건 추가
+        if (!isStopCall) {
+          isStopCall = true;
+          const stopMeeting = {
+            content: '안녕 내 사랑', // 요청 본문
+          };
+          stompClient?.publish({
+            destination: `/app/chat.stop/${uuid}`,
+            body: JSON.stringify(stopMeeting),
+          });
+        }
+
+        // 회의 종료 시 summary, summaryByMemberList, toDoResponseList 수신 처리
+        if (
+          chatMessage.summary &&
+          chatMessage.summaryByMemberList &&
+          chatMessage.toDoResponseList
+        ) {
+          onSummaryUpdate(
+            chatMessage.summary,
+            chatMessage.summaryByMemberList,
+            chatMessage.toDoResponseList
+          );
+        }
       }
     };
 
@@ -71,23 +100,19 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
 
   // 회의 시작 또는 종료 핸들러
   const handleMeetingToggle = async () => {
+    if (!stompClient || !stompClient.connected) {
+      console.error('STOMP 클라이언트가 연결되지 않았습니다.');
+      return; // 연결되지 않은 경우 early return
+    }
     if (isStart) {
       // 회의 종료 요청
       const stopMeeting = {
         content: '안녕 내 사랑', // 요청 본문
       };
       stompClient?.publish({
-        destination: `/app/chat.stop/${uuid}`, // 종료 요청 보내기
+        destination: `/app/chat.click/${uuid}`, // 종료 요청 보내기
         body: JSON.stringify(stopMeeting),
       });
-      setIsMeetingEnded(true);
-
-      const response = await getNoteMainContents(uuid);
-      onSummaryUpdate(
-        response.result.summary,
-        response.result.summaryByMemberList,
-        response.result.toDoResponseList
-      ); // 한 줄 요약, 화자별 요약, ToDoList 전달
     } else {
       // 회의 시작 요청
       const startMeeting = {
@@ -138,7 +163,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
         }
       };
 
-      recorder.start(1000); // 1초마다 데이터 청크 생성
+      recorder.start(200); // 0.2초마다 데이터 청크 생성
       setMediaRecorder(recorder);
     } else {
       mediaRecorder?.stop();

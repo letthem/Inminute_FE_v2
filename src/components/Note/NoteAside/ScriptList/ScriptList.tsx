@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useSocket } from '@/context/SocketContext';
 import { ScriptItem } from '@/components/Note/NoteAside/ScriptList/ScriptItem/ScriptItem';
 import { Loading } from '@/components/Common/Loading/Loading';
+import { getMeetingScripts, getNoteDetail } from '@/apis/Note/getNote';
 
 interface ChatMessage {
   id: number;
@@ -20,6 +21,28 @@ export const ScriptList: React.FC<ScriptListProps> = ({ uuid }) => {
   const [displayMessages, setDisplayMessages] = useState<ChatMessage[]>([]);
   const [currentSpeakers, setCurrentSpeakers] = useState<string[]>([]); // 여러 사용자 관리
   const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    // 초기 로딩: 노트 상세 데이터 가져오기
+    const fetchNoteDetail = async () => {
+      try {
+        const response = await getNoteDetail(uuid);
+
+        // 회의 종료 상태라면 DB에서 회의 스크립트 가져오기
+        if (!response.result.isStart) {
+          const scriptsResponse = await getMeetingScripts(uuid);
+          const dbMessages = scriptsResponse.result.chats.filter(
+            (chat: ChatMessage) => chat.id !== null // id가 null이 아닌 경우만 렌더링
+          );
+          setDisplayMessages(dbMessages);
+        }
+      } catch (error) {
+        console.error('노트 상세 데이터 로드 중 오류 발생:', error);
+      }
+    };
+
+    fetchNoteDetail();
+  }, [uuid]);
 
   useEffect(() => {
     // 로딩 상태 업데이트: CONVERTING 메시지 처리
@@ -83,7 +106,7 @@ export const ScriptList: React.FC<ScriptListProps> = ({ uuid }) => {
       {displayMessages.map((message, index) => (
         <ScriptItem
           key={message.id}
-          name={message.nickname}
+          name={message.nickname || ''}
           script={message.content}
           onUpdateScript={(newContent) => handleUpdateScript(index, newContent)}
           onDeleteScript={() => handleDeleteScript(index)}

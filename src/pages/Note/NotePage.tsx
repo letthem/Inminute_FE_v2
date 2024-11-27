@@ -14,6 +14,7 @@ export const NotePage = () => {
   const { data: isMember, isLoading: isMemberLoading } = useMemberStatus();
   const { data: isNickName, isLoading: isNickNameLoading } = useNickNameStatus();
   const [noteData, setNoteData] = useState<NoteDetail | null>(null);
+  const [isAsideVisible, setIsAsideVisible] = useState(false); // Aside 표시 상태
 
   const fetchNoteDetail = async () => {
     if (!uuid || isMemberLoading || isNickNameLoading) return; // 로딩 중이거나 uuid 없으면 중단
@@ -54,7 +55,12 @@ export const NotePage = () => {
     <SocketProvider uuid={uuid!}>
       <section className="flex w-[calc(100vw-280px)] h-full">
         <NoteMain initialNoteData={noteData} uuid={uuid!} />
-        <NoteAside noteData={noteData} uuid={uuid!} />
+        <NoteAside
+          noteData={noteData}
+          uuid={uuid!}
+          isAsideVisible={isAsideVisible}
+          setIsAsideVisible={setIsAsideVisible}
+        />
       </section>
     </SocketProvider>
   );

@@ -47,7 +47,7 @@ export const NoteTopBar: React.FC<NoteTopBarProps> = ({ noteData }) => {
         src={leftBlack}
         alt="back button"
         className="w-[18px] h-[18px] cursor-pointer ml-9"
-        onClick={() => nav(-1)}
+        onClick={() => nav('/home')}
       />
       <div className="px-4 mr-[10px] cursor-pointer relative">
         <img

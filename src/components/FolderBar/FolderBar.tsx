@@ -191,7 +191,7 @@ export const FolderBar: React.FC = () => {
       {!isFolderBarVisible && location.pathname.includes('/calendar') && (
         <button
           onClick={toggleFolderBar}
-          className="fixed w-9 h-9 top-4 left-4 bg-white rounded-[6px] flex justify-center items-center cursor-pointer z-20 hover:bg-gray02 hover:border-[0.5px] hover:border-gray03"
+          className="fixed w-9 h-9 top-4 left-4 bg-white rounded-[6px] flex justify-center items-center cursor-pointer z-20 hover:transition-all hover:duration-300 hover:ease-in-out hover:bg-gray02 hover:border-[0.5px] hover:border-gray03"
           style={{ boxShadow: '0px 0px 4px 0px rgba(187, 187, 187, 0.80)' }}
         >
           <img src={asideIcon} alt="open folder bar" className="w-[18px] h-[18px]" />

@@ -3,13 +3,13 @@ export interface SummaryByMember {
   summary: string;
 }
 
-export interface ToDoItem {
-  todo: string;
-}
-
 export interface ToDoByMember {
+  id: number;
+  uuid: string;
+  username: string;
   nickname: string;
-  toDoLists: ToDoItem[];
+  content: string;
+  isDone: boolean;
 }
 
 export interface NoteDetail {
