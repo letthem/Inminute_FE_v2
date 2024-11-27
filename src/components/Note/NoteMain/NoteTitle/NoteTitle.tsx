@@ -43,6 +43,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
     const handleMessageReceived = (message: Message) => {
       const chatMessage = JSON.parse(message.body);
 
+      console.log(chatMessage);
       if (chatMessage.isStart === true) {
         setIsStartLocal(true); // 회의 시작 상태 업데이트
         setIsStart(true); // NoteMain에도 회의 시작 상태 전달
@@ -50,6 +51,14 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
         setIsStartLocal(false); // 회의 종료 상태 업데이트
         setIsStart(false); // NoteMain에도 회의 종료 상태 전달
         setIsMeetingEnded(true);
+
+        const stopMeeting = {
+          content: '안녕 내 사랑', // 요청 본문
+        };
+        stompClient?.publish({
+          destination: `/app/chat.stop/${uuid}`,
+          body: JSON.stringify(stopMeeting),
+        });
 
         // 회의 종료 시 summary, summaryByMemberList, toDoResponseList 수신 처리
         if (
@@ -95,10 +104,9 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
         content: '안녕 내 사랑', // 요청 본문
       };
       stompClient?.publish({
-        destination: `/app/chat.stop/${uuid}`, // 종료 요청 보내기
+        destination: `/app/chat.click/${uuid}`, // 종료 요청 보내기
         body: JSON.stringify(stopMeeting),
       });
-
     } else {
       // 회의 시작 요청
       const startMeeting = {
