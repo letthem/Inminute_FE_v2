@@ -7,6 +7,10 @@ interface OneLineSummaryProps {
 }
 
 export const OneLineSummary: React.FC<OneLineSummaryProps> = ({ noteData }) => {
+  if (!noteData?.summary) {
+    return <></>;
+  }
+
   const [summary, setSummary] = useState(noteData?.summary || '');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
