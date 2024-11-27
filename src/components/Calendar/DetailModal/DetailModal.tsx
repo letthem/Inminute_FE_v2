@@ -235,7 +235,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                         value={meeting.name}
                         onChange={(e) => handleInputChange(e, meeting.id)}
                         onKeyDown={(e) => handleInputKeyPress(e, meeting.id)}
-                        className="w-full bg-transparent border-none outline-none text-[13px] leading-[22px] font-[500] text-gray03"
+                        className="w-full bg-transparent border-none outline-none text-[13px] leading-[22px] font-[500] text-gray04"
                       />
                     ) : (
                       <span
