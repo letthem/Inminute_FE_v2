@@ -9,6 +9,7 @@ import kebabWhite from '@/assets/webps/FolderBar/kebabWhite.webp';
 import dragGray from '@/assets/webps/FolderBar/dragGray.webp';
 import { Folder } from '@/components/FolderBar/dto';
 import { useNavigate } from 'react-router-dom';
+import { patchFolder } from '@/apis/Folder/patchFolder';
 
 interface FolderItemProps {
   index: number;
@@ -97,6 +98,7 @@ export const FolderItem: React.FC<FolderItemProps> = ({
 
   const handleNameSubmit = () => {
     if (folderName.trim().length >= 1 && folderName.trim().length <= 9) {
+      patchFolder(folderItem.id, folderName);
       setIsEditing(false); // 이름 변경 모드 종료
       onRenameFolder(index, folderName.trim()); // 변경된 이름 저장
     } else {
