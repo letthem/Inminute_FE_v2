@@ -1,3 +1,4 @@
+import React from 'react';
 import todo from '@/assets/webps/Note/todo.webp';
 import { ToDoItem } from '@/components/Note/NoteMain/ToDoList/ToDoItem/ToDoItem';
 import edit from '@/assets/webps/FolderBar/editBlack.webp';
@@ -41,9 +42,14 @@ export const ToDoList: React.FC<ToDoListProps> = ({ noteData, toDoByMembers }) =
         <img src={edit} alt="edit" className="w-[14px] h-[14px] ml-2 cursor-pointer" />
       </div>
       <div className="flex flex-wrap mt-[28px] mb-[46px] mr-[120px]">
-        {Object.entries(groupedData).map(([nickname, tasks], index) => (
-          <ToDoItem key={index} name={nickname} tasks={tasks} />
-        ))}
+        {Object.entries(groupedData).map(([nickname, tasks], index) => {
+          const ids = tasks.map((task) => task.id); // nickname에 해당하는 고유 ID 리스트
+          const isDoneList = tasks.map((task) => task.isDone); // 해당 nickname의 각 ToDo의 완료 상태
+
+          return (
+            <ToDoItem key={index} name={nickname} tasks={tasks} ids={ids} isDoneList={isDoneList} />
+          );
+        })}
       </div>
     </section>
   );

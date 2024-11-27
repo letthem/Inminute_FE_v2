@@ -21,7 +21,7 @@ export const NoteTopBar: React.FC<NoteTopBarProps> = ({ noteData }) => {
 
   // 회의 노트 삭제
   const handleDelete = () => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this note?');
+    const confirmDelete = window.confirm('해당 회의록을 정말 삭제하시겠습니까?');
     if (confirmDelete) {
       // 여기에 회의록 삭제 API 요청을 추가할 수 있습니다.
       nav('/home'); // 삭제 후 홈으로 이동
@@ -49,13 +49,11 @@ export const NoteTopBar: React.FC<NoteTopBarProps> = ({ noteData }) => {
         className="w-[18px] h-[18px] cursor-pointer ml-9"
         onClick={() => nav('/home')}
       />
-      <div className="px-4 mr-[10px] cursor-pointer relative">
-        <img
-          onClick={() => setIsMenuVisible((prev) => !prev)}
-          src={kebab}
-          alt="kebab menu"
-          className="h-[18.2px]"
-        />
+      <div
+        onClick={() => setIsMenuVisible((prev) => !prev)}
+        className="w-8 flex justify-center items-center mr-[10px] cursor-pointer relative"
+      >
+        <img src={kebab} alt="kebab menu" className="h-[18.2px]" />
         {isMenuVisible && (
           <div ref={menuRef} className="absolute top-[20px] right-[118px]">
             <Menu
