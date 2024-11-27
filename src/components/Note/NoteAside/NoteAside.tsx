@@ -58,7 +58,7 @@ export const NoteAside: React.FC<NoteAsideProps> = ({
       {!isAsideVisible && (
         <button
           onClick={toggleAsideVisibility}
-          className="w-9 h-9 mt-[32px] mr-[26px] z-50 bg-white rounded-[6px] flex justify-center items-center hover:bg-gray02 hover:transition-all hover:duration-300 hover:ease-in-out hover:border-[0.5px] hover:border-gray03"
+          className="w-9 h-9 mt-[32px] mr-[26px] z-10 bg-white rounded-[6px] flex justify-center items-center hover:bg-gray02 hover:transition-all hover:duration-300 hover:ease-in-out hover:border-[0.5px] hover:border-gray03"
           style={{ boxShadow: '0px 0px 4px 0px rgba(187, 187, 187, 0.80)' }}
         >
           <img src={aside} alt="Open Aside" className="w-[18px] h-[18px]" />

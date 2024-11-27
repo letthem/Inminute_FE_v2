@@ -54,8 +54,8 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
         setIsStart(false); // NoteMain에도 회의 종료 상태 전달
         setIsMeetingEnded(true);
 
-        // stop 호출이 중복되지 않도록 조건 추가
-        if (!isStopCall) {
+        // stop 호출이 중복되지 않도록 조건 추가 - 회의 종료 버튼 누른 사람만 stop 요청 전송
+        if (!isStopCall && chatMessage.nickname === nickname) {
           isStopCall = true;
           const stopMeeting = {
             content: '안녕 내 사랑', // 요청 본문
@@ -87,8 +87,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
     return () => {
       subscription.unsubscribe(); // 컴포넌트 언마운트 시 구독 해제
     };
-  }, [stompClient, uuid]); // stompClient와 uuid에 의존성 추가
-
+  }, [stompClient, uuid, nickname]); // stompClient와 uuid에 의존성 추가
   if (!noteData) {
     return <></>;
   }

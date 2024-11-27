@@ -144,6 +144,12 @@ export const ScriptItem: React.FC<ScriptItemProps> = ({
               setEditedScript(e.target.value);
               resizeTextarea();
             }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault(); // 기본 Enter 키 동작 방지
+                handleSaveEdit();
+              }
+            }}
             className="font-pretendard font-[350] text-[13px] leading-[24px] bg-transparent w-full outline-none resize-none overflow-hidden"
           />
         ) : (
