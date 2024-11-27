@@ -40,6 +40,8 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
   useEffect(() => {
     if (!stompClient) return; // stompClient가 null일 경우 early return
 
+    let isStopCall = false;
+
     const handleMessageReceived = (message: Message) => {
       const chatMessage = JSON.parse(message.body);
 
@@ -53,7 +55,8 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
         setIsMeetingEnded(true);
 
         // stop 호출이 중복되지 않도록 조건 추가 - 회의 종료 버튼 누른 사람만 stop 요청 전송
-        if (chatMessage.nickname === nickname) {
+        if (!isStopCall && chatMessage.nickname === nickname) {
+          isStopCall = true;
           const stopMeeting = {
             content: '안녕 내 사랑', // 요청 본문
           };
