@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import todo from '@/assets/webps/Note/todo.webp';
+import editBlack from '@/assets/webps/FolderBar/editBlack.webp';
+import editGray from '@/assets/webps/FolderBar/editGray.webp';
 import { ToDoItem } from '@/components/Note/NoteMain/ToDoList/ToDoItem/ToDoItem';
-import edit from '@/assets/webps/FolderBar/editBlack.webp';
 import { NoteDetail, ToDoByMember } from '@/pages/Note/dto';
 
 interface ToDoListProps {
@@ -27,6 +28,8 @@ const groupByNickname = (toDoResponseList: ToDoByMember[]) => {
 export const ToDoList: React.FC<ToDoListProps> = ({ noteData, toDoByMembers }) => {
   const toDoData = toDoByMembers?.length ? toDoByMembers : noteData?.toDoResponseList || [];
 
+  const [isEditing, setIsEditing] = useState(false); // 전체 수정 가능 상태
+
   // 데이터가 없는 경우 아무것도 렌더링하지 않음
   if (!toDoData || toDoData.length === 0) {
     return <></>;
@@ -39,7 +42,12 @@ export const ToDoList: React.FC<ToDoListProps> = ({ noteData, toDoByMembers }) =
       <div className="flex items-center">
         <img src={todo} alt="todo icon" className="w-5 h-5 mr-[6px]" />
         <span className="font-extrabold text-[15px]">TO DO</span>
-        <img src={edit} alt="edit" className="w-[14px] h-[14px] ml-2 cursor-pointer" />
+        <img
+          src={isEditing ? editGray : editBlack}
+          alt="edit"
+          className="w-[14px] h-[14px] ml-2 cursor-pointer"
+          onClick={() => setIsEditing((prev) => !prev)} // 수정 가능 상태 토글
+        />
       </div>
       <div className="flex flex-wrap mt-[28px] mb-[46px] mr-[120px]">
         {Object.entries(groupedData).map(([nickname, tasks], index) => {
@@ -47,7 +55,15 @@ export const ToDoList: React.FC<ToDoListProps> = ({ noteData, toDoByMembers }) =
           const isDoneList = tasks.map((task) => task.isDone); // 해당 nickname의 각 ToDo의 완료 상태
 
           return (
-            <ToDoItem key={index} name={nickname} tasks={tasks} ids={ids} isDoneList={isDoneList} />
+            <ToDoItem
+              key={index}
+              name={nickname}
+              tasks={tasks}
+              ids={ids}
+              isDoneList={isDoneList}
+              isEditing={isEditing} // 수정 가능 상태 전달
+              setIsEditing={setIsEditing}
+            />
           );
         })}
       </div>

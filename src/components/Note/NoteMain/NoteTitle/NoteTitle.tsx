@@ -21,6 +21,7 @@ interface NoteTitleProps {
   ) => void; // summary 업데이트 핸들러
   setIsMeetingEnded: (ended: boolean) => void; // 회의 종료 상태 업데이트 핸들러
   setIsStart: (isStart: boolean) => void;
+  onMeetingStart: () => void;
 }
 
 export const NoteTitle: React.FC<NoteTitleProps> = ({
@@ -29,6 +30,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
   onSummaryUpdate,
   setIsMeetingEnded,
   setIsStart,
+  onMeetingStart,
 }) => {
   const { stompClient } = useSocket(); // 소켓 클라이언트 가져오기
   const { data: nickname } = useNickName(); // 닉네임 가져오기
@@ -49,6 +51,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
       if (chatMessage.isStart === true) {
         setIsStartLocal(true); // 회의 시작 상태 업데이트
         setIsStart(true); // NoteMain에도 회의 시작 상태 전달
+        onMeetingStart();
       } else if (chatMessage.isStart === false) {
         setIsStartLocal(false); // 회의 종료 상태 업데이트
         setIsStart(false); // NoteMain에도 회의 종료 상태 전달

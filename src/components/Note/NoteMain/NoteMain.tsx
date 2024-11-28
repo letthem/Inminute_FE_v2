@@ -15,9 +15,10 @@ import { QnAModal } from '@/components/Note/NoteMain/QnAModal/QnAModal';
 interface NoteMainProps {
   initialNoteData: NoteDetail | null;
   uuid: string;
+  onMeetingStart: () => void;
 }
 
-export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid }) => {
+export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid, onMeetingStart }) => {
   const [noteData, setNoteData] = useState<NoteDetail | null>(initialNoteData);
   const [summaryBySpeaker, setSummaryBySpeaker] = useState<SummaryByMember[]>([]);
   const [toDoByMembers, setToDoByMembers] = useState<ToDoByMember[]>([]);
@@ -97,6 +98,7 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid }) => 
         onSummaryUpdate={handleSummaryUpdate}
         setIsMeetingEnded={setIsMeetingEnded}
         setIsStart={setIsStart}
+        onMeetingStart={onMeetingStart}
       />
       <div className="overflow-y-auto scrollbar-hide">
         <ParticipantList participants={participants} />
