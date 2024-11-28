@@ -16,6 +16,10 @@ export const NotePage = () => {
   const [noteData, setNoteData] = useState<NoteDetail | null>(null);
   const [isAsideVisible, setIsAsideVisible] = useState(false); // Aside 표시 상태
 
+  const handleMeetingStart = () => {
+    setIsAsideVisible(true); // 회의 시작 시 Aside 기본 열림
+  };
+  
   const fetchNoteDetail = async () => {
     if (!uuid || isMemberLoading || isNickNameLoading) return; // 로딩 중이거나 uuid 없으면 중단
 
@@ -54,7 +58,7 @@ export const NotePage = () => {
   return (
     <SocketProvider uuid={uuid!}>
       <section className="flex w-[calc(100vw-280px)] h-full">
-        <NoteMain initialNoteData={noteData} uuid={uuid!} />
+        <NoteMain initialNoteData={noteData} uuid={uuid!} onMeetingStart={handleMeetingStart} />
         <NoteAside
           noteData={noteData}
           uuid={uuid!}
