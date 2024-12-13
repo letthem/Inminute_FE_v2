@@ -4,6 +4,7 @@ import kebab from '@/assets/webps/Note/kebab.webp';
 import { NoteDetail } from '@/pages/Note/dto';
 import { useEffect, useRef, useState } from 'react';
 import { Menu } from '@/components/Common/Menu/Menu';
+import { deleteNote } from '@/apis/Note/deleteNote';
 
 interface NoteTopBarProps {
   noteData: NoteDetail | null;
@@ -16,11 +17,10 @@ export const NoteTopBar: React.FC<NoteTopBarProps> = ({ noteData, onEditTitle })
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   // 회의 노트 삭제
-  const handleDelete = () => {
+  const handleDelete = async () => {
     const confirmDelete = window.confirm('해당 회의록을 정말 삭제하시겠습니까?');
-    if (confirmDelete) {
-      // 여기에 회의록 삭제 API 요청 추가
-      console.log('회의록 삭제', noteData?.id);
+    if (noteData && confirmDelete) {
+      await deleteNote(noteData.id);
       nav('/home'); // 삭제 후 홈으로 이동
     }
   };
