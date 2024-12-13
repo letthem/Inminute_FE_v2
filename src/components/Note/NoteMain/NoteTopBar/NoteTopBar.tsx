@@ -7,23 +7,20 @@ import { Menu } from '@/components/Common/Menu/Menu';
 
 interface NoteTopBarProps {
   noteData: NoteDetail | null;
+  onEditTitle: () => void;
 }
 
-export const NoteTopBar: React.FC<NoteTopBarProps> = ({ noteData }) => {
+export const NoteTopBar: React.FC<NoteTopBarProps> = ({ noteData, onEditTitle }) => {
   const nav = useNavigate();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
-
-  // 회의 노트 제목 수정
-  const handleEdit = () => {
-    console.log(noteData?.name);
-  };
 
   // 회의 노트 삭제
   const handleDelete = () => {
     const confirmDelete = window.confirm('해당 회의록을 정말 삭제하시겠습니까?');
     if (confirmDelete) {
-      // 여기에 회의록 삭제 API 요청을 추가할 수 있습니다.
+      // 여기에 회의록 삭제 API 요청 추가
+      console.log('회의록 삭제', noteData?.id);
       nav('/home'); // 삭제 후 홈으로 이동
     }
   };
@@ -66,7 +63,7 @@ export const NoteTopBar: React.FC<NoteTopBarProps> = ({ noteData }) => {
               lineHeight="12px"
               editLabel="이름 수정"
               deleteLabel="회의록 삭제"
-              onEdit={handleEdit}
+              onEdit={onEditTitle}
               onDelete={handleDelete}
             />
           </div>

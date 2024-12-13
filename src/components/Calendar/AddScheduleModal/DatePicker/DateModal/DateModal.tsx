@@ -96,8 +96,10 @@ export const DateModal: React.FC<DateModalProps> = ({ selectedDates, onSelectDat
             {day}
           </span>
         ))}
-        {daysInMonth().map((day, index) =>
-          day ? (
+        {daysInMonth().map((day, index) => {
+          const isToday = day && format(day, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd');
+
+          return day ? (
             <div
               key={index}
               className={`text-[12px] w-5 h-[22px] cursor-pointer hover:text-mainBlack ${
@@ -105,7 +107,9 @@ export const DateModal: React.FC<DateModalProps> = ({ selectedDates, onSelectDat
                   (date) => format(date, 'yyyy-MM-dd') === format(day, 'yyyy-MM-dd')
                 )
                   ? 'font-[900] text-mainBlack'
-                  : 'font-[700] text-gray03'
+                  : isToday
+                    ? 'font-[700] text-gray05'
+                    : 'font-[700] text-gray03'
               }`}
               onClick={() => handleDayClick(day)}
             >
@@ -113,8 +117,8 @@ export const DateModal: React.FC<DateModalProps> = ({ selectedDates, onSelectDat
             </div>
           ) : (
             <div key={index} className="w-5 h-[22px]" />
-          )
-        )}
+          );
+        })}
       </div>
       <div className="w-full flex mt-5 justify-center">
         <div

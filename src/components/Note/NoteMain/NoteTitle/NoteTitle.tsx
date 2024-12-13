@@ -22,6 +22,10 @@ interface NoteTitleProps {
   setIsMeetingEnded: (ended: boolean) => void; // 회의 종료 상태 업데이트 핸들러
   setIsStart: (isStart: boolean) => void;
   onMeetingStart: () => void;
+  isEditing: boolean; // 수정 상태
+  editedTitle: string; // 수정 중인 제목
+  onTitleChange: (newTitle: string) => void; // 제목 변경 핸들러
+  onTitleSave: () => void; // 제목 저장 핸들러
 }
 
 export const NoteTitle: React.FC<NoteTitleProps> = ({
@@ -31,6 +35,10 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
   setIsMeetingEnded,
   setIsStart,
   onMeetingStart,
+  isEditing,
+  editedTitle,
+  onTitleChange,
+  onTitleSave,
 }) => {
   const { stompClient } = useSocket(); // 소켓 클라이언트 가져오기
   const { data: nickname } = useNickName(); // 닉네임 가져오기
@@ -61,7 +69,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
         if (!isStopCall && chatMessage.nickname === nickname) {
           isStopCall = true;
           const stopMeeting = {
-            content: '안녕 내 사랑', // 요청 본문
+            content: 'stop meeting',
           };
           stompClient?.publish({
             destination: `/app/chat.stop/${uuid}`,
@@ -109,7 +117,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
     if (isStart) {
       // 회의 종료 요청
       const stopMeeting = {
-        content: '안녕 내 사랑', // 요청 본문
+        content: 'stop meeting', // 요청 본문
       };
       stompClient?.publish({
         destination: `/app/chat.click/${uuid}`, // 종료 요청 보내기
@@ -118,7 +126,7 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
     } else {
       // 회의 시작 요청
       const startMeeting = {
-        content: 'show me the mic',
+        content: 'start meeting',
       };
       stompClient?.publish({
         destination: `/app/chat.start/${uuid}`,
@@ -178,9 +186,18 @@ export const NoteTitle: React.FC<NoteTitleProps> = ({
       <section className="relative">
         {isStart && <MicButton isRecording={isRecording} onToggleRecording={toggleRecording} />}
         <div className="flex justify-between items-center mt-[30px]">
-          <h1 className="text-[26px] font-bold ml-12 mr-4 leading-[30px] break-keep">
-            {noteData.name}
-          </h1>
+          {isEditing ? (
+            <input
+              className="text-[26px] font-bold ml-12 text-gray05 border-none bg-transparent focus:outline-none"
+              value={editedTitle}
+              onChange={(e) => onTitleChange(e.target.value)}
+              onBlur={onTitleSave}
+              onKeyDown={(e) => e.key === 'Enter' && onTitleSave()}
+              autoFocus
+            />
+          ) : (
+            <h1 className="text-[26px] font-bold ml-12">{noteData?.name}</h1>
+          )}
           <div className="flex text-white text-[10.5px] leading-[18px]">
             <CopyLink url={currentUrl} />
             <div
