@@ -6,7 +6,7 @@ export const Logout = () => {
   const nav = useNavigate();
 
   const handleLogout = async () => {
-    await logout(); // 여기서는 에러 처리를 하지 않음
+    await logout();
     nav('/'); // about 페이지로 이동
   };
 

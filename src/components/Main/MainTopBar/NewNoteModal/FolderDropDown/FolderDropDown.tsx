@@ -20,7 +20,8 @@ export const FolderDropDown: React.FC<FolderDropdownProps> = ({
 }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const handleDropdownToggle = () => {
+  const handleDropdownToggle = (e: React.MouseEvent) => {
+    e.stopPropagation(); // 이벤트 전파 차단
     setIsOpen(!isOpen);
   };
 
@@ -50,7 +51,10 @@ export const FolderDropDown: React.FC<FolderDropdownProps> = ({
         onFocus={(e) => (e.target.style.boxShadow = '0 0 0 1px #2B2B2B inset')}
         onBlur={(e) => (e.target.style.boxShadow = '0 0 0 1px #D9D9D9 inset')}
         ref={dropdownRef}
-        onClick={handleDropdownToggle}
+        onClick={(e) => {
+          e.stopPropagation(); // 이벤트 전파 차단
+          handleDropdownToggle(e);
+        }}
       >
         <p className="font-[500] text-[11px] mt-[10px] ml-4 text-gray05">폴더 선택</p>
         <img
@@ -62,31 +66,34 @@ export const FolderDropDown: React.FC<FolderDropdownProps> = ({
           {selectedOption.name}
         </span>
       </div>
-      <div
-        className={`w-[408px] absolute top-[303px] bg-white rounded-[10px] shadow-[0_0_4px_0_rgba(0,0,0,0.25)] z-20 transition-all duration-200 ease-in-out overflow-hidden ${
-          isOpen ? 'max-h-[122px] opacity-100 overflow-y-auto scrollbar-hide' : 'max-h-0 opacity-0'
-        }`}
-      >
-        <ul className="mx-[10px] mt-[7px]">
-          {options.map((option) => (
-            <li
-              key={option.id}
-              className={`pl-2 h-[32px] mb-[6px] pt-[4px] pb-[5px] text-[14px] leading-[15px] font-medium cursor-pointer rounded flex items-center hover:bg-gray02 ${
-                option === selectedOption ? 'text-gray04' : 'text-mainBlack'
-              }`}
-              onClick={() => {
-                onOptionSelect(option);
-                setIsOpen(false);
-              }}
-            >
-              {option.name}
-              {option === selectedOption && (
-                <img className="w-[11px] ml-[12px]" src={check} alt="selected" />
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
+
+      {/* 드롭다운 목록 */}
+      {isOpen && (
+        <div
+          className={`absolute w-[408px] top-[303px] bg-white rounded-[10px] shadow-[0_0_4px_0_rgba(0,0,0,0.25)] z-20 overflow-hidden`}
+        >
+          <ul className="mx-[10px] mt-[7px] max-h-[115px] overflow-y-auto scrollbar-hide">
+            {options.map((option) => (
+              <li
+                key={option.id}
+                className={`pl-2 h-[32px] mb-[6px] pt-[4px] pb-[5px] text-[14px] leading-[15px] font-medium cursor-pointer rounded flex items-center hover:bg-gray02 ${
+                  option.id === selectedOption.id ? 'text-gray04' : 'text-mainBlack'
+                }`}
+                onMouseDown={(e) => {
+                  e.preventDefault(); // 마우스 이벤트의 기본 동작 방지
+                  onOptionSelect(option);
+                  setIsOpen(false);
+                }}
+              >
+                {option.name}
+                {option.id === selectedOption.id && (
+                  <img className="w-[11px] ml-[12px]" src={check} alt="selected" />
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </>
   );
 };
