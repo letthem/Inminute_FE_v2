@@ -11,6 +11,7 @@ import { SummaryBySpeakerList } from '@/components/Note/NoteMain/SummaryBySpeake
 import { ToDoList } from '@/components/Note/NoteMain/ToDoList/ToDoList';
 import chat from '@/assets/webps/Note/chatBlackSharp.webp';
 import { QnAModal } from '@/components/Note/NoteMain/QnAModal/QnAModal';
+import { patchNoteTitle } from '@/apis/Note/patchNote';
 
 interface NoteMainProps {
   initialNoteData: NoteDetail | null;
@@ -22,12 +23,40 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid, onMee
   const [noteData, setNoteData] = useState<NoteDetail | null>(initialNoteData);
   const [summaryBySpeaker, setSummaryBySpeaker] = useState<SummaryByMember[]>([]);
   const [toDoByMembers, setToDoByMembers] = useState<ToDoByMember[]>([]);
-
   const [isQnAModalOpen, setIsQnAModalOpen] = useState(false); // Q&A 모달 상태
   const [participants, setParticipants] = useState<string[]>([]); // participants 상태 선언
   const [isMeetingEnded, setIsMeetingEnded] = useState(false); // 회의 종료 상태
   const [isStart, setIsStart] = useState(false); // 회의 상태
+  const [isEditing, setIsEditing] = useState(false); // 제목 수정 상태
+  const [editedTitle, setEditedTitle] = useState(noteData?.name || ''); // 수정 중인 제목
   const { messages } = useSocket();
+
+  const handleEditTitle = () => {
+    setIsEditing(true); // 수정 모드 활성화
+  };
+
+  const handleTitleChange = (newTitle: string) => {
+    const trimmedValue = newTitle.replace(/\s/g, ''); // 띄어쓰기 제외
+    if (trimmedValue.length <= 11) {
+      setEditedTitle(newTitle); // 띄어쓰기 제외 11자 이내에서만 업데이트
+    }
+  };
+
+  const handleTitleSave = async () => {
+    const trimmedTitle = editedTitle.trim(); // 제목의 앞뒤 공백 제거
+    if (trimmedTitle.length === 0) {
+      // 제목이 비어 있으면 저장 막음
+      setEditedTitle(noteData?.name || ''); // 원래 제목으로 복구
+      setIsEditing(false); // 수정 모드 종료
+      return;
+    }
+
+    if (noteData?.id) {
+      await patchNoteTitle(noteData.id, trimmedTitle); // 제목 수정 API 호출
+      setNoteData((prev) => (prev ? { ...prev, name: trimmedTitle } : prev)); // 로컬 데이터 업데이트
+      setIsEditing(false); // 수정 모드 종료
+    }
+  };
 
   // DB에서 데이터를 가져오는 함수
   const fetchDataFromDB = async () => {
@@ -91,7 +120,7 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid, onMee
 
   return (
     <main className="relative flex flex-1 flex-col">
-      <NoteTopBar noteData={noteData} />
+      <NoteTopBar noteData={noteData} onEditTitle={handleEditTitle} />
       <NoteTitle
         noteData={noteData}
         uuid={uuid}
@@ -99,6 +128,10 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid, onMee
         setIsMeetingEnded={setIsMeetingEnded}
         setIsStart={setIsStart}
         onMeetingStart={onMeetingStart}
+        isEditing={isEditing}
+        editedTitle={editedTitle}
+        onTitleChange={handleTitleChange}
+        onTitleSave={handleTitleSave}
       />
       <div className="overflow-y-auto scrollbar-hide">
         <ParticipantList participants={participants} />
@@ -127,7 +160,7 @@ export const NoteMain: React.FC<NoteMainProps> = ({ initialNoteData, uuid, onMee
         ) : null}
       </div>
 
-      {isMeetingEnded && (
+      {(isMeetingEnded || noteData?.summary) && (
         <button
           onClick={handleQnAClick}
           className={`absolute bottom-7 right-6 w-14 h-14  ${
