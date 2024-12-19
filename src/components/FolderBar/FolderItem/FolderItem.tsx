@@ -10,6 +10,7 @@ import dragGray from '@/assets/webps/FolderBar/dragGray.webp';
 import { Folder } from '@/components/FolderBar/dto';
 import { useNavigate } from 'react-router-dom';
 import { patchFolder } from '@/apis/Folder/patchFolder';
+import { deleteFolder } from '@/apis/Folder/deleteFolder';
 
 interface FolderItemProps {
   index: number;
@@ -114,6 +115,20 @@ export const FolderItem: React.FC<FolderItemProps> = ({
     }
   };
 
+  // 폴더 삭제 기능
+  const handleDeleteFolder = async () => {
+    try {
+      // API 호출
+      await deleteFolder(folderItem.id);
+
+      // UI 업데이트
+      onDeleteFolder(index);
+      setIsMenuVisible(false); // 메뉴 닫기
+    } catch (error) {
+      console.error('폴더 삭제 중 에러 발생:', error);
+    }
+  };
+
   useEffect(() => {
     if (isMenuVisible) {
       document.addEventListener('mousedown', handleClickOutside);
@@ -209,10 +224,7 @@ export const FolderItem: React.FC<FolderItemProps> = ({
                 editLabel="이름 변경"
                 deleteLabel="삭제하기"
                 onEdit={handleRename}
-                onDelete={() => {
-                  onDeleteFolder(index); // 폴더 삭제 로직 호출
-                  setIsMenuVisible(false); // 메뉴 닫기
-                }}
+                onDelete={handleDeleteFolder}
               />
             </div>
           )}

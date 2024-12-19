@@ -100,8 +100,18 @@ export const FolderBar: React.FC = () => {
   };
 
   // 폴더 삭제 핸들러
-  const handleDeleteFolder = (index: number) => {
-    setFolders((prevFolders) => prevFolders.filter((_, i) => i !== index)); // 해당 폴더 삭제
+  const handleDeleteFolder = (folderIndex: number) => {
+    setFolders((prevFolders) => {
+      const updatedFolders = [...prevFolders];
+      const removedFolder = updatedFolders.splice(folderIndex, 1)[0];
+
+      if (removedFolder.notes.length > 0) {
+        // 삭제된 폴더 안의 노트를 unassignedNotes로 이동
+        setUnassignedNotes((prevNotes) => [...prevNotes, ...removedFolder.notes]);
+      }
+
+      return updatedFolders;
+    });
   };
 
   // 폴더 이름 변경 함수
