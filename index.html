@@ -3,9 +3,37 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link href="https://fonts.cdnfonts.com/css/nanumsquare-neo" rel="stylesheet" rel="preload" />
+    <link
+      rel="stylesheet"
+      as="style"
+      crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
+    />
+    <meta property="og:title" content="Inminute" />
+    <meta
+      property="og:description"
+      content="나를 위한 AI 회의록 서비스, 스크립트부터 요약까지 한 번에 !"
+    />
+    <meta property="og:image" content="/thumbnail.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://inminute.kr" />
+    <link rel="icon" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <title>Inminute</title>
   </head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KST0PP5WB1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-KST0PP5WB1');
+  </script>
+  <!-------------------------------------->
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
